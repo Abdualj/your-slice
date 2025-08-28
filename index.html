@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perusasemoinnin harjoittelu</title>
+    <link rel="stylesheet" href="styles.css">
+     <script src="main.js" defer></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-icon">🍕</span>
+                    <h1>Your Slice</h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Menu</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li class="cart-icon">
+                            🛒
+                            <span class="cart-count">0</span>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h2>Create Your Perfect Pizza Slice</h2>
+            <p>Customize every aspect of your pizza slice - from dough to toppings - baked fresh right before your eyes</p>
+            <button class="btn btn-primary btn-large">Build Your Slice Now</button>
+        </div>
+    </section>
+
+    <section class="builder-section container">
+        <div class="section-title">
+            <h2>Build Your Slice</h2>
+            <p>Follow the steps to create your customized pizza slice</p>
+        </div>
+
+        <div class="builder-steps">
+            <div class="step active">
+                <div class="step-number">1</div>
+                <p>Base</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <p>Sauce</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <p>Cheese</p>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <p>Toppings</p>
+            </div>
+            <div class="step">
+                <div class="step-number">5</div>
+                <p>Size</p>
+            </div>
+        </div>
+
+        <div class="builder-content">
+            <div class="pizza-preview">
+                <div class="pizza-canvas">
+                    <!-- Pizza visualization will be rendered here -->
+                </div>
+            </div>
+            <div class="options-container">
+                <h3>Select Your Base</h3>
+                <div class="options-grid">
+                    <div class="option-card selected">
+                        <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Original">
+                        <h3>Original</h3>
+                        <p>+€0.00</p>
+                    </div>
+                    <div class="option-card">
+                        <img src="https://images.unsplash.com/photo-1614707267537-b85aaf00c4b7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Whole Wheat">
+                        <h3>Whole Wheat</h3>
+                        <p>+€0.50</p>
+                    </div>
+                    <div class="option-card">
+                        <img src="https://images.unsplash.com/photo-1627626775846-122c844700d8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Gluten-Free">
+                        <h3>Gluten-Free</h3>
+                        <p>+€1.50</p>
+                    </div>
+                    <div class="option-card">
+                        <img src="https://images.unsplash.com/photo-1624342909597-9c5c8f872b38?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Herb">
+                        <h3>Herb Infused</h3>
+                        <p>+€0.75</p>
+                    </div>
+                </div>
+
+                <div class="navigation-buttons">
+                    <button class="btn" disabled>Previous</button>
+                    <button class="btn btn-primary">Next: Choose Sauce</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="menu-section">
+    <div class="container">
+        <div class="section-title">
+            <h2>Popular Creations</h2>
+            <p>Not feeling creative? Try our signature slices</p>
+        </div>
+
+        <div class="menu-scroll-container">
+            <div class="menu-scroll-grid">
+                <div class="menu-item">
+                    <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Margherita">
+                    <div class="menu-item-content">
+                        <h3>Classic Margherita</h3>
+                        <p>Tomato sauce, fresh mozzarella, basil leaves</p>
+                        <div class="menu-item-bottom">
+                            <span class="price">€4.50</span>
+                            <button class="add-to-cart-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Pepperoni">
+                    <div class="menu-item-content">
+                        <h3>Pepperoni Supreme</h3>
+                        <p>Tomato sauce, mozzarella, spicy pepperoni</p>
+                        <div class="menu-item-bottom">
+                            <span class="price">€5.00</span>
+                            <button class="add-to-cart-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <img src="https://images.unsplash.com/photo-1595854341625-f33ee10dbf94?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Veggie">
+                    <div class="menu-item-content">
+                        <h3>Garden Veggie</h3>
+                        <p>Tomato sauce, mozzarella, mushrooms, peppers, olives</p>
+                        <div class="menu-item-bottom">
+                            <span class="price">€5.50</span>
+                            <button class="add-to-cart-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <img src="https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="BBQ Chicken">
+                    <div class="menu-item-content">
+                        <h3>BBQ Chicken</h3>
+                        <p>BBQ sauce, mozzarella, grilled chicken, red onions</p>
+                        <div class="menu-item-bottom">
+                            <span class="price">€6.00</span>
+                            <button class="add-to-cart-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Additional menu items to showcase the scroll -->
+                <div class="menu-item">
+                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Truffle">
+                    <div class="menu-item-content">
+                        <h3>Truffle Delight</h3>
+                        <p>White sauce, mozzarella, truffle oil, mushrooms</p>
+                        <div class="menu-item-bottom">
+                            <span class="price">€7.50</span>
+                            <button class="add-to-cart-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="menu-item">
+                    <img src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Hawaiian">
+                    <div class="menu-item-content">
+                        <h3>Hawaiian Paradise</h3>
+                        <p>Tomato sauce, mozzarella, ham, pineapple</p>
+                        <div class="menu-item-bottom">
+                            <span class="price">€6.50</span>
+                            <button class="add-to-cart-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scroll indicators -->
+        <div class="scroll-indicators">
+            <button class="scroll-arrow left-arrow" aria-label="Scroll left">&#8249;</button>
+            <div class="dot-indicators">
+                <span class="dot active"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+            <button class="scroll-arrow right-arrow" aria-label="Scroll right">&#8250;</button>
+        </div>
+    </div>
+</section>
+
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Your Slice</h3>
+                    <p>Creating the perfect customized pizza slice, baked fresh right before your eyes.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Menu</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li>Address</li>
+                        <li>Helsinki, Finland</li>
+                        <li>+358 12 345 6789</li>
+                        <li>email</li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Opening Hours</h3>
+                    <ul>
+                        <li>Mon-Thu: 10:30 - 22:00</li>
+                        <li>Fri-Sat: 10:30 - 00:00</li>
+                        <li>Sun: 12:00 - 22:00</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Your Slice. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <!-- Cart Panel -->
+    <div class="cart-panel">
+        <div class="cart-header">
+            <h2>Your Order</h2>
+            <button class="close-cart">×</button>
+        </div>
+        <div class="cart-items">
+            <div class="empty-cart">
+                <div>🛒</div>
+                <p>Your cart is empty</p>
+            </div>
+            <!-- Cart items will be added here dynamically -->
+        </div>
+        <div class="cart-summary">
+            <div class="summary-row">
+                <span>Subtotal:</span>
+                <span class="cart-subtotal">€0.00</span>
+            </div>
+            <div class="summary-row">
+                <span>Delivery fee:</span>
+                <span class="delivery-fee">€2.50</span>
+            </div>
+            <div class="summary-row summary-total">
+                <span>Total:</span>
+                <span class="cart-total">€2.50</span>
+            </div>
+            <button class="checkout-btn">Proceed to Checkout</button>
+        </div>
+    </div>
