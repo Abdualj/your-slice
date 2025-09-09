@@ -259,12 +259,26 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         document.querySelectorAll('.remove-item').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const index = parseInt(this.dataset.index);
-                cart.splice(index, 1);
-                updateCart();
-            });
-        });
+        btn.addEventListener('click', function() {
+        const index = parseInt(this.dataset.index);
+        cart.splice(index, 1); // Poista tuote korista
+
+        if (cart.length === 0) {
+            // Jos kori on tyhjä, näytä tyhjä viesti ja nollaa summat
+            cartItems.innerHTML = '';
+            cartCount.textContent = '0';
+            cartSubtotal.textContent = '€0.00';
+            cartTotal.textContent = '€0.00'; // Ei toimitusmaksua
+            document.querySelector('.delivery-fee').textContent = '€0.00'; // Nollaa toimitusmaksu
+            cartItems.appendChild(emptyCart.cloneNode(true));
+        } else {
+            updateCart(); // Päivitä kori ja summat
+        }
+    });
+
+
+});
+
     }
     
     // Checkout button

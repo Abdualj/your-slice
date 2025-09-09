@@ -291,7 +291,7 @@
     .menu-scroll-grid {
         display: flex;
         gap: 20px;
-        padding: 0 20px;
+        padding: 0px;
     }
     
     .menu-item {
@@ -355,7 +355,7 @@
         justify-content: center;
         align-items: center;
         gap: 15px;
-        margin-top: 20px;
+        padding: 50px 0px;
     }
     
     .scroll-arrow {
@@ -635,19 +635,10 @@
         .empty-cart p {
             margin-top: 10px;
         }
-        
-        /* Body shift when cart is open */
-        body.cart-open {
-            transform: translateX(-350px);
-        }
-        
+            
         @media (max-width: 768px) {
             .cart-panel {
                 width: 300px;
-            }
-            
-            body.cart-open {
-                transform: translateX(-300px);
             }
         }
         
