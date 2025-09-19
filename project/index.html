@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perusasemoinnin harjoittelu</title>
+    <title>your-slice</title>
     <link rel="stylesheet" href="styles.css">
      <script src="main.js" defer></script>
      <!-- Google Translate Initialization -->
@@ -34,6 +34,8 @@
                         <li><a href="#">Menu</a></li>
                         <li><a href="#">About</a></li>
                         <li><a href="#">Contact</a></li>
+                        <!-- Login icon -->
+                        <li class="login-icon"><a href="#" id="openDialog">🔐</a></li>
                         <li class="cart-icon">
                             🛒
                             <span class="cart-count">0</span>
@@ -287,3 +289,29 @@
             <button class="checkout-btn">Proceed to Checkout</button>
         </div>
     </div>
+    
+    <!-- Login Dialog -->
+    <dialog id="loginDialog">
+        <button class="close-btn" aria-label="Sulje">✕</button>
+        
+        <form method="dialog" class="login-form">
+            <h2>Kirjaudu sisään</h2>
+
+            <label for="name">Nimi:</label>
+            <input type="text" id="name" name="name" minlength="3" required>
+
+            <label for="email">Sähköposti:</label>
+            <input type="email" id="email" name="email" pattern=".+@metropolia\.fi$" required>
+
+            <label for="password">Salasana:</label>
+            <input type="password" id="password" name="password"
+                pattern="(?=.*[A-Z])(?=.*[0-9]).{6,}" required>
+
+            <menu>
+                <button value="cancel" class="cancel-btn">Peruuta</button>
+                <button value="submit" class="submit-btn">Kirjaudu</button>
+            </menu>
+        </form>
+    </dialog>
+    </body>
+</html>

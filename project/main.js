@@ -329,3 +329,50 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize cart
     updateCart();
 });
+
+  // Login dialog functionality
+        const dialog = document.getElementById('loginDialog');
+        document.getElementById('openDialog').addEventListener('click', (e) => {
+            e.preventDefault();
+            dialog.showModal();
+        });
+
+        // Add close button functionality
+        const closeBtn = dialog.querySelector('.close-btn');
+        closeBtn.addEventListener('click', () => {
+            dialog.close();
+        });
+
+        // Close dialog when clicking outside
+        dialog.addEventListener('click', (e) => {
+            if (e.target === dialog) {
+                dialog.close();
+            }
+        });
+
+        // Form submission handling
+        const loginForm = document.querySelector('.login-form');
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Here you would typically handle the login logic
+            alert('welcome back xxxxxx');
+            dialog.close();
+        });
+
+        // Burger menu functionality
+        const burgerMenu = document.getElementById('burgerMenu');
+        const navMobile = document.getElementById('navMobile');
+        
+        if (burgerMenu && navMobile) {
+            burgerMenu.addEventListener('click', () => {
+                navMobile.classList.toggle('active');
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!burgerMenu.contains(e.target) && !navMobile.contains(e.target) && navMobile.classList.contains('active')) {
+                    navMobile.classList.remove('active');
+                }
+            });
+        }
+

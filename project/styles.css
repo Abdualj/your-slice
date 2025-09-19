@@ -75,6 +75,85 @@
         nav ul li a:hover {
             color: var(--primary);
         }
+        /* Login icon styles */
+        .login-icon a {
+            text-decoration: none;
+            font-size: 1.2rem;
+            display: block;
+            padding: 0px;
+        }
+
+        /* Login dialog styles */
+        #loginDialog {
+            border: none;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            width: 90%;
+            max-width: 400px;
+        }
+
+        #loginDialog::backdrop {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .login-form h2 {
+            margin-bottom: 1rem;
+            color: var(--dark);
+            text-align: center;
+        }
+
+        .login-form label {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .login-form input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .login-form menu {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+
+        .cancel-btn, .submit-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .cancel-btn {
+            background-color: #e0e0e0;
+        }
+
+        .submit-btn {
+            background-color: var(--primary);
+            color: white;
+        }
         
         .cart-icon {
             position: relative;
