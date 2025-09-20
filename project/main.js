@@ -330,33 +330,58 @@ document.addEventListener('DOMContentLoaded', function() {
     updateCart();
 });
 
-  // Login dialog functionality
-        const dialog = document.getElementById('loginDialog');
-        document.getElementById('openDialog').addEventListener('click', (e) => {
+          // Login dialog functionality
+        const loginDialog = document.getElementById('loginDialog');
+        document.getElementById('openLoginDialog').addEventListener('click', (e) => {
             e.preventDefault();
-            dialog.showModal();
+            loginDialog.showModal();
         });
 
-        // Add close button functionality
-        const closeBtn = dialog.querySelector('.close-btn');
-        closeBtn.addEventListener('click', () => {
-            dialog.close();
+
+        // Sign up dialog functionality
+        const signupDialog = document.getElementById('signupDialog');
+        document.getElementById('openSignupDialog').addEventListener('click', (e) => {
+            e.preventDefault();
+            signupDialog.showModal();
         });
 
-        // Close dialog when clicking outside
-        dialog.addEventListener('click', (e) => {
-            if (e.target === dialog) {
-                dialog.close();
+
+ // Add close button functionality
+        const closeBtns = document.querySelectorAll('.close-btn');
+        closeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                loginDialog.close();
+                signupDialog.close();
+            });
+        });
+
+       // Close dialog when clicking outside
+        loginDialog.addEventListener('click', (e) => {
+            if (e.target === loginDialog) {
+                loginDialog.close();
             }
         });
 
-        // Form submission handling
+        signupDialog.addEventListener('click', (e) => {
+            if (e.target === signupDialog) {
+                signupDialog.close();
+            }
+        });
+
+
+       // Form submission handling
         const loginForm = document.querySelector('.login-form');
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            // Here you would typically handle the login logic
-            alert('welcome back xxxxxx');
-            dialog.close();
+            alert('Login successful! Welcome back.');
+            loginDialog.close();
+        });
+        
+        const signupForm = document.querySelector('.signup-form');
+        signupForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Account created successfully! Welcome to Your Slice.');
+            signupDialog.close();
         });
 
         // Burger menu functionality
