@@ -10,7 +10,7 @@
     </class>
     <!-- Login Dialog -->
     <dialog id="loginDialog">
-        <button class="close-btn" aria-label="Sulje">✕</button>
+        <button class="close-btn" aria-label="Sulje"></button>
         
         <form method="dialog" class="login-form" id="loginForm">
             <h2>Kirjaudu sisään</h2>
@@ -27,9 +27,7 @@
             <input type="password" id="password" name="password"
                 pattern="(?=.*[A-Z])(?=.*[0-9]).{6,}" required>
             <div class="error-message" id="passwordError">Salasanan tulee olla vähintään 6 merkkiä pitkä, sisältää vähintään yhden ison kirjaimen ja yhden numeron</div>
-
-            <menu>
-                <button value="cancel" class="cancel-btn">Peruuta</button>
+        <menu>
                 <button value="submit" class="submit-btn">Kirjaudu</button>
             </menu>
         </form>
