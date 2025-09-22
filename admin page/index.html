@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     </head>
 <body class="pre-login">
-    </class>
+    
     <!-- Login Dialog -->
     <dialog id="loginDialog">
         <button class="close-btn" aria-label="Sulje"></button>
@@ -29,6 +29,7 @@
             <div class="error-message" id="passwordError">Salasanan tulee olla vähintään 6 merkkiä pitkä, sisältää vähintään yhden ison kirjaimen ja yhden numeron</div>
         <menu>
                 <button value="submit" class="submit-btn">Kirjaudu</button>
+                <button type="button" class="cancel-btn">Peruuta</button>
             </menu>
         </form>
     </dialog>
@@ -173,6 +174,37 @@
                     </tbody>
                 </table>
             </div>
+  
+
+  
+<!-- Products Management -->
+<div class="products-table">
+    <div class="products-header">
+        <h2>Manage Products</h2>
+    </div>
+
+    <div class="add-product-form">
+        <input type="text" id="productName" placeholder="Product Name">
+        <input type="number" id="productPrice" placeholder="Price (€)">
+        <button id="addProductBtn">Add Product</button>
+    </div>
+
+    <table id="productsTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price (€)</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Uudet tuotteet tulee tänne -->
+        </tbody>
+    </table>
+</div>
+
+
+
         </div>
     </div>
     <script>
@@ -311,6 +343,72 @@
                 // In a real app, this would update the dashboard stats
                 console.log('Stats would update here');
             }
+                // === Product Management ===
+            const addProductBtn = document.getElementById('addProductBtn');
+            const productNameInput = document.getElementById('productName');
+            const productPriceInput = document.getElementById('productPrice');
+            const productsTableBody = document.querySelector('#productsTable tbody');
+            // Lisää tuote
+            addProductBtn.addEventListener('click', function() {
+            const name = productNameInput.value.trim();
+            const price = parseFloat(productPriceInput.value);
+
+            if (!name || isNaN(price)) {
+                alert("Anna tuotteen nimi ja hinta!");
+                return;
+            }
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${name}</td>
+                <td>€${price.toFixed(2)}</td>
+                <td><button class="delete-btn btn">Delete</button></td>
+            `;
+
+            productsTableBody.appendChild(row);
+
+            // Tyhjennä kentät
+            productNameInput.value = '';
+            productPriceInput.value = '';
+        });
+
+            // Poista tuote (delegointi)
+            productsTableBody.addEventListener('click', function(e) {
+            if (e.target.classList.contains('delete-btn')) {
+                if (confirm('Poistetaanko tuote?')) {
+                    e.target.closest('tr').remove();
+                }
+            }
+        });
+
+            if (addProductForm && productTableBody) {
+            addProductForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = document.getElementById('productName').value.trim();
+                const priceInput = document.getElementById('productPrice').value;
+                const price = parseFloat(priceInput);
+                if (!name || isNaN(price)) return;
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                <td>${name}</td>
+                <td>€${price.toFixed(2)}</td>
+                <td><button class="delete-btn btn">Delete</button></td>
+                `;
+                productTableBody.appendChild(row);
+                addProductForm.reset();
+            });
+
+            // Event delegation: poisto nappia klikatessa
+            productTableBody.addEventListener('click', function(e) {
+                if (e.target.classList.contains('delete-btn')) {
+                if (confirm('Poistetaanko tuote?')) {
+                    e.target.closest('tr').remove();
+                }
+                }
+            });
+            }
+
         });
     </script>
 </body>
