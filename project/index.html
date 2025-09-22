@@ -3,21 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>your-slice</title>
+    <title>Your Slice</title>
     <link rel="stylesheet" href="styles.css">
-     <script src="main.js" defer></script>
-     <!-- Google Translate Initialization -->
+    <script src="main.js" defer></script>
+
+    <!-- Smooth Scroll -->
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+
+    <!-- Google Translate Initialization -->
     <script type="text/javascript">
         function googleTranslateElementInit() {
             new google.translate.TranslateElement({
                 pageLanguage: 'en',
-                includedLanguages: 'fi', // Add desired language codes
+                includedLanguages: 'fi',
                 layout: google.translate.TranslateElement.InlineLayout.SIMPLE
             }, 'google_translate_element');
         }
     </script>
     <script type="text/javascript"
-            src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+        src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
     </script>
 </head>
 <body>
@@ -29,11 +37,11 @@
                     <h1>Your Slice</h1>
                 </div>
                 <nav>
-                     <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">Menu</a></li>
-                        <li><a href="#">About</a></li>
-                        <li><a href="#">Contact</a></li>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#build-your-slice">Build your slice</a></li>
+                        <li><a href="#menu">Menu</a></li>
+                        <li><a href="#contact">Contact</a></li>
                         <li class="cart-icon">
                             🛒
                             <span class="cart-count">0</span>
@@ -48,7 +56,8 @@
         </div>
     </header>
 
-    <section class="hero">
+    <!-- Hero Section -->
+    <section id="home" class="hero">
         <div class="container">
             <h2>Create Your Perfect Pizza Slice</h2>
             <p>Customize every aspect of your pizza slice - from dough to toppings - baked fresh right before your eyes</p>
@@ -56,7 +65,8 @@
         </div>
     </section>
 
-    <section class="builder-section container">
+    <!-- Builder Section -->
+    <section id="build-your-slice" class="builder-section container">
         <div class="section-title">
             <h2>Build Your Slice</h2>
             <p>Follow the steps to create your customized pizza slice</p>
@@ -115,7 +125,6 @@
                         <p>+€0.75</p>
                     </div>
                 </div>
-                
 
                 <div class="navigation-buttons">
                     <button class="btn" disabled>Previous</button>
@@ -125,105 +134,105 @@
         </div>
     </section>
 
-    <section class="menu-section">
-    <div class="container">
-        <div class="section-title">
-            <h2>Popular Creations</h2>
-            <p>Not feeling creative? Try our signature slices</p>
-        </div>
+    <!-- Menu Section -->
+    <section id="menu" class="menu-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Popular Creations</h2>
+                <p>Not feeling creative? Try our signature slices</p>
+            </div>
 
-        <div class="menu-scroll-container">
-            <div class="menu-scroll-grid">
-                <div class="menu-item">
-                    <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Margherita">
-                    <div class="menu-item-content">
-                        <h3>Classic Margherita</h3>
-                        <p>Tomato sauce, fresh mozzarella, basil leaves</p>
-                        <div class="menu-item-bottom">
-                            <span class="price">€4.50</span>
-                            <button class="add-to-cart-btn">Add to Cart</button>
+            <div class="menu-scroll-container">
+                <div class="menu-scroll-grid">
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Margherita">
+                        <div class="menu-item-content">
+                            <h3>Classic Margherita</h3>
+                            <p>Tomato sauce, fresh mozzarella, basil leaves</p>
+                            <div class="menu-item-bottom">
+                                <span class="price">€4.50</span>
+                                <button class="add-to-cart-btn">Add to Cart</button>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="menu-item">
-                    <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Pepperoni">
-                    <div class="menu-item-content">
-                        <h3>Pepperoni Supreme</h3>
-                        <p>Tomato sauce, mozzarella, spicy pepperoni</p>
-                        <div class="menu-item-bottom">
-                            <span class="price">€5.00</span>
-                            <button class="add-to-cart-btn">Add to Cart</button>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Pepperoni">
+                        <div class="menu-item-content">
+                            <h3>Pepperoni Supreme</h3>
+                            <p>Tomato sauce, mozzarella, spicy pepperoni</p>
+                            <div class="menu-item-bottom">
+                                <span class="price">€5.00</span>
+                                <button class="add-to-cart-btn">Add to Cart</button>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="menu-item">
-                    <img src="https://images.unsplash.com/photo-1595854341625-f33ee10dbf94?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Veggie">
-                    <div class="menu-item-content">
-                        <h3>Garden Veggie</h3>
-                        <p>Tomato sauce, mozzarella, mushrooms, peppers, olives</p>
-                        <div class="menu-item-bottom">
-                            <span class="price">€5.50</span>
-                            <button class="add-to-cart-btn">Add to Cart</button>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1595854341625-f33ee10dbf94?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Veggie">
+                        <div class="menu-item-content">
+                            <h3>Garden Veggie</h3>
+                            <p>Tomato sauce, mozzarella, mushrooms, peppers, olives</p>
+                            <div class="menu-item-bottom">
+                                <span class="price">€5.50</span>
+                                <button class="add-to-cart-btn">Add to Cart</button>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="menu-item">
-                    <img src="https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="BBQ Chicken">
-                    <div class="menu-item-content">
-                        <h3>BBQ Chicken</h3>
-                        <p>BBQ sauce, mozzarella, grilled chicken, red onions</p>
-                        <div class="menu-item-bottom">
-                            <span class="price">€6.00</span>
-                            <button class="add-to-cart-btn">Add to Cart</button>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="BBQ Chicken">
+                        <div class="menu-item-content">
+                            <h3>BBQ Chicken</h3>
+                            <p>BBQ sauce, mozzarella, grilled chicken, red onions</p>
+                            <div class="menu-item-bottom">
+                                <span class="price">€6.00</span>
+                                <button class="add-to-cart-btn">Add to Cart</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                
-                <!-- Additional menu items to showcase the scroll -->
-                <div class="menu-item">
-                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Truffle">
-                    <div class="menu-item-content">
-                        <h3>Truffle Delight</h3>
-                        <p>White sauce, mozzarella, truffle oil, mushrooms</p>
-                        <div class="menu-item-bottom">
-                            <span class="price">€7.50</span>
-                            <button class="add-to-cart-btn">Add to Cart</button>
+
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Truffle">
+                        <div class="menu-item-content">
+                            <h3>Truffle Delight</h3>
+                            <p>White sauce, mozzarella, truffle oil, mushrooms</p>
+                            <div class="menu-item-bottom">
+                                <span class="price">€7.50</span>
+                                <button class="add-to-cart-btn">Add to Cart</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="menu-item">
-                    <img src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Hawaiian">
-                    <div class="menu-item-content">
-                        <h3>Hawaiian Paradise</h3>
-                        <p>Tomato sauce, mozzarella, ham, pineapple</p>
-                        <div class="menu-item-bottom">
-                            <span class="price">€6.50</span>
-                            <button class="add-to-cart-btn">Add to Cart</button>
+
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Hawaiian">
+                        <div class="menu-item-content">
+                            <h3>Hawaiian Paradise</h3>
+                            <p>Tomato sauce, mozzarella, ham, pineapple</p>
+                            <div class="menu-item-bottom">
+                                <span class="price">€6.50</span>
+                                <button class="add-to-cart-btn">Add to Cart</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <!-- Scroll indicators -->
-        <div class="scroll-indicators">
-            <button class="scroll-arrow left-arrow" aria-label="Scroll left">&#8249;</button>
-            <div class="dot-indicators">
-                <span class="dot active</span>
-                <span class="dot"></span>
-                <span class="dot"></span>
+            
+            <!-- Scroll indicators -->
+            <div class="scroll-indicators">
+                <button class="scroll-arrow left-arrow" aria-label="Scroll left">&#8249;</button>
+                <div class="dot-indicators">
+                    <span class="dot active"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+                <button class="scroll-arrow right-arrow" aria-label="Scroll right">&#8250;</button>
             </div>
-            <button class="scroll-arrow right-arrow" aria-label="Scroll right">&#8250;</button>
         </div>
-    </div>
-</section>
+    </section>
 
-
-    <footer>
+    <!-- Contact / Footer -->
+    <footer id="contact">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-column">
@@ -233,10 +242,10 @@
                 <div class="footer-column">
                     <h3>Quick Links</h3>
                     <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">Menu</a></li>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Contact</a></li>
+                         <li><a href="#home">Home</a></li>
+                        <li><a href="#build-your-slice">Build your slice</a></li>
+                        <li><a href="#menu">Menu</a></li>
+                        <li><a href="#contact">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
@@ -262,6 +271,7 @@
             </div>
         </div>
     </footer>
+
     <!-- Cart Panel -->
     <div class="cart-panel">
         <div class="cart-header">
@@ -273,7 +283,6 @@
                 <div>🛒</div>
                 <p>Your cart is empty</p>
             </div>
-            <!-- Cart items will be added here dynamically -->
         </div>
         <div class="cart-summary">
             <div class="summary-row">
@@ -291,37 +300,31 @@
             <button class="checkout-btn">Proceed to Checkout</button>
         </div>
     </div>
-    
+
     <!-- Login Dialog -->
     <dialog id="loginDialog">
         <button class="close-btn" aria-label="Sulje">✕</button>
-        
         <form method="dialog" class="login-form">
-            <h2>log in</h2>
-
+            <h2>Log in</h2>
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" minlength="3" required>
-
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" pattern=".+@metropolia\.fi$" required>
-
             <label for="password">Password:</label>
             <input type="password" id="password" name="password"
                 pattern="(?=.*[A-Z])(?=.*[0-9]).{6,}" required>
-
             <menu>
                 <button value="cancel" class="cancel-btn">Cancel</button>
                 <button value="submit" class="submit-btn">Log in</button>
             </menu>
         </form>
     </dialog>
-<!-- Sign Up Dialog -->
+
+    <!-- Sign Up Dialog -->
     <dialog id="signupDialog">
         <button class="close-btn" aria-label="Close">✕</button>
-        
         <form method="dialog" class="signup-form">
             <h2>Sign up</h2>
-            
             <div class="form-row">
                 <div>
                     <label for="signup-name">First Name:</label>
@@ -332,27 +335,20 @@
                     <input type="text" id="signup-surname" name="signup-surname" minlength="2" required>
                 </div>
             </div>
-
             <label for="signup-age">Age:</label>
             <input type="number" id="signup-age" name="signup-age" min="16" max="120" required>
-
             <label for="signup-email">Email:</label>
             <input type="email" id="signup-email" name="signup-email" pattern=".+@metropolia\.fi$" required>
             <p class="instructions">Must be a @metropolia.fi email address</p>
-
             <label for="signup-password">Password:</label>
             <input type="password" id="signup-password" name="signup-password"
                 pattern="(?=.*[A-Z])(?=.*[0-9]).{6,}" required>
             <p class="instructions">Must contain at least one uppercase letter, one number, and be at least 6 characters long</p>
-
             <menu>
                 <button value="cancel" class="cancel-btn">Cancel</button>
                 <button value="submit" class="submit-btn">Sign up</button>
             </menu>
         </form>
     </dialog>
-
-    
-
 </body>
 </html>
