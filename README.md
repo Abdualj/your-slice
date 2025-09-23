@@ -1,2 +1,1 @@
-# your-slice
-# yourslice
+# Your Slice Project
