@@ -417,50 +417,83 @@ if (burgerMenu && navMobile) {
   });
 }
 
-// === Reviews of Restaurants ===
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("addReviewForm");
   const list = document.getElementById("reviewsList");
+  const STORAGE_KEY = "reviews";
 
-  // Lataa aiemmat arvostelut localStoragesta
-  const reviews = JSON.parse(localStorage.getItem("reviews") || "[]");
+  // Ladataan olemassa olevat arvostelut
+  let reviews = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+
+  function saveReviews() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(reviews));
+  }
+
+  // Estetään mahdollinen HTML-injektio (yksinkertainen)
+  function escapeHtml(str) {
+    return String(str).replace(/[&<>"']/g, (s) => {
+      return {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;",
+      }[s];
+    });
+  }
+
+  function addReviewToDOM(review) {
+    const { name, rating, text } = review;
+    const li = document.createElement("li");
+    li.className = "review-item";
+
+    // sisältö (escape)
+    li.innerHTML = `<div class="review-content"><strong>${escapeHtml(
+      name
+    )}</strong> (${escapeHtml(rating)}★)<p>${escapeHtml(text)}</p></div>`;
+
+    // poistonappi
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "Poista";
+    deleteBtn.className = "delete-btn";
+
+    deleteBtn.addEventListener("click", () => {
+      if (confirm("Haluatko varmasti poistaa tämän arvostelun?")) {
+        // Poistetaan DOMista
+        li.remove();
+
+        // Poistetaan myös reviews-taulukosta (löydetään indeksi)
+        const index = reviews.findIndex(
+          (r) => r.name === name && r.rating === rating && r.text === text
+        );
+        if (index > -1) {
+          reviews.splice(index, 1);
+          saveReviews();
+        }
+      }
+    });
+
+    li.appendChild(deleteBtn);
+    list.appendChild(li);
+  }
+
+  // Renderöidään aiemmat arvostelut
   reviews.forEach(addReviewToDOM);
 
+  // Lomakkeen lähetys
   form.addEventListener("submit", (e) => {
     e.preventDefault();
-
-    const name = document.getElementById("reviewerName").value;
+    const name = document.getElementById("reviewerName").value.trim();
     const rating = document.getElementById("reviewRating").value;
-    const text = document.getElementById("reviewText").value;
+    const text = document.getElementById("reviewText").value.trim();
+
+    if (!name || !rating || !text) return; // yksinkertainen validointi
 
     const review = { name, rating, text };
-    reviews.push(review); // lisää arrayhin
-    localStorage.setItem("reviews", JSON.stringify(reviews)); // tallenna localStorageen
+    reviews.push(review);
+    saveReviews();
 
     addReviewToDOM(review);
     form.reset();
   });
-
-  function addReviewToDOM({ name, rating, text }) {
-    const li = document.createElement("li");
-
-    const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "Delete";
-    deleteBtn.className = "delete-btn";
-    deleteBtn.addEventListener("click", () => {
-      li.remove();
-      // Poista myös localStoragesta
-      const index = reviews.findIndex(
-        (r) => r.name === name && r.rating === rating && r.text === text
-      );
-      if (index > -1) {
-        reviews.splice(index, 1);
-        localStorage.setItem("reviews", JSON.stringify(reviews));
-      }
-    });
-
-    li.innerHTML = `<strong>${name}</strong> (${rating}★): <p>${text}</p>`;
-    li.appendChild(deleteBtn);
-    list.appendChild(li);
-  }
 });
