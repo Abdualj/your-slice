@@ -231,6 +231,34 @@
         </div>
     </section>
 
+    <!-- Reviews Section (lisää tämä ennen footeria) -->
+<section id="reviews" class="reviews-section container">
+  <div class="section-title">
+    <h2>Restaurant Reviews</h2>
+    <p>Read what customers say or add your own review</p>
+  </div>
+
+  <form id="addReviewForm" class="add-review-form">
+    <input type="text" id="reviewerName" placeholder="Your name" required>
+    <select id="reviewRating" required>
+      <option value="">Rating</option>
+      <option value="5">★★★★★ (5)</option>
+      <option value="4">★★★★ (4)</option>
+      <option value="3">★★★ (3)</option>
+      <option value="2">★★ (2)</option>
+      <option value="1">★ (1)</option>
+    </select>
+    <textarea id="reviewText" placeholder="Write your review" rows="3" required></textarea>
+    <button type="submit" class="btn">Add review</button>
+  </form>
+
+  <ul id="reviewsList" class="reviews-list">
+    <!-- Reviews will be rendered here -->
+  </ul>
+</section>
+<!-- Reviews section ends -->
+
+
     <!-- Contact / Footer -->
     <footer id="contact">
         <div class="container">

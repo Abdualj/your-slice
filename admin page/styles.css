@@ -19,6 +19,7 @@
         body {
             background-color: #f5f7fa;
             color: #333;
+            min-height: 100vh;
         }
         
         /* Foggy background effect */
@@ -29,7 +30,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(255, 255, 255, 0.7);
+            background-color: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(5px);
             z-index: 998;
         }
@@ -39,15 +40,19 @@
             width: 100%;
             max-width: 400px;
             border: none;
-            border-radius: 8px;
-            padding: 25px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            position: relative;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             z-index: 999;
+            background: white;
         }
         
         #loginDialog::backdrop {
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: transparent;
         }
         
         .close-btn {
@@ -59,6 +64,21 @@
             font-size: 1.5rem;
             cursor: pointer;
             color: var(--gray);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .close-btn:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .close-btn::before {
+            content: '×';
+            font-size: 24px;
         }
         
         .login-form h2 {
@@ -76,16 +96,18 @@
         
         .login-form input {
             width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
+            padding: 12px;
+            margin-bottom: 5px;
             border: 1px solid #ddd;
-            border-radius: 4px;
+            border-radius: 6px;
             font-size: 1rem;
+            transition: border-color 0.3s;
         }
         
         .login-form input:focus {
             outline: none;
             border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.2);
         }
         
         .login-form menu {
@@ -98,9 +120,10 @@
         .login-form button {
             padding: 10px 20px;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: 500;
+            transition: all 0.2s;
         }
         
         .cancel-btn {
@@ -108,15 +131,22 @@
             color: var(--dark);
         }
         
+        .cancel-btn:hover {
+            background-color: #e0e0e0;
+        }
+        
         .submit-btn {
             background-color: var(--primary);
             color: white;
         }
         
+        .submit-btn:hover {
+            background-color: #c0392b;
+        }
+        
         .error-message {
             color: var(--danger);
-            font-size: 0.9rem;
-            margin-top: -10px;
+            font-size: 0.85rem;
             margin-bottom: 15px;
             display: none;
         }
@@ -271,6 +301,7 @@
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: relative;
         }
         
         .table-header {
@@ -297,6 +328,11 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .filter-btn:hover {
+            background-color: #f5f5f5;
         }
         
         .filter-btn.active {
@@ -322,8 +358,28 @@
             color: var(--dark);
         }
         
+        tr {
+            transition: background-color 0.2s;
+            cursor: pointer;
+        }
+        
         tr:hover {
             background-color: #f8f9fa;
+        }
+        
+        tr.active {
+            background-color: rgba(231, 76, 60, 0.05);
+            position: relative;
+        }
+        
+        tr.active::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background-color: var(--primary);
         }
         
         .status {
@@ -353,28 +409,61 @@
             color: var(--danger);
         }
         
-        .action-btn {
-            padding: 6px 12px;
+        /* Scroll Action Selector */
+        .action-selector {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            padding: 10px;
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 70vh;
+            overflow-y: auto;
+            min-width: 180px;
+        }
+        
+        .action-option {
+            padding: 12px 15px;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
+            background: #f8f9fa;
             cursor: pointer;
-            font-size: 12px;
-            margin-right: 5px;
+            transition: all 0.2s;
+            text-align: left;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
-        .btn-process {
-            background-color: var(--warning);
+        .action-option:hover {
+            background: #e9ecef;
+            transform: translateX(3px);
+        }
+        
+        .action-option.active {
+            background: var(--primary);
             color: white;
         }
         
-        .btn-complete {
-            background-color: var(--success);
-            color: white;
+        .action-option i {
+            font-size: 16px;
         }
         
-        .btn-cancel {
-            background-color: var(--danger);
-            color: white;
+        .current-action {
+            color: var(--gray);
+            font-style: italic;
+        }
+        
+        .action-applied {
+            color: var(--success);
+            font-weight: 500;
         }
 
         /* Products Management Section */
@@ -471,6 +560,11 @@
             .main-content {
                 margin-left: 70px;
             }
+            
+            .action-selector {
+                right: 10px;
+                padding: 8px;
+            }
         }
         
         @media (max-width: 768px) {
@@ -480,5 +574,28 @@
             
             th, td {
                 padding: 10px 15px;
+            }
+            
+            .action-selector {
+                position: fixed;
+                bottom: 0;
+                top: auto;
+                left: 0;
+                right: 0;
+                transform: none;
+                max-height: 200px;
+                border-radius: 10px 10px 0 0;
+                flex-direction: row;
+                overflow-x: auto;
+                padding: 15px;
+            }
+            
+            .action-option {
+                flex: 1;
+                min-width: 120px;
+                justify-content: center;
+                text-align: center;
+                flex-direction: column;
+                gap: 5px;
             }
         }

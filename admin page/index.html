@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     </head>
 <body class="pre-login">
-    
+    </class>
     <!-- Login Dialog -->
     <dialog id="loginDialog">
         <button class="close-btn" aria-label="Sulje"></button>
@@ -29,10 +29,31 @@
             <div class="error-message" id="passwordError">Salasanan tulee olla vähintään 6 merkkiä pitkä, sisältää vähintään yhden ison kirjaimen ja yhden numeron</div>
         <menu>
                 <button value="submit" class="submit-btn">Kirjaudu</button>
-                <button type="button" class="cancel-btn">Peruuta</button>
             </menu>
         </form>
     </dialog>
+
+    <!-- Scroll Action Selector -->
+    <div class="action-selector">
+        <button class="action-option" data-action="process">
+            <i>⏱</i> Process
+        </button>
+        <button class="action-option" data-action="complete">
+            <i>✅</i> Complete
+        </button>
+        <button class="action-option" data-action="cancel">
+            <i>❌</i> Cancel
+        </button>
+        <button class="action-option" data-action="view">
+            <i>👁</i> View
+        </button>
+        <button class="action-option" data-action="edit">
+            <i>✏️</i> Edit
+        </button>
+        <button class="action-option" data-action="delete">
+            <i>🗑</i> Delete
+        </button>
+    </div>
 
     <!-- Admin Dashboard (hidden until login) -->
     <div class="admin-container">
@@ -46,7 +67,6 @@
                 <li><a href="#"><i>📝</i> <span>Orders</span></a></li>
                 <li><a href="#"><i>🍕</i> <span>Menu Items</span></a></li>
                 <li><a href="#"><i>👥</i> <span>Customers</span></a></li>
-                <li><a href="#"><i>📈</i> <span>Reports</span></a></li>
                 <li><a href="#"><i>⚙️</i> <span>Settings</span></a></li>
                 <li><a href="/project/index.html"><i>↩️</i> <span>Back to Store</span></a></li>
             </ul>
@@ -123,9 +143,8 @@
                             <td>2x Margherita, 1x Pepperoni</td>
                             <td>€14.50</td>
                             <td><span class="status status-new">New</span></td>
-                            <td>
-                                <button class="action-btn btn-process">Process</button>
-                                <button class="action-btn btn-complete">Complete</button>
+                            <td class="action-cell">
+                                <span class="current-action">Click to select action</span>
                             </td>
                         </tr>
                         <tr>
@@ -134,9 +153,8 @@
                             <td>1x Veggie Supreme</td>
                             <td>€9.00</td>
                             <td><span class="status status-processing">Processing</span></td>
-                            <td>
-                                <button class="action-btn btn-complete">Complete</button>
-                                <button class="action-btn btn-cancel">Cancel</button>
+                            <td class="action-cell">
+                                <span class="current-action">Click to select action</span>
                             </td>
                         </tr>
                         <tr>
@@ -145,8 +163,8 @@
                             <td>3x BBQ Chicken, 2x Soda</td>
                             <td>€28.50</td>
                             <td><span class="status status-completed">Completed</span></td>
-                            <td>
-                                <button class="action-btn">View</button>
+                            <td class="action-cell">
+                                <span class="current-action">Click to select action</span>
                             </td>
                         </tr>
                         <tr>
@@ -155,9 +173,8 @@
                             <td>1x Gluten-Free Pizza</td>
                             <td>€12.00</td>
                             <td><span class="status status-new">New</span></td>
-                            <td>
-                                <button class="action-btn btn-process">Process</button>
-                                <button class="action-btn btn-complete">Complete</button>
+                            <td class="action-cell">
+                                <span class="current-action">Click to select action</span>
                             </td>
                         </tr>
                         <tr>
@@ -166,18 +183,14 @@
                             <td>1x Hawaiian, 1x Garlic Bread</td>
                             <td>€15.50</td>
                             <td><span class="status status-processing">Processing</span></td>
-                            <td>
-                                <button class="action-btn btn-complete">Complete</button>
-                                <button class="action-btn btn-cancel">Cancel</button>
+                            <td class="action-cell">
+                                <span class="current-action">Click to select action</span>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-  
 
-  
-<!-- Products Management -->
 <div class="products-table">
     <div class="products-header">
         <h2>Manage Products</h2>
@@ -204,9 +217,9 @@
 </div>
 
 
-
         </div>
     </div>
+    
     <script>
         // Show login dialog on page load
         document.addEventListener('DOMContentLoaded', function() {
@@ -291,6 +304,9 @@
                     dialog.close();
                     document.querySelector('.admin-container').style.display = 'flex';
                     document.body.classList.remove('pre-login');
+                    
+                    // Initialize scroll action selector
+                    initScrollActionSelector();
                 }
             });
             
@@ -298,35 +314,6 @@
             const cancelBtn = document.querySelector('.cancel-btn');
             cancelBtn.addEventListener('click', function() {
                 dialog.close();
-            });
-            
-            // Original dashboard functionality
-            const processButtons = document.querySelectorAll('.btn-process');
-            const completeButtons = document.querySelectorAll('.btn-complete');
-            const cancelButtons = document.querySelectorAll('.btn-cancel');
-            
-            processButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const statusCell = this.parentElement.previousElementSibling;
-                    statusCell.innerHTML = '<span class="status status-processing">Processing</span>';
-                    updateStats();
-                });
-            });
-            
-            completeButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const statusCell = this.parentElement.previousElementSibling;
-                    statusCell.innerHTML = '<span class="status status-completed">Completed</span>';
-                    updateStats();
-                });
-            });
-            
-            cancelButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const statusCell = this.parentElement.previousElementSibling;
-                    statusCell.innerHTML = '<span class="status status-cancelled">Cancelled</span>';
-                    updateStats();
-                });
             });
             
             // Filter buttons
@@ -338,78 +325,158 @@
                     // In a real app, this would filter the orders table
                 });
             });
+        });
+        
+        // Scroll Action Selector Functionality
+        function initScrollActionSelector() {
+            const actionSelector = document.querySelector('.action-selector');
+            const actionOptions = document.querySelectorAll('.action-option');
+            const actionCells = document.querySelectorAll('.action-cell');
+            const tableRows = document.querySelectorAll('tbody tr');
+            let selectedAction = null;
+            let activeRow = null;
             
+            // Add click event listeners to table rows
+            tableRows.forEach(row => {
+                row.addEventListener('click', function(e) {
+                    // Remove active class from all rows
+                    tableRows.forEach(r => r.classList.remove('active'));
+                    
+                    // Add active class to clicked row
+                    this.classList.add('active');
+                    
+                    // Set active row
+                    activeRow = this;
+                    
+                    // Position action selector near the active row
+                    positionActionSelector(this);
+                    
+                    // Show action selector
+                    actionSelector.style.display = 'flex';
+                });
+            });
+            
+            // Add click event listeners to action options
+            actionOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove active class from all options
+                    actionOptions.forEach(opt => opt.classList.remove('active'));
+                    
+                    // Add active class to clicked option
+                    this.classList.add('active');
+                    
+                    // Set selected action
+                    selectedAction = this.getAttribute('data-action');
+                    
+                    // Update active row if exists
+                    if (activeRow) {
+                        updateRowAction(activeRow, selectedAction);
+                        
+                        // Hide action selector after a delay
+                        setTimeout(() => {
+                            actionSelector.style.display = 'none';
+                            activeRow.classList.remove('active');
+                            activeRow = null;
+                        }, 1000);
+                    }
+                });
+            });
+            
+            // Position the action selector relative to the active row
+            function positionActionSelector(row) {
+                const rowRect = row.getBoundingClientRect();
+                const tableRect = document.querySelector('.orders-table').getBoundingClientRect();
+                
+                // Position vertically aligned with the row
+                const topPosition = Math.max(20, rowRect.top + window.scrollY - 100);
+                actionSelector.style.top = `${topPosition}px`;
+                
+                // Position to the right of the table on desktop
+                if (window.innerWidth > 768) {
+                    actionSelector.style.right = '20px';
+                    actionSelector.style.left = 'auto';
+                } else {
+                    // On mobile, center it horizontally
+                    actionSelector.style.left = '50%';
+                    actionSelector.style.right = 'auto';
+                    actionSelector.style.transform = 'translateX(-50%)';
+                }
+            }
+            
+            // Update the action for a specific row
+            function updateRowAction(row, action) {
+                const actionCell = row.querySelector('.action-cell');
+                const statusCell = row.querySelector('.status');
+                
+                let actionText = '';
+                let newStatus = '';
+                
+                switch(action) {
+                    case 'process':
+                        actionText = 'Processing order...';
+                        newStatus = 'Processing';
+                        break;
+                    case 'complete':
+                        actionText = 'Completing order...';
+                        newStatus = 'Completed';
+                        break;
+                    case 'cancel':
+                        actionText = 'Cancelling order...';
+                        newStatus = 'Cancelled';
+                        break;
+                    case 'view':
+                        actionText = 'Viewing order details...';
+                        break;
+                    case 'edit':
+                        actionText = 'Editing order...';
+                        break;
+                    case 'delete':
+                        actionText = 'Deleting order...';
+                        break;
+                }
+                
+                // Update action cell
+                actionCell.innerHTML = `<span class="action-applied">${actionText}</span>`;
+                
+                // Update status if applicable
+                if (newStatus) {
+                    statusCell.textContent = newStatus;
+                    statusCell.className = 'status';
+                    
+                    switch(newStatus) {
+                        case 'Processing':
+                            statusCell.classList.add('status-processing');
+                            break;
+                        case 'Completed':
+                            statusCell.classList.add('status-completed');
+                            break;
+                        case 'Cancelled':
+                            statusCell.classList.add('status-cancelled');
+                            break;
+                    }
+                }
+                
+                // Update stats (simulated)
+                updateStats();
+            }
+            
+            // Close action selector when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!actionSelector.contains(e.target) && !e.target.closest('tbody tr')) {
+                    actionSelector.style.display = 'none';
+                    if (activeRow) {
+                        activeRow.classList.remove('active');
+                        activeRow = null;
+                    }
+                }
+            });
+            
+            // Simulate stats update
             function updateStats() {
                 // In a real app, this would update the dashboard stats
-                console.log('Stats would update here');
+                console.log('Stats would update here based on the action performed');
             }
-                // === Product Management ===
-            const addProductBtn = document.getElementById('addProductBtn');
-            const productNameInput = document.getElementById('productName');
-            const productPriceInput = document.getElementById('productPrice');
-            const productsTableBody = document.querySelector('#productsTable tbody');
-            // Lisää tuote
-            addProductBtn.addEventListener('click', function() {
-            const name = productNameInput.value.trim();
-            const price = parseFloat(productPriceInput.value);
-
-            if (!name || isNaN(price)) {
-                alert("Anna tuotteen nimi ja hinta!");
-                return;
-            }
-
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${name}</td>
-                <td>€${price.toFixed(2)}</td>
-                <td><button class="delete-btn btn">Delete</button></td>
-            `;
-
-            productsTableBody.appendChild(row);
-
-            // Tyhjennä kentät
-            productNameInput.value = '';
-            productPriceInput.value = '';
-        });
-
-            // Poista tuote (delegointi)
-            productsTableBody.addEventListener('click', function(e) {
-            if (e.target.classList.contains('delete-btn')) {
-                if (confirm('Poistetaanko tuote?')) {
-                    e.target.closest('tr').remove();
-                }
-            }
-        });
-
-            if (addProductForm && productTableBody) {
-            addProductForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const name = document.getElementById('productName').value.trim();
-                const priceInput = document.getElementById('productPrice').value;
-                const price = parseFloat(priceInput);
-                if (!name || isNaN(price)) return;
-
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                <td>${name}</td>
-                <td>€${price.toFixed(2)}</td>
-                <td><button class="delete-btn btn">Delete</button></td>
-                `;
-                productTableBody.appendChild(row);
-                addProductForm.reset();
-            });
-
-            // Event delegation: poisto nappia klikatessa
-            productTableBody.addEventListener('click', function(e) {
-                if (e.target.classList.contains('delete-btn')) {
-                if (confirm('Poistetaanko tuote?')) {
-                    e.target.closest('tr').remove();
-                }
-                }
-            });
-            }
-
-        });
+        };
     </script>
 </body>
 </html>
