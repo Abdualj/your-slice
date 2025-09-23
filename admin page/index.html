@@ -174,10 +174,7 @@
                     </tbody>
                 </table>
             </div>
-  
 
-  
-<!-- Products Management -->
 <div class="products-table">
     <div class="products-header">
         <h2>Manage Products</h2>
@@ -202,7 +199,6 @@
         </tbody>
     </table>
 </div>
-
 
 
         </div>
@@ -410,6 +406,47 @@
             }
 
         });
+        // Products functionality
+const addProductBtn = document.getElementById('addProductBtn');
+const productNameInput = document.getElementById('productName');
+const productPriceInput = document.getElementById('productPrice');
+const productsTableBody = document.querySelector('#productsTable tbody');
+
+addProductBtn.addEventListener('click', function() {
+    const name = productNameInput.value.trim();
+    const price = parseFloat(productPriceInput.value);
+
+    if (!name || isNaN(price)) {
+        alert('Täytä tuotteen nimi ja hinta oikein.');
+        return;
+    }
+
+    // Luo uusi rivi
+    const tr = document.createElement('tr');
+
+    tr.innerHTML = `
+        <td>${name}</td>
+        <td>€${price.toFixed(2)}</td>
+        <td><button class="delete-btn">Delete</button></td>
+    `;
+
+    // Lisää rivi taulukkoon
+    productsTableBody.appendChild(tr);
+
+    // Poista nappi
+    const deleteBtn = tr.querySelector('.delete-btn');
+    deleteBtn.addEventListener('click', () => {
+        if (confirm('Haluatko varmasti poistaa tuotteen?')) {
+        tr.remove();
+        }
+    });
+
+    // Tyhjennä inputit
+    productNameInput.value = '';
+    productPriceInput.value = '';
+});
+
+
     </script>
 </body>
 </html>
