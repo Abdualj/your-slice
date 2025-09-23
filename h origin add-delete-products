@@ -1,0 +1,1625 @@
+[33mcommit e27f2ca906d95506ab5a65833819109611b9c5d8[m
+Author: abdualj <abdualjubury@gmail.com>
+Date:   Sun Sep 21 00:09:37 2025 +0300
+
+    admin page fixes
+
+[1mdiff --git a/admin page/index.html b/admin page/index.html[m
+[1mindex 31fe2ae..3fad022 100644[m
+[1m--- a/admin page/index.html[m	
+[1m+++ b/admin page/index.html[m	
+[36m@@ -10,7 +10,7 @@[m
+     </class>[m
+     <!-- Login Dialog -->[m
+     <dialog id="loginDialog">[m
+[31m-        <button class="close-btn" aria-label="Sulje">✕</button>[m
+[32m+[m[32m        <button class="close-btn" aria-label="Sulje"></button>[m
+         [m
+         <form method="dialog" class="login-form" id="loginForm">[m
+             <h2>Kirjaudu sisään</h2>[m
+[36m@@ -27,9 +27,7 @@[m
+             <input type="password" id="password" name="password"[m
+                 pattern="(?=.*[A-Z])(?=.*[0-9]).{6,}" required>[m
+             <div class="error-message" id="passwordError">Salasanan tulee olla vähintään 6 merkkiä pitkä, sisältää vähintään yhden ison kirjaimen ja yhden numeron</div>[m
+[31m-[m
+[31m-            <menu>[m
+[31m-                <button value="cancel" class="cancel-btn">Peruuta</button>[m
+[32m+[m[32m        <menu>[m
+                 <button value="submit" class="submit-btn">Kirjaudu</button>[m
+             </menu>[m
+         </form>[m
+
+[33mcommit 768ceecce987243e15eeb696d9a97ee3c6044a41[m
+Author: abdualj <abdualjubury@gmail.com>
+Date:   Sun Sep 21 00:04:00 2025 +0300
+
+    fixed admin page
+
+[1mdiff --git a/admin page/index.html b/admin page/index.html[m
+[1mindex d5d8eb1..31fe2ae 100644[m
+[1m--- a/admin page/index.html[m	
+[1m+++ b/admin page/index.html[m	
+[36m@@ -1,3 +1,4 @@[m
+[32m+[m[32m<!DOCTYPE html>[m
+ <html lang="fi">[m
+ <head>[m
+     <meta charset="UTF-8">[m
+[36m@@ -5,294 +6,27 @@[m
+     <title>Admin Dashboard - Your Slice</title>[m
+     <link rel="stylesheet" href="styles.css">[m
+     </head>[m
+[31m-<body>[m
+[31m-     <header>[m
+[31m-        <div class="container">[m
+[31m-            <div class="header-content">[m
+[31m-                <div class="logo">[m
+[31m-                    <span class="logo-icon">🍕</span>[m
+[31m-                    <h1>Your Slice</h1>[m
+[31m-                </div>[m
+[31m-                <nav>[m
+[31m-                    <ul>[m
+[31m-                        <li><a href="#">Home</a></li>[m
+[31m-                        <li><a href="#">Menu</a></li>[m
+[31m-                        <li><a href="#">About</a></li>[m
+[31m-                        <li><a href="#">Contact</a></li>[m
+[31m-                        <li class="cart-icon">[m
+[31m-                            🛒[m
+[31m-                            <span class="cart-count">0</span>[m
+[31m-                        </li>[m
+[31m-                        <li class="auth-buttons">[m
+[31m-                            <a href="#" class="auth-btn login-btn" id="openLoginDialog">Log in</a>[m
+[31m-                            <a href="#" class="auth-btn signup-btn" id="openSignupDialog">Sign up</a>[m
+[31m-                        </li>[m
+[31m-                    </ul>[m
+[31m-                </nav>[m
+[31m-            </div>[m
+[31m-        </div>[m
+[31m-    </header>[m
+[31m-[m
+[31m-    <section class="hero">[m
+[31m-        <div class="container">[m
+[31m-            <h2>Create Your Perfect Pizza Slice</h2>[m
+[31m-            <p>Customize every aspect of your pizza slice - from dough to toppings - baked fresh right before your eyes</p>[m
+[31m-            <button class="btn btn-primary btn-large">Build Your Slice Now</button>[m
+[31m-        </div>[m
+[31m-    </section>[m
+[31m-[m
+[31m-    <section class="builder-section container">[m
+[31m-        <div class="section-title">[m
+[31m-            <h2>Build Your Slice</h2>[m
+[31m-            <p>Follow the steps to create your customized pizza slice</p>[m
+[31m-        </div>[m
+[31m-[m
+[31m-        <div class="builder-steps">[m
+[31m-            <div class="step active">[m
+[31m-                <div class="step-number">1</div>[m
+[31m-                <p>Base</p>[m
+[31m-            </div>[m
+[31m-            <div class="step">[m
+[31m-                <div class="step-number">2</div>[m
+[31m-                <p>Sauce</p>[m
+[31m-            </div>[m
+[31m-            <div class="step">[m
+[31m-                <div class="step-number">3</div>[m
+[31m-                <p>Cheese</p>[m
+[31m-            </div>[m
+[31m-            <div class="step">[m
+[31m-                <div class="step-number">4</div>[m
+[31m-                <p>Toppings</p>[m
+[31m-            </div>[m
+[31m-            <div class="step">[m
+[31m-                <div class="step-number">5</div>[m
+[31m-                <p>Size</p>[m
+[31m-            </div>[m
+[31m-        </div>[m
+[31m-[m
+[31m-        <div class="builder-content">[m
+[31m-            <div class="pizza-preview">[m
+[31m-                <div class="pizza-canvas">[m
+[31m-                    <!-- Pizza visualization will be rendered here -->[m
+[31m-                </div>[m
+[31m-            </div>[m
+[31m-            <div class="options-container">[m
+[31m-                <h3>Select Your Base</h3>[m
+[31m-                <div class="options-grid">[m
+[31m-                    <div class="option-card selected">[m
+[31m-                        <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Original">[m
+[31m-                        <h3>Original</h3>[m
+[31m-                        <p>+€0.00</p>[m
+[31m-                    </div>[m
+[31m-                    <div class="option-card">[m
+[31m-                        <img src="https://images.unsplash.com/photo-1614707267537-b85aaf00c4b7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Whole Wheat">[m
+[31m-                        <h3>Whole Wheat</h3>[m
+[31m-                        <p>+€0.50</p>[m
+[31m-                    </div>[m
+[31m-                    <div class="option-card">[m
+[31m-                        <img src="https://images.unsplash.com/photo-1627626775846-122c844700d8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Gluten-Free">[m
+[31m-                        <h3>Gluten-Free</h3>[m
+[31m-                        <p>+€1.50</p>[m
+[31m-                    </div>[m
+[31m-                    <div class="option-card">[m
+[31m-                        <img src="https://images.unsplash.com/photo-1624342909597-9c5c8f872b38?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Herb">[m
+[31m-                        <h3>Herb Infused</h3>[m
+[31m-                        <p>+€0.75</p>[m
+[31m-                    </div>[m
+[31m-                </div>[m
+[31m-                [m
+[31m-[m
+[31m-                <div class="navigation-buttons">[m
+[31m-                    <button class="btn" disabled>Previous</button>[m
+[31m-                    <button class="btn btn-primary">Next: Choose Sauce</button>[m
+[31m-                </div>[m
+[31m-            </div>[m
+[31m-        </div>[m
+[31m-    </section>[m
+[31m-[m
+[31m-    <section class="menu-section">[m
+[31m-    <div class="container">[m
+[31m-        <div class="section-title">[m
+[31m-            <h2>Popular Creations</h2>[m
+[31m-            <p>Not feeling creative? Try our signature slices</p>[m
+[31m-        </div>[m
+[31m-[m
+[31m-        <div class="menu-scroll-container">[m
+[31m-            <div class="menu-scroll-grid">[m
+[31m-                <div class="menu-item">[m
+[31m-                    <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Margherita">[m
+[31m-                    <div class="menu-item-content">[m
+[31m-                        <h3>Classic Margherita</h3>[m
+[31m-                        <p>Tomato sauce, fresh mozzarella, basil leaves</p>[m
+[31m-                        <div class="menu-item-bottom">[m
+[31m-                            <span class="price">€4.50</span>[m
+[31m-                            <button class="add-to-cart-btn">Add to Cart</button>[m
+[31m-                        </div>[m
+[31m-                    </div>[m
+[31m-                </div>[m
+[31m-[m
+[31m-                <div class="menu-item">[m
+[31m-                    <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Pepperoni">[m
+[31m-                    <div class="menu-item-content">[m
+[31m-                        <h3>Pepperoni Supreme</h3>[m
+[31m-                        <p>Tomato sauce, mozzarella, spicy pepperoni</p>[m
+[31m-                        <div class="menu-item-bottom">[m
+[31m-                            <span class="price">€5.00</span>[m
+[31m-                            <button class="add-to-cart-btn">Add to Cart</button>[m
+[31m-                        </div>[m
+[31m-                    </div>[m
+[31m-                </div>[m
+[31m-[m
+[31m-                <div class="menu-item">[m
+[31m-                    <img src="https://images.unsplash.com/photo-1595854341625-f33ee10dbf94?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Veggie">[m
+[31m-                    <div class="menu-item-content">[m
+[31m-                        <h3>Garden Veggie</h3>[m
+[31m-                        <p>Tomato sauce, mozzarella, mushrooms, peppers, olives</p>[m
+[31m-                        <div class="menu-item-bottom">[m
+[31m-                            <span class="price">€5.50</span>[m
+[31m-                            <button class="add-to-cart-btn">Add to Cart</button>[m
+[31m-                        </div>[m
+[31m-                    </div>[m
+[31m-                </div>[m
+[31m-[m
+[31m-                <div class="menu-item">[m
+[31m-                    <img src="https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="BBQ Chicken">[m
+[31m-                    <div class="menu-item-content">[m
+[31m-                        <h3>BBQ Chicken</h3>[m
+[31m-                        <p>BBQ sauce, mozzarella, grilled chicken, red onions</p>[m
+[31m-                        <div class="menu-item-bottom">[m
+[31m-                            <span class="price">€6.00</span>[m
+[31m-                            <button class="add-to-cart-btn">Add to Cart</button>[m
+[31m-                        </div>[m
+[31m-                    </div>[m
+[31m-                </div>[m
+[31m-                [m
+[31m-                <!-- Additional menu items to showcase the scroll -->[m
+[31m-                <div class="menu-item">[m
+[31m-                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Truffle">[m
+[31m-                    <div class="menu-item-content">[m
+[31m-                        <h3>Truffle Delight</h3>[m
+[31m-                        <p>White sauce, mozzarella, truffle oil, mushrooms</p>[m
+[31m-                        <div class="menu-item-bottom">[m
+[31m-                            <span class="price">€7.50</span>[m
+[31m-                            <button class="add-to-cart-btn">Add to Cart</button>[m
+[31m-                        </div>[m
+[31m-                    </div>[m
+[31m-                </div>[m
+[31m-                [m
+[31m-                <div class="menu-item">[m
+[31m-                    <img src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Hawaiian">[m
+[31m-                    <div class="menu-item-content">[m
+[31m-                        <h3>Hawaiian Paradise</h3>[m
+[31m-                        <p>Tomato sauce, mozzarella, ham, pineapple</p>[m
+[31m-                        <div class="menu-item-bottom">[m
+[31m-                            <span class="price">€6.50</span>[m
+[31m-                            <button class="add-to-cart-btn">Add to Cart</button>[m
+[31m-                        </div>[m
+[31m-                    </div>[m
+[31m-                </div>[m
+[31m-            </div>[m
+[31m-        </div>[m
+[31m-        [m
+[31m-        <!-- Scroll indicators -->[m
+[31m-        <div class="scroll-indicators">[m
+[31m-            <button class="scroll-arrow left-arrow" aria-label="Scroll left">&#8249;</button>[m
+[31m-            <div class="dot-indicators">[m
+[31m-                <span class="dot active"></span>[m
+[31m-                <span class="dot"></span>[m
+[31m-                <span class="dot"></span>[m
+[31m-            </div>[m
+[31m-            <button class="scroll-arrow right-arrow" aria-label="Scroll right">&#8250;</button>[m
+[31m-        </div>[m
+[31m-    </div>[m
+[31m-</section>[m
+[31m-[m
+[31m-[m
+[31m-    <footer>[m
+[31m-        <div class="container">[m
+[31m-            <div class="footer-content">[m
+[31m-                <div class="footer-column">[m
+[31m-                    <h3>Your Slice</h3>[m
+[31m-                    <p>Creating the perfect customized pizza slice, baked fresh right before your eyes.</p>[m
+[31m-                </div>[m
+[31m-                <div class="footer-column">[m
+[31m-                    <h3>Quick Links</h3>[m
+[31m-                    <ul>[m
+[31m-                        <li><a href="#">Home</a></li>[m
+[31m-                        <li><a href="#">Menu</a></li>[m
+[31m-                        <li><a href="#">About Us</a></li>[m
+[31m-                        <li><a href="#">Contact</a></li>[m
+[31m-                    </ul>[m
+[31m-                </div>[m
+[31m-                <div class="footer-column">[m
+[31m-                    <h3>Contact Us</h3>[m
+[31m-                    <ul>[m
+[31m-                        <li>Address</li>[m
+[31m-                        <li>Helsinki, Finland</li>[m
+[31m-                        <li>+358 12 345 6789</li>[m
+[31m-                        <li>email</li>[m
+[31m-                    </ul>[m
+[31m-                </div>[m
+[31m-                <div class="footer-column">[m
+[31m-                    <h3>Opening Hours</h3>[m
+[31m-                    <ul>[m
+[31m-                        <li>Mon-Thu: 10:30 - 22:00</li>[m
+[31m-                        <li>Fri-Sat: 10:30 - 00:00</li>[m
+[31m-                        <li>Sun: 12:00 - 22:00</li>[m
+[31m-                    </ul>[m
+[31m-                </div>[m
+[31m-            </div>[m
+[31m-            <div class="copyright">[m
+[31m-                <p>&copy; 2025 Your Slice. All rights reserved.</p>[m
+[31m-            </div>[m
+[31m-        </div>[m
+[31m-    </footer>[m
+[31m-    <!-- Cart Panel -->[m
+[31m-    <div class="cart-panel">[m
+[31m-        <div class="cart-header">[m
+[31m-            <h2>Your Order</h2>[m
+[31m-            <button class="close-cart">×</button>[m
+[31m-        </div>[m
+[31m-        <div class="cart-items">[m
+[31m-            <div class="empty-cart">[m
+[31m-                <div>🛒</div>[m
+[31m-                <p>Your cart is empty</p>[m
+[31m-            </div>[m
+[31m-            <!-- Cart items will be added here dynamically -->[m
+[31m-        </div>[m
+[31m-        <div class="cart-summary">[m
+[31m-            <div class="summary-row">[m
+[31m-                <span>Subtotal:</span>[m
+[31m-                <span class="cart-subtotal">€0.00</span>[m
+[31m-            </div>[m
+[31m-            <div class="summary-row">[m
+[31m-                <span>Delivery fee:</span>[m
+[31m-                <span class="delivery-fee">€2.50</span>[m
+[31m-            </div>[m
+[31m-            <div class="summary-row summary-total">[m
+[31m-                <span>Total:</span>[m
+[31m-                <span class="cart-total">€2.50</span>[m
+[31m-            </div>[m
+[31m-            <button class="checkout-btn">Proceed to Checkout</button>[m
+[31m-        </div>[m
+[31m-    </div>[m
+[31m-    [m
+[32m+[m[32m<body class="pre-login">[m
+[32m+[m[32m    </class>[m
+     <!-- Login Dialog -->[m
+     <dialog id="loginDialog">[m
+         <button class="close-btn" aria-label="Sulje">✕</button>[m
+         [m
+[31m-        <form method="dialog" class="login-form">[m
+[32m+[m[32m        <form method="dialog" class="login-form" id="loginForm">[m
+             <h2>Kirjaudu sisään</h2>[m
+ [m
+             <label for="name">Nimi:</label>[m
+             <input type="text" id="name" name="name" minlength="3" required>[m
+[32m+[m[32m            <div class="error-message" id="nameError">Nimen tulee olla vähintään 3 merkkiä pitkä</div>[m
+ [m
+             <label for="email">Sähköposti:</label>[m
+             <input type="email" id="email" name="email" pattern=".+@metropolia\.fi$" required>[m
+[32m+[m[32m            <div class="error-message" id="emailError">Sähköpostin tulee olla @metropolia.fi -pääte</div>[m
+ [m
+             <label for="password">Salasana:</label>[m
+             <input type="password" id="password" name="password"[m
+                 pattern="(?=.*[A-Z])(?=.*[0-9]).{6,}" required>[m
+[32m+[m[32m            <div class="error-message" id="passwordError">Salasanan tulee olla vähintään 6 merkkiä pitkä, sisältää vähintään yhden ison kirjaimen ja yhden numeron</div>[m
+ [m
+             <menu>[m
+                 <button value="cancel" class="cancel-btn">Peruuta</button>[m
+[36m@@ -300,35 +34,286 @@[m
+             </menu>[m
+         </form>[m
+     </dialog>[m
+[31m-    [m
+[31m-    <!-- Sign Up Dialog -->[m
+[31m-    <dialog id="signupDialog">[m
+[31m-        <button class="close-btn" aria-label="Sulje">✕</button>[m
+[31m-        [m
+[31m-        <form method="dialog" class="signup-form">[m
+[31m-            <h2>Luo tili</h2>[m
+ [m
+[31m-            <label for="signup-name">Etunimi:</label>[m
+[31m-            <input type="text" id="signup-name" name="signup-name" minlength="2" required>[m
+[31m-[m
+[31m-            <label for="signup-surname">Sukunimi:</label>[m
+[31m-            <input type="text" id="signup-surname" name="signup-surname" minlength="2" required>[m
+[31m-[m
+[31m-            <label for="signup-age">Ikä:</label>[m
+[31m-            <input type="number" id="signup-age" name="signup-age" min="16" max="120" required>[m
+[32m+[m[32m    <!-- Admin Dashboard (hidden until login) -->[m
+[32m+[m[32m    <div class="admin-container">[m
+[32m+[m[32m        <!-- Sidebar -->[m
+[32m+[m[32m        <div class="sidebar">[m
+[32m+[m[32m            <div class="sidebar-header">[m
+[32m+[m[32m                <h2>🍕 <span>Your Slice Admin</span></h2>[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m            <ul class="sidebar-menu">[m
+[32m+[m[32m                <li><a href="#" class="active"><i>📊</i> <span>Dashboard</span></a></li>[m
+[32m+[m[32m                <li><a href="#"><i>📝</i> <span>Orders</span></a></li>[m
+[32m+[m[32m                <li><a href="#"><i>🍕</i> <span>Menu Items</span></a></li>[m
+[32m+[m[32m                <li><a href="#"><i>👥</i> <span>Customers</span></a></li>[m
+[32m+[m[32m                <li><a href="#"><i>📈</i> <span>Reports</span></a></li>[m
+[32m+[m[32m                <li><a href="#"><i>⚙️</i> <span>Settings</span></a></li>[m
+[32m+[m[32m                <li><a href="/project/index.html"><i>↩️</i> <span>Back to Store</span></a></li>[m
+[32m+[m[32m            </ul>[m
+[32m+[m[32m        </div>[m
+ [m
+[31m-            <label for="signup-email">Sähköposti:</label>[m
+[31m-            <input type="email" id="signup-email" name="signup-email" required>[m
+[32m+[m[32m        <!-- Main Content -->[m
+[32m+[m[32m        <div class="main-content">[m
+[32m+[m[32m            <div class="admin-header">[m
+[32m+[m[32m                <h1>Admin Dashboard</h1>[m
+[32m+[m[32m                <div class="user-info">[m
+[32m+[m[32m                    <div class="user-avatar">A</div>[m
+[32m+[m[32m                    <span>Admin User</span>[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m            </div>[m
+ [m
+[31m-            <label for="signup-password">Salasana:</label>[m
+[31m-            <input type="password" id="signup-password" name="signup-password"[m
+[31m-                pattern="(?=.*[A-Z])(?=.*[0-9]).{6,}" required>[m
+[32m+[m[32m            <!-- Dashboard Stats -->[m
+[32m+[m[32m            <div class="dashboard-cards">[m
+[32m+[m[32m                <div class="card stat-card">[m
+[32m+[m[32m                    <div class="stat-icon orders">📋</div>[m
+[32m+[m[32m                    <div class="stat-info">[m
+[32m+[m[32m                        <h3>24</h3>[m
+[32m+[m[32m                        <p>New Orders</p>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m                <div class="card stat-card">[m
+[32m+[m[32m                    <div class="stat-icon processing">⏱</div>[m
+[32m+[m[32m                    <div class="stat-info">[m
+[32m+[m[32m                        <h3>8</h3>[m
+[32m+[m[32m                        <p>Processing</p>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m                <div class="card stat-card">[m
+[32m+[m[32m                    <div class="stat-icon completed">✅</div>[m
+[32m+[m[32m                    <div class="stat-info">[m
+[32m+[m[32m                        <h3>42</h3>[m
+[32m+[m[32m                        <p>Completed Today</p>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m                <div class="card stat-card">[m
+[32m+[m[32m                    <div class="stat-icon revenue">💰</div>[m
+[32m+[m[32m                    <div class="stat-info">[m
+[32m+[m[32m                        <h3>€1,248</h3>[m
+[32m+[m[32m                        <p>Today's Revenue</p>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m            </div>[m
+ [m
+[31m-            <menu>[m
+[31m-                <button value="cancel" class="cancel-btn">Peruuta</button>[m
+[31m-                <button value="submit" class="submit-btn">Luo tili</button>[m
+[31m-            </menu>[m
+[31m-        </form>[m
+[31m-    </dialog>[m
+[32m+[m[32m            <!-- Orders Table -->[m
+[32m+[m[32m            <div class="orders-table">[m
+[32m+[m[32m                <div class="table-header">[m
+[32m+[m[32m                    <h2>Recent Orders</h2>[m
+[32m+[m[32m                    <div class="filters">[m
+[32m+[m[32m                        <button class="filter-btn active">All</button>[m
+[32m+[m[32m                        <button class="filter-btn">New</button>[m
+[32m+[m[32m                        <button class="filter-btn">Processing</button>[m
+[32m+[m[32m                        <button class="filter-btn">Completed</button>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m                <table>[m
+[32m+[m[32m                    <thead>[m
+[32m+[m[32m                        <tr>[m
+[32m+[m[32m                            <th>Order ID</th>[m
+[32m+[m[32m                            <th>Customer</th>[m
+[32m+[m[32m                            <th>Items</th>[m
+[32m+[m[32m                            <th>Total</th>[m
+[32m+[m[32m                            <th>Status</th>[m
+[32m+[m[32m                            <th>Actions</th>[m
+[32m+[m[32m                        </tr>[m
+[32m+[m[32m                    </thead>[m
+[32m+[m[32m                    <tbody>[m
+[32m+[m[32m                        <tr>[m
+[32m+[m[32m                            <td>#ORD-1025</td>[m
+[32m+[m[32m                            <td>Matti Meikäläinen</td>[m
+[32m+[m[32m                            <td>2x Margherita, 1x Pepperoni</td>[m
+[32m+[m[32m                            <td>€14.50</td>[m
+[32m+[m[32m                            <td><span class="status status-new">New</span></td>[m
+[32m+[m[32m                            <td>[m
+[32m+[m[32m                                <button class="action-btn btn-process">Process</button>[m
+[32m+[m[32m                                <button class="action-btn btn-complete">Complete</button>[m
+[32m+[m[32m                            </td>[m
+[32m+[m[32m                        </tr>[m
+[32m+[m[32m                        <tr>[m
+[32m+[m[32m                            <td>#ORD-1024</td>[m
+[32m+[m[32m                            <td>Liisa Virtanen</td>[m
+[32m+[m[32m                            <td>1x Veggie Supreme</td>[m
+[32m+[m[32m                            <td>€9.00</td>[m
+[32m+[m[32m                            <td><span class="status status-processing">Processing</span></td>[m
+[32m+[m[32m                            <td>[m
+[32m+[m[32m                                <button class="action-btn btn-complete">Complete</button>[m
+[32m+[m[32m                                <button class="action-btn btn-cancel">Cancel</button>[m
+[32m+[m[32m                            </td>[m
+[32m+[m[32m                        </tr>[m
+[32m+[m[32m                        <tr>[m
+[32m+[m[32m                            <td>#ORD-1023</td>[m
+[32m+[m[32m                            <td>Antti Korhonen</td>[m
+[32m+[m[32m                            <td>3x BBQ Chicken, 2x Soda</td>[m
+[32m+[m[32m                            <td>€28.50</td>[m
+[32m+[m[32m                            <td><span class="status status-completed">Completed</span></td>[m
+[32m+[m[32m                            <td>[m
+[32m+[m[32m                                <button class="action-btn">View</button>[m
+[32m+[m[32m                            </td>[m
+[32m+[m[32m                        </tr>[m
+[32m+[m[32m                        <tr>[m
+[32m+[m[32m                            <td>#ORD-1022</td>[m
+[32m+[m[32m                            <td>Maria Järvinen</td>[m
+[32m+[m[32m                            <td>1x Gluten-Free Pizza</td>[m
+[32m+[m[32m                            <td>€12.00</td>[m
+[32m+[m[32m                            <td><span class="status status-new">New</span></td>[m
+[32m+[m[32m                            <td>[m
+[32m+[m[32m                                <button class="action-btn btn-process">Process</button>[m
+[32m+[m[32m                                <button class="action-btn btn-complete">Complete</button>[m
+[32m+[m[32m                            </td>[m
+[32m+[m[32m                        </tr>[m
+[32m+[m[32m                        <tr>[m
+[32m+[m[32m                            <td>#ORD-1021</td>[m
+[32m+[m[32m                            <td>Jussi Nieminen</td>[m
+[32m+[m[32m                            <td>1x Hawaiian, 1x Garlic Bread</td>[m
+[32m+[m[32m                            <td>€15.50</td>[m
+[32m+[m[32m                            <td><span class="status status-processing">Processing</span></td>[m
+[32m+[m[32m                            <td>[m
+[32m+[m[32m                                <button class="action-btn btn-complete">Complete</button>[m
+[32m+[m[32m                                <button class="action-btn btn-cancel">Cancel</button>[m
+[32m+[m[32m                            </td>[m
+[32m+[m[32m                        </tr>[m
+[32m+[m[32m                    </tbody>[m
+[32m+[m[32m                </table>[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m    </div>[m
+[32m+[m[32m    <script>[m
+[32m+[m[32m        // Show login dialog on page load[m
+[32m+[m[32m        document.addEventListener('DOMContentLoaded', function() {[m
+[32m+[m[32m            const dialog = document.getElementById('loginDialog');[m
+[32m+[m[32m            dialog.showModal();[m
+[32m+[m[41m            [m
+[32m+[m[32m            // Add close button functionality[m
+[32m+[m[32m            const closeBtn = document.querySelector('.close-btn');[m
+[32m+[m[32m            closeBtn.addEventListener('click', () => {[m
+[32m+[m[32m                dialog.close();[m
+[32m+[m[32m            });[m
+[32m+[m[41m            [m
+[32m+[m[32m            // Form validation[m
+[32m+[m[32m            const loginForm = document.getElementById('loginForm');[m
+[32m+[m[32m            const nameInput = document.getElementById('name');[m
+[32m+[m[32m            const emailInput = document.getElementById('email');[m
+[32m+[m[32m            const passwordInput = document.getElementById('password');[m
+[32m+[m[32m            const nameError = document.getElementById('nameError');[m
+[32m+[m[32m            const emailError = document.getElementById('emailError');[m
+[32m+[m[32m            const passwordError = document.getElementById('passwordError');[m
+[32m+[m[41m            [m
+[32m+[m[32m            // Validate inputs on change[m
+[32m+[m[32m            nameInput.addEventListener('input', function() {[m
+[32m+[m[32m                if (nameInput.validity.valid) {[m
+[32m+[m[32m                    nameError.style.display = 'none';[m
+[32m+[m[32m                } else {[m
+[32m+[m[32m                    nameError.style.display = 'block';[m
+[32m+[m[32m                }[m
+[32m+[m[32m            });[m
+[32m+[m[41m            [m
+[32m+[m[32m            emailInput.addEventListener('input', function() {[m
+[32m+[m[32m                if (emailInput.validity.valid) {[m
+[32m+[m[32m                    emailError.style.display = 'none';[m
+[32m+[m[32m                } else {[m
+[32m+[m[32m                    emailError.style.display = 'block';[m
+[32m+[m[32m                }[m
+[32m+[m[32m            });[m
+[32m+[m[41m            [m
+[32m+[m[32m            passwordInput.addEventListener('input', function() {[m
+[32m+[m[32m                if (passwordInput.validity.valid) {[m
+[32m+[m[32m                    passwordError.style.display = 'none';[m
+[32m+[m[32m                } else {[m
+[32m+[m[32m                    passwordError.style.display = 'block';[m
+[32m+[m[32m                }[m
+[32m+[m[32m            });[m
+[32m+[m[41m            [m
+[32m+[m[32m            // Handle form submission[m
+[32m+[m[32m            loginForm.addEventListener('submit', function(e) {[m
+[32m+[m[32m                e.preventDefault();[m
+[32m+[m[41m                [m
+[32m+[m[32m                let isValid = true;[m
+[32m+[m[41m                [m
+[32m+[m[32m                // Validate name[m
+[32m+[m[32m                if (nameInput.value.length < 3) {[m
+[32m+[m[32m                    nameError.style.display = 'block';[m
+[32m+[m[32m                    isValid = false;[m
+[32m+[m[32m                } else {[m
+[32m+[m[32m                    nameError.style.display = 'none';[m
+[32m+[m[32m                }[m
+[32m+[m[41m                [m
+[32m+[m[32m                // Validate email[m
+[32m+[m[32m                if (!emailInput.value.endsWith('@metropolia.fi')) {[m
+[32m+[m[32m                    emailError.style.display = 'block';[m
+[32m+[m[32m                    isValid = false;[m
+[32m+[m[32m                } else {[m
+[32m+[m[32m                    emailError.style.display = 'none';[m
+[32m+[m[32m                }[m
+[32m+[m[41m                [m
+[32m+[m[32m                // Validate password[m
+[32m+[m[32m                const hasUpperCase = /[A-Z]/.test(passwordInput.value);[m
+[32m+[m[32m                const hasNumber = /[0-9]/.test(passwordInput.value);[m
+[32m+[m[41m                [m
+[32m+[m[32m                if (passwordInput.value.length < 6 || !hasUpperCase || !hasNumber) {[m
+[32m+[m[32m                    passwordError.style.display = 'block';[m
+[32m+[m[32m                    isValid = false;[m
+[32m+[m[32m                } else {[m
+[32m+[m[32m                    passwordError.style.display = 'none';[m
+[32m+[m[32m                }[m
+[32m+[m[41m                [m
+[32m+[m[32m                // If form is valid, close dialog and show admin dashboard[m
+[32m+[m[32m                if (isValid) {[m
+[32m+[m[32m                    dialog.close();[m
+[32m+[m[32m                    document.querySelector('.admin-container').style.display = 'flex';[m
+[32m+[m[32m                    document.body.classList.remove('pre-login');[m
+[32m+[m[32m                }[m
+[32m+[m[32m            });[m
+[32m+[m[41m            [m
+[32m+[m[32m            // Cancel button functionality[m
+[32m+[m[32m            const cancelBtn = document.querySelector('.cancel-btn');[m
+[32m+[m[32m            cancelBtn.addEventListener('click', function() {[m
+[32m+[m[32m                dialog.close();[m
+[32m+[m[32m            });[m
+[32m+[m[41m            [m
+[32m+[m[32m            // Original dashboard functionality[m
+[32m+[m[32m            const processButtons = document.querySelectorAll('.btn-process');[m
+[32m+[m[32m            const completeButtons = document.querySelectorAll('.btn-complete');[m
+[32m+[m[32m            const cancelButtons = document.querySelectorAll('.btn-cancel');[m
+[32m+[m[41m            [m
+[32m+[m[32m            processButtons.forEach(button => {[m
+[32m+[m[32m                button.addEventListener('click', function() {[m
+[32m+[m[32m                    const statusCell = this.parentElement.previousElementSibling;[m
+[32m+[m[32m                    statusCell.innerHTML = '<span class="status status-processing">Processing</span>';[m
+[32m+[m[32m                    updateStats();[m
+[32m+[m[32m                });[m
+[32m+[m[32m            });[m
+[32m+[m[41m            [m
+[32m+[m[32m            completeButtons.forEach(button => {[m
+[32m+[m[32m                button.addEventListener('click', function() {[m
+[32m+[m[32m                    const statusCell = this.parentElement.previousElementSibling;[m
+[32m+[m[32m                    statusCell.innerHTML = '<span class="status status-completed">Completed</span>';[m
+[32m+[m[32m                    updateStats();[m
+[32m+[m[32m                });[m
+[32m+[m[32m            });[m
+[32m+[m[41m            [m
+[32m+[m[32m            cancelButtons.forEach(button => {[m
+[32m+[m[32m                button.addEventListener('click', function() {[m
+[32m+[m[32m                    const statusCell = this.parentElement.previousElementSibling;[m
+[32m+[m[32m                    statusCell.innerHTML = '<span class="status status-cancelled">Cancelled</span>';[m
+[32m+[m[32m                    updateStats();[m
+[32m+[m[32m                });[m
+[32m+[m[32m            });[m
+[32m+[m[41m            [m
+[32m+[m[32m            // Filter buttons[m
+[32m+[m[32m            const filterButtons = document.querySelectorAll('.filter-btn');[m
+[32m+[m[32m            filterButtons.forEach(button => {[m
+[32m+[m[32m                button.addEventListener('click', function() {[m
+[32m+[m[32m                    filterButtons.forEach(btn => btn.classList.remove('active'));[m
+[32m+[m[32m                    this.classList.add('active');[m
+[32m+[m[32m                    // In a real app, this would filter the orders table[m
+[32m+[m[32m                });[m
+[32m+[m[32m            });[m
+[32m+[m[41m            [m
+[32m+[m[32m            function updateStats() {[m
+[32m+[m[32m                // In a real app, this would update the dashboard stats[m
+[32m+[m[32m                console.log('Stats would update here');[m
+[32m+[m[32m            }[m
+[32m+[m[32m        });[m
+[32m+[m[32m    </script>[m
+ </body>[m
+ </html>[m
+\ No newline at end of file[m
+
+[33mcommit 0fb87178f633e954777dcd47611eb87877a3b670[m
+Author: abdualj <abdualjubury@gmail.com>
+Date:   Sat Sep 20 23:45:39 2025 +0300
+
+    login and sign up dialog
+
+[1mdiff --git a/admin page/index.html b/admin page/index.html[m
+[1mindex ad57872..d5d8eb1 100644[m
+[1m--- a/admin page/index.html[m	
+[1m+++ b/admin page/index.html[m	
+[36m@@ -6,25 +6,293 @@[m
+     <link rel="stylesheet" href="styles.css">[m
+     </head>[m
+ <body>[m
+[32m+[m[32m     <header>[m
+[32m+[m[32m        <div class="container">[m
+[32m+[m[32m            <div class="header-content">[m
+[32m+[m[32m                <div class="logo">[m
+[32m+[m[32m                    <span class="logo-icon">🍕</span>[m
+[32m+[m[32m                    <h1>Your Slice</h1>[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m                <nav>[m
+[32m+[m[32m                    <ul>[m
+[32m+[m[32m                        <li><a href="#">Home</a></li>[m
+[32m+[m[32m                        <li><a href="#">Menu</a></li>[m
+[32m+[m[32m                        <li><a href="#">About</a></li>[m
+[32m+[m[32m                        <li><a href="#">Contact</a></li>[m
+[32m+[m[32m                        <li class="cart-icon">[m
+[32m+[m[32m                            🛒[m
+[32m+[m[32m                            <span class="cart-count">0</span>[m
+[32m+[m[32m                        </li>[m
+[32m+[m[32m                        <li class="auth-buttons">[m
+[32m+[m[32m                            <a href="#" class="auth-btn login-btn" id="openLoginDialog">Log in</a>[m
+[32m+[m[32m                            <a href="#" class="auth-btn signup-btn" id="openSignupDialog">Sign up</a>[m
+[32m+[m[32m                        </li>[m
+[32m+[m[32m                    </ul>[m
+[32m+[m[32m                </nav>[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m    </header>[m
+[32m+[m
+[32m+[m[32m    <section class="hero">[m
+[32m+[m[32m        <div class="container">[m
+[32m+[m[32m            <h2>Create Your Perfect Pizza Slice</h2>[m
+[32m+[m[32m            <p>Customize every aspect of your pizza slice - from dough to toppings - baked fresh right before your eyes</p>[m
+[32m+[m[32m            <button class="btn btn-primary btn-large">Build Your Slice Now</button>[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m    </section>[m
+[32m+[m
+[32m+[m[32m    <section class="builder-section container">[m
+[32m+[m[32m        <div class="section-title">[m
+[32m+[m[32m            <h2>Build Your Slice</h2>[m
+[32m+[m[32m            <p>Follow the steps to create your customized pizza slice</p>[m
+[32m+[m[32m        </div>[m
+[32m+[m
+[32m+[m[32m        <div class="builder-steps">[m
+[32m+[m[32m            <div class="step active">[m
+[32m+[m[32m                <div class="step-number">1</div>[m
+[32m+[m[32m                <p>Base</p>[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m            <div class="step">[m
+[32m+[m[32m                <div class="step-number">2</div>[m
+[32m+[m[32m                <p>Sauce</p>[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m            <div class="step">[m
+[32m+[m[32m                <div class="step-number">3</div>[m
+[32m+[m[32m                <p>Cheese</p>[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m            <div class="step">[m
+[32m+[m[32m                <div class="step-number">4</div>[m
+[32m+[m[32m                <p>Toppings</p>[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m            <div class="step">[m
+[32m+[m[32m                <div class="step-number">5</div>[m
+[32m+[m[32m                <p>Size</p>[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m        </div>[m
+[32m+[m
+[32m+[m[32m        <div class="builder-content">[m
+[32m+[m[32m            <div class="pizza-preview">[m
+[32m+[m[32m                <div class="pizza-canvas">[m
+[32m+[m[32m                    <!-- Pizza visualization will be rendered here -->[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m            <div class="options-container">[m
+[32m+[m[32m                <h3>Select Your Base</h3>[m
+[32m+[m[32m                <div class="options-grid">[m
+[32m+[m[32m                    <div class="option-card selected">[m
+[32m+[m[32m                        <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Original">[m
+[32m+[m[32m                        <h3>Original</h3>[m
+[32m+[m[32m                        <p>+€0.00</p>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                    <div class="option-card">[m
+[32m+[m[32m                        <img src="https://images.unsplash.com/photo-1614707267537-b85aaf00c4b7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Whole Wheat">[m
+[32m+[m[32m                        <h3>Whole Wheat</h3>[m
+[32m+[m[32m                        <p>+€0.50</p>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                    <div class="option-card">[m
+[32m+[m[32m                        <img src="https://images.unsplash.com/photo-1627626775846-122c844700d8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Gluten-Free">[m
+[32m+[m[32m                        <h3>Gluten-Free</h3>[m
+[32m+[m[32m                        <p>+€1.50</p>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                    <div class="option-card">[m
+[32m+[m[32m                        <img src="https://images.unsplash.com/photo-1624342909597-9c5c8f872b38?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Herb">[m
+[32m+[m[32m                        <h3>Herb Infused</h3>[m
+[32m+[m[32m                        <p>+€0.75</p>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                </div>[m
+[32m+[m[41m                [m
+[32m+[m
+[32m+[m[32m                <div class="navigation-buttons">[m
+[32m+[m[32m                    <button class="btn" disabled>Previous</button>[m
+[32m+[m[32m                    <button class="btn btn-primary">Next: Choose Sauce</button>[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m    </section>[m
+[32m+[m
+[32m+[m[32m    <section class="menu-section">[m
+[32m+[m[32m    <div class="container">[m
+[32m+[m[32m        <div class="section-title">[m
+[32m+[m[32m            <h2>Popular Creations</h2>[m
+[32m+[m[32m            <p>Not feeling creative? Try our signature slices</p>[m
+[32m+[m[32m        </div>[m
+[32m+[m
+[32m+[m[32m        <div class="menu-scroll-container">[m
+[32m+[m[32m            <div class="menu-scroll-grid">[m
+[32m+[m[32m                <div class="menu-item">[m
+[32m+[m[32m                    <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Margherita">[m
+[32m+[m[32m                    <div class="menu-item-content">[m
+[32m+[m[32m                        <h3>Classic Margherita</h3>[m
+[32m+[m[32m                        <p>Tomato sauce, fresh mozzarella, basil leaves</p>[m
+[32m+[m[32m                        <div class="menu-item-bottom">[m
+[32m+[m[32m                            <span class="price">€4.50</span>[m
+[32m+[m[32m                            <button class="add-to-cart-btn">Add to Cart</button>[m
+[32m+[m[32m                        </div>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                </div>[m
+[32m+[m
+[32m+[m[32m                <div class="menu-item">[m
+[32m+[m[32m                    <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Pepperoni">[m
+[32m+[m[32m                    <div class="menu-item-content">[m
+[32m+[m[32m                        <h3>Pepperoni Supreme</h3>[m
+[32m+[m[32m                        <p>Tomato sauce, mozzarella, spicy pepperoni</p>[m
+[32m+[m[32m                        <div class="menu-item-bottom">[m
+[32m+[m[32m                            <span class="price">€5.00</span>[m
+[32m+[m[32m                            <button class="add-to-cart-btn">Add to Cart</button>[m
+[32m+[m[32m                        </div>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                </div>[m
+[32m+[m
+[32m+[m[32m                <div class="menu-item">[m
+[32m+[m[32m                    <img src="https://images.unsplash.com/photo-1595854341625-f33ee10dbf94?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Veggie">[m
+[32m+[m[32m                    <div class="menu-item-content">[m
+[32m+[m[32m                        <h3>Garden Veggie</h3>[m
+[32m+[m[32m                        <p>Tomato sauce, mozzarella, mushrooms, peppers, olives</p>[m
+[32m+[m[32m                        <div class="menu-item-bottom">[m
+[32m+[m[32m                            <span class="price">€5.50</span>[m
+[32m+[m[32m                            <button class="add-to-cart-btn">Add to Cart</button>[m
+[32m+[m[32m                        </div>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                </div>[m
+[32m+[m
+[32m+[m[32m                <div class="menu-item">[m
+[32m+[m[32m                    <img src="https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="BBQ Chicken">[m
+[32m+[m[32m                    <div class="menu-item-content">[m
+[32m+[m[32m                        <h3>BBQ Chicken</h3>[m
+[32m+[m[32m                        <p>BBQ sauce, mozzarella, grilled chicken, red onions</p>[m
+[32m+[m[32m                        <div class="menu-item-bottom">[m
+[32m+[m[32m                            <span class="price">€6.00</span>[m
+[32m+[m[32m                            <button class="add-to-cart-btn">Add to Cart</button>[m
+[32m+[m[32m                        </div>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                </div>[m
+[32m+[m[41m                [m
+[32m+[m[32m                <!-- Additional menu items to showcase the scroll -->[m
+[32m+[m[32m                <div class="menu-item">[m
+[32m+[m[32m                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Truffle">[m
+[32m+[m[32m                    <div class="menu-item-content">[m
+[32m+[m[32m                        <h3>Truffle Delight</h3>[m
+[32m+[m[32m                        <p>White sauce, mozzarella, truffle oil, mushrooms</p>[m
+[32m+[m[32m                        <div class="menu-item-bottom">[m
+[32m+[m[32m                            <span class="price">€7.50</span>[m
+[32m+[m[32m                            <button class="add-to-cart-btn">Add to Cart</button>[m
+[32m+[m[32m                        </div>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                </div>[m
+[32m+[m[41m                [m
+[32m+[m[32m                <div class="menu-item">[m
+[32m+[m[32m                    <img src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Hawaiian">[m
+[32m+[m[32m                    <div class="menu-item-content">[m
+[32m+[m[32m                        <h3>Hawaiian Paradise</h3>[m
+[32m+[m[32m                        <p>Tomato sauce, mozzarella, ham, pineapple</p>[m
+[32m+[m[32m                        <div class="menu-item-bottom">[m
+[32m+[m[32m                            <span class="price">€6.50</span>[m
+[32m+[m[32m                            <button class="add-to-cart-btn">Add to Cart</button>[m
+[32m+[m[32m                        </div>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m        </div>[m
+[32m+[m[41m        [m
+[32m+[m[32m        <!-- Scroll indicators -->[m
+[32m+[m[32m        <div class="scroll-indicators">[m
+[32m+[m[32m            <button class="scroll-arrow left-arrow" aria-label="Scroll left">&#8249;</button>[m
+[32m+[m[32m            <div class="dot-indicators">[m
+[32m+[m[32m                <span class="dot active"></span>[m
+[32m+[m[32m                <span class="dot"></span>[m
+[32m+[m[32m                <span class="dot"></span>[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m            <button class="scroll-arrow right-arrow" aria-label="Scroll right">&#8250;</button>[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m    </div>[m
+[32m+[m[32m</section>[m
+[32m+[m
+[32m+[m
+[32m+[m[32m    <footer>[m
+[32m+[m[32m        <div class="container">[m
+[32m+[m[32m            <div class="footer-content">[m
+[32m+[m[32m                <div class="footer-column">[m
+[32m+[m[32m                    <h3>Your Slice</h3>[m
+[32m+[m[32m                    <p>Creating the perfect customized pizza slice, baked fresh right before your eyes.</p>[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m                <div class="footer-column">[m
+[32m+[m[32m                    <h3>Quick Links</h3>[m
+[32m+[m[32m                    <ul>[m
+[32m+[m[32m                        <li><a href="#">Home</a></li>[m
+[32m+[m[32m                        <li><a href="#">Menu</a></li>[m
+[32m+[m[32m                        <li><a href="#">About Us</a></li>[m
+[32m+[m[32m                        <li><a href="#">Contact</a></li>[m
+[32m+[m[32m                    </ul>[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m                <div class="footer-column">[m
+[32m+[m[32m                    <h3>Contact Us</h3>[m
+[32m+[m[32m                    <ul>[m
+[32m+[m[32m                        <li>Address</li>[m
+[32m+[m[32m                        <li>Helsinki, Finland</li>[m
+[32m+[m[32m                        <li>+358 12 345 6789</li>[m
+[32m+[m[32m                        <li>email</li>[m
+[32m+[m[32m                    </ul>[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m                <div class="footer-column">[m
+[32m+[m[32m                    <h3>Opening Hours</h3>[m
+[32m+[m[32m                    <ul>[m
+[32m+[m[32m                        <li>Mon-Thu: 10:30 - 22:00</li>[m
+[32m+[m[32m                        <li>Fri-Sat: 10:30 - 00:00</li>[m
+[32m+[m[32m                        <li>Sun: 12:00 - 22:00</li>[m
+[32m+[m[32m                    </ul>[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m            <div class="copyright">[m
+[32m+[m[32m                <p>&copy; 2025 Your Slice. All rights reserved.</p>[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m    </footer>[m
+[32m+[m[32m    <!-- Cart Panel -->[m
+[32m+[m[32m    <div class="cart-panel">[m
+[32m+[m[32m        <div class="cart-header">[m
+[32m+[m[32m            <h2>Your Order</h2>[m
+[32m+[m[32m            <button class="close-cart">×</button>[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m        <div class="cart-items">[m
+[32m+[m[32m            <div class="empty-cart">[m
+[32m+[m[32m                <div>🛒</div>[m
+[32m+[m[32m                <p>Your cart is empty</p>[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m            <!-- Cart items will be added here dynamically -->[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m        <div class="cart-summary">[m
+[32m+[m[32m            <div class="summary-row">[m
+[32m+[m[32m                <span>Subtotal:</span>[m
+[32m+[m[32m                <span class="cart-subtotal">€0.00</span>[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m            <div class="summary-row">[m
+[32m+[m[32m                <span>Delivery fee:</span>[m
+[32m+[m[32m                <span class="delivery-fee">€2.50</span>[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m            <div class="summary-row summary-total">[m
+[32m+[m[32m                <span>Total:</span>[m
+[32m+[m[32m                <span class="cart-total">€2.50</span>[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m            <button class="checkout-btn">Proceed to Checkout</button>[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m    </div>[m
+[32m+[m[41m    [m
+     <!-- Login Dialog -->[m
+     <dialog id="loginDialog">[m
+         <button class="close-btn" aria-label="Sulje">✕</button>[m
+         [m
+[31m-        <form method="dialog" class="login-form" id="loginForm">[m
+[32m+[m[32m        <form method="dialog" class="login-form">[m
+             <h2>Kirjaudu sisään</h2>[m
+ [m
+             <label for="name">Nimi:</label>[m
+             <input type="text" id="name" name="name" minlength="3" required>[m
+[31m-            <div class="error-message" id="nameError">Nimen tulee olla vähintään 3 merkkiä pitkä</div>[m
+ [m
+             <label for="email">Sähköposti:</label>[m
+             <input type="email" id="email" name="email" pattern=".+@metropolia\.fi$" required>[m
+[31m-            <div class="error-message" id="emailError">Sähköpostin tulee olla @metropolia.fi -pääte</div>[m
+ [m
+             <label for="password">Salasana:</label>[m
+             <input type="password" id="password" name="password"[m
+                 pattern="(?=.*[A-Z])(?=.*[0-9]).{6,}" required>[m
+[31m-            <div class="error-message" id="passwordError">Salasanan tulee olla vähintään 6 merkkiä pitkä, sisältää vähintään yhden ison kirjaimen ja yhden numeron</div>[m
+ [m
+             <menu>[m
+                 <button value="cancel" class="cancel-btn">Peruuta</button>[m
+[36m@@ -32,292 +300,35 @@[m
+             </menu>[m
+         </form>[m
+     </dialog>[m
+[32m+[m[41m    [m
+[32m+[m[32m    <!-- Sign Up Dialog -->[m
+[32m+[m[32m    <dialog id="signupDialog">[m
+[32m+[m[32m        <button class="close-btn" aria-label="Sulje">✕</button>[m
+[32m+[m[41m        [m
+[32m+[m[32m        <form method="dialog" class="signup-form">[m
+[32m+[m[32m            <h2>Luo tili</h2>[m
+ [m
+[31m-    <div class="admin-container">[m
+[31m-        <!-- Sidebar -->[m
+[31m-        <div class="sidebar">[m
+[31m-            [m
+[31m-            <ul class="sidebar-menu">[m
+[31m-                <li><a href="#" class="active"><i>📊</i> <span>Dashboard</span></a></li>[m
+[31m-                <li><a href="#"><i>📝</i> <span>Orders</span></a></li>[m
+[31m-                <li><a href="#"><i>🍕</i> <span>Menu Items</span></a></li>[m
+[31m-                <li><a href="#"><i>👥</i> <span>Customers</span></a></li>[m
+[31m-                <li><a href="#"><i>📈</i> <span>Reports</span></a></li>[m
+[31m-                <li><a href="#"><i>⚙️</i> <span>Settings</span></a></li>[m
+[31m-                <li><a href="/project/index.html"><i>↩️</i> <span>Back to Store</span></a></li>[m
+[31m-            </ul>[m
+[31m-        </div>[m
+[32m+[m[32m            <label for="signup-name">Etunimi:</label>[m
+[32m+[m[32m            <input type="text" id="signup-name" name="signup-name" minlength="2" required>[m
+ [m
+[31m-        <!-- Main Content -->[m
+[31m-        <div class="main-content">[m
+[31m-            <div class="admin-header">[m
+[31m-                <h1>Admin Dashboard</h1>[m
+[31m-                <div class="user-info">[m
+[31m-                    <div class="user-avatar">A</div>[m
+[31m-                    <span>Admin User</span>[m
+[31m-                </div>[m
+[31m-            </div>[m
+[32m+[m[32m            <label for="signup-surname">Sukunimi:</label>[m
+[32m+[m[32m            <input type="text" id="signup-surname" name="signup-surname" minlength="2" required>[m
+ [m
+[31m-            <!-- Dashboard Stats -->[m
+[31m-            <div class="dashboard-cards">[m
+[31m-                <div class="card stat-card">[m
+[31m-                    <div class="stat-icon orders">📋</div>[m
+[31m-                    <div class="stat-info">[m
+[31m-                        <h3>24</h3>[m
+[31m-                        <p>New Orders</p>[m
+[31m-                    </div>[m
+[31m-                </div>[m
+[31m-                <div class="card stat-card">[m
+[31m-                    <div class="stat-icon processing">⏱</div>[m
+[31m-                    <div class="stat-info">[m
+[31m-                        <h3>8</h3>[m
+[31m-                        <p>Processing</p>[m
+[31m-                    </div>[m
+[31m-                </div>[m
+[31m-                <div class="card stat-card">[m
+[31m-                    <div class="stat-icon completed">✅</div>[m
+[31m-                    <div class="stat-info">[m
+[31m-                        <h3>42</h3>[m
+[31m-                        <p>Completed Today</p>[m
+[31m-                    </div>[m
+[31m-                </div>[m
+[31m-                <div class="card stat-card">[m
+[31m-                    <div class="stat-icon revenue">💰</div>[m
+[31m-                    <div class="stat-info">[m
+[31m-                        <h3>€1,248</h3>[m
+[31m-                        <p>Today's Revenue</p>[m
+[31m-                    </div>[m
+[31m-                </div>[m
+[31m-            </div>[m
+[32m+[m[32m            <label for="signup-age">Ikä:</label>[m
+[32m+[m[32m            <input type="number" id="signup-age" name="signup-age" min="16" max="120" required>[m
+ [m
+[31m-            <!-- Orders Table -->[m
+[31m-            <div class="orders-table">[m
+[31m-                <div class="table-header">[m
+[31m-                    <h2>Recent Orders</h2>[m
+[31m-                    <div class="filters">[m
+[31m-                        <button class="filter-btn active">All</button>[m
+[31m-                        <button class="filter-btn">New</button>[m
+[31m-                        <button class="filter-btn">Processing</button>[m
+[31m-                        <button class="filter-btn">Completed</button>[m
+[31m-                    </div>[m
+[31m-                </div>[m
+[31m-                <table>[m
+[31m-                    <thead>[m
+[31m-                        <tr>[m
+[31m-                            <th>Order ID</th>[m
+[31m-                            <th>Customer</th>[m
+[31m-                            <th>Items</th>[m
+[31m-                            <th>Total</th>[m
+[31m-                            <th>Status</th>[m
+[31m-                            <th>Actions</th>[m
+[31m-                        </tr>[m
+[31m-                    </thead>[m
+[31m-                    <tbody>[m
+[31m-                        <tr>[m
+[31m-                            <td>#ORD-1025</td>[m
+[31m-                            <td>Matti Meikäläinen</td>[m
+[31m-                            <td>2x Margherita, 1x Pepperoni</td>[m
+[31m-                            <td>€14.50</td>[m
+[31m-                            <td><span class="status status-new">New</span></td>[m
+[31m-                            <td>[m
+[31m-                                <button class="action-btn btn-process">Process</button>[m
+[31m-                                <button class="action-btn btn-complete">Complete</button>[m
+[31m-                            </td>[m
+[31m-                        </tr>[m
+[31m-                        <tr>[m
+[31m-                            <td>#ORD-1024</td>[m
+[31m-                            <td>Liisa Virtanen</td>[m
+[31m-                            <td>1x Veggie Supreme</td>[m
+[31m-                            <td>€9.00</td>[m
+[31m-                            <td><span class="status status-processing">Processing</span></td>[m
+[31m-                            <td>[m
+[31m-                                <button class="action-btn btn-complete">Complete</button>[m
+[31m-                                <button class="action-btn btn-cancel">Cancel</button>[m
+[31m-                            </td>[m
+[31m-                        </tr>[m
+[31m-                        <tr>[m
+[31m-                            <td>#ORD-1023</td>[m
+[31m-                            <td>Antti Korhonen</td>[m
+[31m-                            <td>3x BBQ Chicken, 2x Soda</td>[m
+[31m-                            <td>€28.50</td>[m
+[31m-                            <td><span class="status status-completed">Completed</span></td>[m
+[31m-                            <td>[m
+[31m-                                <button class="action-btn">View</button>[m
+[31m-                            </td>[m
+[31m-                        </tr>[m
+[31m-                        <tr>[m
+[31m-                            <td>#ORD-1022</td>[m
+[31m-                            <td>Maria Järvinen</td>[m
+[31m-                            <td>1x Gluten-Free Pizza</td>[m
+[31m-                            <td>€12.00</td>[m
+[31m-                            <td><span class="status status-new">New</span></td>[m
+[31m-                            <td>[m
+[31m-                                <button class="action-btn btn-process">Process</button>[m
+[31m-                                <button class="action-btn btn-complete">Complete</button>[m
+[31m-                            </td>[m
+[31m-                        </tr>[m
+[31m-                        <tr>[m
+[31m-                            <td>#ORD-1021</td>[m
+[31m-                            <td>Jussi Nieminen</td>[m
+[31m-                            <td>1x Hawaiian, 1x Garlic Bread</td>[m
+[31m-                            <td>€15.50</td>[m
+[31m-                            <td><span class="status status-processing">Processing</span></td>[m
+[31m-                            <td>[m
+[31m-                                <button class="action-btn btn-complete">Complete</button>[m
+[31m-                                <button class="action-btn btn-cancel">Cancel</button>[m
+[31m-                            </td>[m
+[31m-                        </tr>[m
+[31m-                    </tbody>[m
+[31m-                </table>[m
+[31m-            </div>[m
+[31m-        </div>[m
+[31m-    </div>[m
+[32m+[m[32m            <label for="signup-email">Sähköposti:</label>[m
+[32m+[m[32m            <input type="email" id="signup-email" name="signup-email" required>[m
+ [m
+[31m-    <script>[m
+[31m-    document.body.classList.add('pre-login');[m
+[31m-    [m
+[31m-    // When login is successful[m
+[31m-    function handleSuccessfulLogin() {[m
+[31m-        document.body.classList.remove('pre-login');[m
+[31m-        document.body.classList.add('logged-in');[m
+[31m-    }[m
+[31m-    [m
+[31m-    // Show login dialog on page load[m
+[31m-    document.addEventListener('DOMContentLoaded', function() {[m
+[31m-        const dialog = document.getElementById('loginDialog');[m
+[31m-        dialog.showModal();[m
+[31m-        [m
+[31m-        // Add close button functionality[m
+[31m-        const closeBtn = document.querySelector('.close-btn');[m
+[31m-        closeBtn.addEventListener('click', () => {[m
+[31m-            dialog.close();[m
+[31m-        });[m
+[31m-        [m
+[31m-        // Form validation[m
+[31m-        const loginForm = document.getElementById('loginForm');[m
+[31m-        const nameInput = document.getElementById('name');[m
+[31m-        const emailInput = document.getElementById('email');[m
+[31m-        const passwordInput = document.getElementById('password');[m
+[31m-        const nameError = document.getElementById('nameError');[m
+[31m-        const emailError = document.getElementById('emailError');[m
+[31m-        const passwordError = document.getElementById('passwordError');[m
+[31m-        [m
+[31m-        // Validate inputs on change[m
+[31m-        nameInput.addEventListener('input', function() {[m
+[31m-            if (nameInput.validity.valid) {[m
+[31m-                nameError.style.display = 'none';[m
+[31m-            } else {[m
+[31m-                nameError.style.display = 'block';[m
+[31m-            }[m
+[31m-        });[m
+[31m-        [m
+[31m-        emailInput.addEventListener('input', function() {[m
+[31m-            if (emailInput.validity.valid) {[m
+[31m-                emailError.style.display = 'none';[m
+[31m-            } else {[m
+[31m-                emailError.style.display = 'block';[m
+[31m-            }[m
+[31m-        });[m
+[31m-        [m
+[31m-        passwordInput.addEventListener('input', function() {[m
+[31m-            if (passwordInput.validity.valid) {[m
+[31m-                passwordError.style.display = 'none';[m
+[31m-            } else {[m
+[31m-                passwordError.style.display = 'block';[m
+[31m-            }[m
+[31m-        });[m
+[31m-        [m
+[31m-        // Handle form submission[m
+[31m-        loginForm.addEventListener('submit', function(e) {[m
+[31m-            e.preventDefault();[m
+[31m-            [m
+[31m-            let isValid = true;[m
+[31m-            [m
+[31m-            // Validate name[m
+[31m-            if (nameInput.value.length < 3) {[m
+[31m-                nameError.style.display = 'block';[m
+[31m-                isValid = false;[m
+[31m-            } else {[m
+[31m-                nameError.style.display = 'none';[m
+[31m-            }[m
+[31m-            [m
+[31m-            // Validate email[m
+[31m-            if (!emailInput.value.endsWith('@metropolia.fi')) {[m
+[31m-                emailError.style.display = 'block';[m
+[31m-                isValid = false;[m
+[31m-            } else {[m
+[31m-                emailError.style.display = 'none';[m
+[31m-            }[m
+[31m-            [m
+[31m-            // Validate password[m
+[31m-            const hasUpperCase = /[A-Z]/.test(passwordInput.value);[m
+[31m-            const hasNumber = /[0-9]/.test(passwordInput.value);[m
+[31m-            [m
+[31m-            if (passwordInput.value.length < 6 || !hasUpperCase || !hasNumber) {[m
+[31m-                passwordError.style.display = 'block';[m
+[31m-                isValid = false;[m
+[31m-            } else {[m
+[31m-                passwordError.style.display = 'none';[m
+[31m-            }[m
+[32m+[m[32m            <label for="signup-password">Salasana:</label>[m
+[32m+[m[32m            <input type="password" id="signup-password" name="signup-password"[m
+[32m+[m[32m                pattern="(?=.*[A-Z])(?=.*[0-9]).{6,}" required>[m
+ [m
+[31m-            if (isValid) {[m
+[31m-                dialog.close();[m
+[31m-                document.querySelector('.admin-container').style.display = 'flex';[m
+[31m-                document.body.classList.remove('pre-login');[m
+[31m-                document.body.classList.add('logged-in');[m
+[31m-            }[m
+[31m-        }); // This closing bracket was missing[m
+[31m-        [m
+[31m-        // Cancel button functionality[m
+[31m-        const cancelBtn = document.querySelector('.cancel-btn');[m
+[31m-        cancelBtn.addEventListener('click', function() {[m
+[31m-            dialog.close();[m
+[31m-        });[m
+[31m-        [m
+[31m-        // Original dashboard functionality[m
+[31m-        const processButtons = document.querySelectorAll('.btn-process');[m
+[31m-        const completeButtons = document.querySelectorAll('.btn-complete');[m
+[31m-        const cancelButtons = document.querySelectorAll('.btn-cancel');[m
+[31m-        [m
+[31m-        processButtons.forEach(button => {[m
+[31m-            button.addEventListener('click', function() {[m
+[31m-                const statusCell = this.parentElement.previousElementSibling;[m
+[31m-                statusCell.innerHTML = '<span class="status status-processing">Processing</span>';[m
+[31m-                updateStats();[m
+[31m-            });[m
+[31m-        });[m
+[31m-        [m
+[31m-        completeButtons.forEach(button => {[m
+[31m-            button.addEventListener('click', function() {[m
+[31m-                const statusCell = this.parentElement.previousElementSibling;[m
+[31m-                statusCell.innerHTML = '<span class="status status-completed">Completed</span>';[m
+[31m-                updateStats();[m
+[31m-            });[m
+[31m-        });[m
+[31m-        [m
+[31m-        cancelButtons.forEach(button => {[m
+[31m-            button.addEventListener('click', function() {[m
+[31m-                const statusCell = this.parentElement.previousElementSibling;[m
+[31m-                statusCell.innerHTML = '<span class="status status-cancelled">Cancelled</span>';[m
+[31m-                updateStats();[m
+[31m-            });[m
+[31m-        });[m
+[31m-        [m
+[31m-        // Filter buttons[m
+[31m-        const filterButtons = document.querySelectorAll('.filter-btn');[m
+[31m-        filterButtons.forEach(button => {[m
+[31m-            button.addEventListener('click', function() {[m
+[31m-                filterButtons.forEach(btn => btn.classList.remove('active'));[m
+[31m-                this.classList.add('active');[m
+[31m-                // In a real app, this would filter the orders table[m
+[31m-            });[m
+[31m-        });[m
+[31m-        [m
+[31m-        function updateStats() {[m
+[31m-            // In a real app, this would update the dashboard stats[m
+[31m-            console.log('Stats would update here');[m
+[31m-        }[m
+[31m-    });[m
+[31m-</script>[m
+[32m+[m[32m            <menu>[m
+[32m+[m[32m                <button value="cancel" class="cancel-btn">Peruuta</button>[m
+[32m+[m[32m                <button value="submit" class="submit-btn">Luo tili</button>[m
+[32m+[m[32m            </menu>[m
+[32m+[m[32m        </form>[m
+[32m+[m[32m    </dialog>[m
+ </body>[m
+ </html>[m
+\ No newline at end of file[m
+
+[33mcommit 2f011bd5a41333f9e5c04173a39455f7c217810e[m
+Author: abdualj <abdualjubury@gmail.com>
+Date:   Thu Sep 18 22:46:49 2025 +0300
+
+    update
+
+[1mdiff --git a/admin page/index.html b/admin page/index.html[m
+[1mnew file mode 100644[m
+[1mindex 0000000..ad57872[m
+[1m--- /dev/null[m
+[1m+++ b/admin page/index.html[m	
+[36m@@ -0,0 +1,323 @@[m
+[32m+[m[32m<html lang="fi">[m
+[32m+[m[32m<head>[m
+[32m+[m[32m    <meta charset="UTF-8">[m
+[32m+[m[32m    <meta name="viewport" content="width=device-width, initial-scale=1.0">[m
+[32m+[m[32m    <title>Admin Dashboard - Your Slice</title>[m
+[32m+[m[32m    <link rel="stylesheet" href="styles.css">[m
+[32m+[m[32m    </head>[m
+[32m+[m[32m<body>[m
+[32m+[m[32m    <!-- Login Dialog -->[m
+[32m+[m[32m    <dialog id="loginDialog">[m
+[32m+[m[32m        <button class="close-btn" aria-label="Sulje">✕</button>[m
+[32m+[m[41m        [m
+[32m+[m[32m        <form method="dialog" class="login-form" id="loginForm">[m
+[32m+[m[32m            <h2>Kirjaudu sisään</h2>[m
+[32m+[m
+[32m+[m[32m            <label for="name">Nimi:</label>[m
+[32m+[m[32m            <input type="text" id="name" name="name" minlength="3" required>[m
+[32m+[m[32m            <div class="error-message" id="nameError">Nimen tulee olla vähintään 3 merkkiä pitkä</div>[m
+[32m+[m
+[32m+[m[32m            <label for="email">Sähköposti:</label>[m
+[32m+[m[32m            <input type="email" id="email" name="email" pattern=".+@metropolia\.fi$" required>[m
+[32m+[m[32m            <div class="error-message" id="emailError">Sähköpostin tulee olla @metropolia.fi -pääte</div>[m
+[32m+[m
+[32m+[m[32m            <label for="password">Salasana:</label>[m
+[32m+[m[32m            <input type="password" id="password" name="password"[m
+[32m+[m[32m                pattern="(?=.*[A-Z])(?=.*[0-9]).{6,}" required>[m
+[32m+[m[32m            <div class="error-message" id="passwordError">Salasanan tulee olla vähintään 6 merkkiä pitkä, sisältää vähintään yhden ison kirjaimen ja yhden numeron</div>[m
+[32m+[m
+[32m+[m[32m            <menu>[m
+[32m+[m[32m                <button value="cancel" class="cancel-btn">Peruuta</button>[m
+[32m+[m[32m                <button value="submit" class="submit-btn">Kirjaudu</button>[m
+[32m+[m[32m            </menu>[m
+[32m+[m[32m        </form>[m
+[32m+[m[32m    </dialog>[m
+[32m+[m
+[32m+[m[32m    <div class="admin-container">[m
+[32m+[m[32m        <!-- Sidebar -->[m
+[32m+[m[32m        <div class="sidebar">[m
+[32m+[m[41m            [m
+[32m+[m[32m            <ul class="sidebar-menu">[m
+[32m+[m[32m                <li><a href="#" class="active"><i>📊</i> <span>Dashboard</span></a></li>[m
+[32m+[m[32m                <li><a href="#"><i>📝</i> <span>Orders</span></a></li>[m
+[32m+[m[32m                <li><a href="#"><i>🍕</i> <span>Menu Items</span></a></li>[m
+[32m+[m[32m                <li><a href="#"><i>👥</i> <span>Customers</span></a></li>[m
+[32m+[m[32m                <li><a href="#"><i>📈</i> <span>Reports</span></a></li>[m
+[32m+[m[32m                <li><a href="#"><i>⚙️</i> <span>Settings</span></a></li>[m
+[32m+[m[32m                <li><a href="/project/index.html"><i>↩️</i> <span>Back to Store</span></a></li>[m
+[32m+[m[32m            </ul>[m
+[32m+[m[32m        </div>[m
+[32m+[m
+[32m+[m[32m        <!-- Main Content -->[m
+[32m+[m[32m        <div class="main-content">[m
+[32m+[m[32m            <div class="admin-header">[m
+[32m+[m[32m                <h1>Admin Dashboard</h1>[m
+[32m+[m[32m                <div class="user-info">[m
+[32m+[m[32m                    <div class="user-avatar">A</div>[m
+[32m+[m[32m                    <span>Admin User</span>[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m            </div>[m
+[32m+[m
+[32m+[m[32m            <!-- Dashboard Stats -->[m
+[32m+[m[32m            <div class="dashboard-cards">[m
+[32m+[m[32m                <div class="card stat-card">[m
+[32m+[m[32m                    <div class="stat-icon orders">📋</div>[m
+[32m+[m[32m                    <div class="stat-info">[m
+[32m+[m[32m                        <h3>24</h3>[m
+[32m+[m[32m                        <p>New Orders</p>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m                <div class="card stat-card">[m
+[32m+[m[32m                    <div class="stat-icon processing">⏱</div>[m
+[32m+[m[32m                    <div class="stat-info">[m
+[32m+[m[32m                        <h3>8</h3>[m
+[32m+[m[32m                        <p>Processing</p>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m                <div class="card stat-card">[m
+[32m+[m[32m                    <div class="stat-icon completed">✅</div>[m
+[32m+[m[32m                    <div class="stat-info">[m
+[32m+[m[32m                        <h3>42</h3>[m
+[32m+[m[32m                        <p>Completed Today</p>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m                <div class="card stat-card">[m
+[32m+[m[32m                    <div class="stat-icon revenue">💰</div>[m
+[32m+[m[32m                    <div class="stat-info">[m
+[32m+[m[32m                        <h3>€1,248</h3>[m
+[32m+[m[32m                        <p>Today's Revenue</p>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m            </div>[m
+[32m+[m
+[32m+[m[32m            <!-- Orders Table -->[m
+[32m+[m[32m            <div class="orders-table">[m
+[32m+[m[32m                <div class="table-header">[m
+[32m+[m[32m                    <h2>Recent Orders</h2>[m
+[32m+[m[32m                    <div class="filters">[m
+[32m+[m[32m                        <button class="filter-btn active">All</button>[m
+[32m+[m[32m                        <button class="filter-btn">New</button>[m
+[32m+[m[32m                        <button class="filter-btn">Processing</button>[m
+[32m+[m[32m                        <button class="filter-btn">Completed</button>[m
+[32m+[m[32m                    </div>[m
+[32m+[m[32m                </div>[m
+[32m+[m[32m                <table>[m
+[32m+[m[32m                    <thead>[m
+[32m+[m[32m                        <tr>[m
+[32m+[m[32m                            <th>Order ID</th>[m
+[32m+[m[32m                            <th>Customer</th>[m
+[32m+[m[32m                            <th>Items</th>[m
+[32m+[m[32m                            <th>Total</th>[m
+[32m+[m[32m                            <th>Status</th>[m
+[32m+[m[32m                            <th>Actions</th>[m
+[32m+[m[32m                        </tr>[m
+[32m+[m[32m                    </thead>[m
+[32m+[m[32m                    <tbody>[m
+[32m+[m[32m                        <tr>[m
+[32m+[m[32m                            <td>#ORD-1025</td>[m
+[32m+[m[32m                            <td>Matti Meikäläinen</td>[m
+[32m+[m[32m                            <td>2x Margherita, 1x Pepperoni</td>[m
+[32m+[m[32m                            <td>€14.50</td>[m
+[32m+[m[32m                            <td><span class="status status-new">New</span></td>[m
+[32m+[m[32m                            <td>[m
+[32m+[m[32m                                <button class="action-btn btn-process">Process</button>[m
+[32m+[m[32m                                <button class="action-btn btn-complete">Complete</button>[m
+[32m+[m[32m                            </td>[m
+[32m+[m[32m                        </tr>[m
+[32m+[m[32m                        <tr>[m
+[32m+[m[32m                            <td>#ORD-1024</td>[m
+[32m+[m[32m                            <td>Liisa Virtanen</td>[m
+[32m+[m[32m                            <td>1x Veggie Supreme</td>[m
+[32m+[m[32m                            <td>€9.00</td>[m
+[32m+[m[32m                            <td><span class="status status-processing">Processing</span></td>[m
+[32m+[m[32m                            <td>[m
+[32m+[m[32m                                <button class="action-btn btn-complete">Complete</button>[m
+[32m+[m[32m                                <button class="action-btn btn-cancel">Cancel</button>[m
+[32m+[m[32m                            </td>[m
+[32m+[m[32m                        </tr>[m
+[32m+[m[32m                        <tr>[m
+[32m+[m[32m                            <td>#ORD-1023</td>[m
+[32m+[m[32m                            <td>Antti Korhonen</td>[m
+[32m+[m[32m                            <td>3x BBQ Chicken, 2x Soda</td>[m
+[32m+[m[32m                            <td>€28.50</td>[m
+[32m+[m[32m                            <td><span class="status status-completed">Completed</span></td>[m
+[32m+[m[32m                            <td>[m
+[32m+[m[32m                                <button class="action-btn">View</button>[m
+[32m+[m[32m                            </td>[m
+[32m+[m[32m                        </tr>[m
+[32m+[m[32m                        <tr>[m
+[32m+[m[32m                            <td>#ORD-1022</td>[m
+[32m+[m[32m                            <td>Maria Järvinen</td>[m
+[32m+[m[32m                            <td>1x Gluten-Free Pizza</td>[m
+[32m+[m[32m                            <td>€12.00</td>[m
+[32m+[m[32m                            <td><span class="status status-new">New</span></td>[m
+[32m+[m[32m                            <td>[m
+[32m+[m[32m                                <button class="action-btn btn-process">Process</button>[m
+[32m+[m[32m                                <button class="action-btn btn-complete">Complete</button>[m
+[32m+[m[32m                            </td>[m
+[32m+[m[32m                        </tr>[m
+[32m+[m[32m                        <tr>[m
+[32m+[m[32m                            <td>#ORD-1021</td>[m
+[32m+[m[32m                            <td>Jussi Nieminen</td>[m
+[32m+[m[32m                            <td>1x Hawaiian, 1x Garlic Bread</td>[m
+[32m+[m[32m                            <td>€15.50</td>[m
+[32m+[m[32m                            <td><span class="status status-processing">Processing</span></td>[m
+[32m+[m[32m                            <td>[m
+[32m+[m[32m                                <button class="action-btn btn-complete">Complete</button>[m
+[32m+[m[32m                                <button class="action-btn btn-cancel">Cancel</button>[m
+[32m+[m[32m                            </td>[m
+[32m+[m[32m                        </tr>[m
+[32m+[m[32m                    </tbody>[m
+[32m+[m[32m                </table>[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m    </div>[m
+[32m+[m
+[32m+[m[32m    <script>[m
+[32m+[m[32m    document.body.classList.add('pre-login');[m
+[32m+[m[41m    [m
+[32m+[m[32m    // When login is successful[m
+[32m+[m[32m    function handleSuccessfulLogin() {[m
+[32m+[m[32m        document.body.classList.remove('pre-login');[m
+[32m+[m[32m        document.body.classList.add('logged-in');[m
+[32m+[m[32m    }[m
+[32m+[m[41m    [m
+[32m+[m[32m    // Show login dialog on page load[m
+[32m+[m[32m    document.addEventListener('DOMContentLoaded', function() {[m
+[32m+[m[32m        const dialog = document.getElementById('loginDialog');[m
+[32m+[m[32m        dialog.showModal();[m
+[32m+[m[41m        [m
+[32m+[m[32m        // Add close button functionality[m
+[32m+[m[32m        const closeBtn = document.querySelector('.close-btn');[m
+[32m+[m[32m        closeBtn.addEventListener('click', () => {[m
+[32m+[m[32m            dialog.close();[m
+[32m+[m[32m        });[m
+[32m+[m[41m        [m
+[32m+[m[32m        // Form validation[m
+[32m+[m[32m        const loginForm = document.getElementById('loginForm');[m
+[32m+[m[32m        const nameInput = document.getElementById('name');[m
+[32m+[m[32m        const emailInput = document.getElementById('email');[m
+[32m+[m[32m        const passwordInput = document.getElementById('password');[m
+[32m+[m[32m        const nameError = document.getElementById('nameError');[m
+[32m+[m[32m        const emailError = document.getElementById('emailError');[m
+[32m+[m[32m        const passwordError = document.getElementById('passwordError');[m
+[32m+[m[41m        [m
+[32m+[m[32m        // Validate inputs on change[m
+[32m+[m[32m        nameInput.addEventListener('input', function() {[m
+[32m+[m[32m            if (nameInput.validity.valid) {[m
+[32m+[m[32m                nameError.style.display = 'none';[m
+[32m+[m[32m            } else {[m
+[32m+[m[32m                nameError.style.display = 'block';[m
+[32m+[m[32m            }[m
+[32m+[m[32m        });[m
+[32m+[m[41m        [m
+[32m+[m[32m        emailInput.addEventListener('input', function() {[m
+[32m+[m[32m            if (emailInput.validity.valid) {[m
+[32m+[m[32m                emailError.style.display = 'none';[m
+[32m+[m[32m            } else {[m
+[32m+[m[32m                emailError.style.display = 'block';[m
+[32m+[m[32m            }[m
+[32m+[m[32m        });[m
+[32m+[m[41m        [m
+[32m+[m[32m        passwordInput.addEventListener('input', function() {[m
+[32m+[m[32m            if (passwordInput.validity.valid) {[m
+[32m+[m[32m                passwordError.style.display = 'none';[m
+[32m+[m[32m            } else {[m
+[32m+[m[32m                passwordError.style.display = 'block';[m
+[32m+[m[32m            }[m
+[32m+[m[32m        });[m
+[32m+[m[41m        [m
+[32m+[m[32m        // Handle form submission[m
+[32m+[m[32m        loginForm.addEventListener('submit', function(e) {[m
+[32m+[m[32m            e.preventDefault();[m
+[32m+[m[41m            [m
+[32m+[m[32m            let isValid = true;[m
+[32m+[m[41m            [m
+[32m+[m[32m            // Validate name[m
+[32m+[m[32m            if (nameInput.value.length < 3) {[m
+[32m+[m[32m                nameError.style.display = 'block';[m
+[32m+[m[32m                isValid = false;[m
+[32m+[m[32m            } else {[m
+[32m+[m[32m                nameError.style.display = 'none';[m
+[32m+[m[32m            }[m
+[32m+[m[41m            [m
+[32m+[m[32m            // Validate email[m
+[32m+[m[32m            if (!emailInput.value.endsWith('@metropolia.fi')) {[m
+[32m+[m[32m                emailError.style.display = 'block';[m
+[32m+[m[32m                isValid = false;[m
+[32m+[m[32m            } else {[m
+[32m+[m[32m                emailError.style.display = 'none';[m
+[32m+[m[32m            }[m
+[32m+[m[41m            [m
+[32m+[m[32m            // Validate password[m
+[32m+[m[32m            const hasUpperCase = /[A-Z]/.test(passwordInput.value);[m
+[32m+[m[32m            const hasNumber = /[0-9]/.test(passwordInput.value);[m
+[32m+[m[41m            [m
+[32m+[m[32m            if (passwordInput.value.length < 6 || !hasUpperCase || !hasNumber) {[m
+[32m+[m[32m                passwordError.style.display = 'block';[m
+[32m+[m[32m                isValid = false;[m
+[32m+[m[32m            } else {[m
+[32m+[m[32m                passwordError.style.display = 'none';[m
+[32m+[m[32m            }[m
+[32m+[m
+[32m+[m[32m            if (isValid) {[m
+[32m+[m[32m                dialog.close();[m
+[32m+[m[32m                document.querySelector('.admin-container').style.display = 'flex';[m
+[32m+[m[32m                document.body.classList.remove('pre-login');[m
+[32m+[m[32m                document.body.classList.add('logged-in');[m
+[32m+[m[32m            }[m
+[32m+[m[32m        }); // This closing bracket was missing[m
+[32m+[m[41m        [m
+[32m+[m[32m        // Cancel button functionality[m
+[32m+[m[32m        const cancelBtn = document.querySelector('.cancel-btn');[m
+[32m+[m[32m        cancelBtn.addEventListener('click', function() {[m
+[32m+[m[32m            dialog.close();[m
+[32m+[m[32m        });[m
+[32m+[m[41m        [m
+[32m+[m[32m        // Original dashboard functionality[m
+[32m+[m[32m        const processButtons = document.querySelectorAll('.btn-process');[m
+[32m+[m[32m        const completeButtons = document.querySelectorAll('.btn-complete');[m
+[32m+[m[32m        const cancelButtons = document.querySelectorAll('.btn-cancel');[m
+[32m+[m[41m        [m
+[32m+[m[32m        processButtons.forEach(button => {[m
+[32m+[m[32m            button.addEventListener('click', function() {[m
+[32m+[m[32m                const statusCell = this.parentElement.previousElementSibling;[m
+[32m+[m[32m                statusCell.innerHTML = '<span class="status status-processing">Processing</span>';[m
+[32m+[m[32m                updateStats();[m
+[32m+[m[32m            });[m
+[32m+[m[32m        });[m
+[32m+[m[41m        [m
+[32m+[m[32m        completeButtons.forEach(button => {[m
+[32m+[m[32m            button.addEventListener('click', function() {[m
+[32m+[m[32m                const statusCell = this.parentElement.previousElementSibling;[m
+[32m+[m[32m                statusCell.innerHTML = '<span class="status status-completed">Completed</span>';[m
+[32m+[m[32m                updateStats();[m
+[32m+[m[32m            });[m
+[32m+[m[32m        });[m
+[32m+[m[41m        [m
+[32m+[m[32m        cancelButtons.forEach(button => {[m
+[32m+[m[32m            button.addEventListener('click', function() {[m
+[32m+[m[32m                const statusCell = this.parentElement.previousElementSibling;[m
+[32m+[m[32m                statusCell.innerHTML = '<span class="status status-cancelled">Cancelled</span>';[m
+[32m+[m[32m                updateStats();[m
+[32m+[m[32m            });[m
+[32m+[m[32m        });[m
+[32m+[m[41m        [m
+[32m+[m[32m        // Filter buttons[m
+[32m+[m[32m        const filterButtons = document.querySelectorAll('.filter-btn');[m
+[32m+[m[32m        filterButtons.forEach(button => {[m
+[32m+[m[32m            button.addEventListener('click', function() {[m
+[32m+[m[32m                filterButtons.forEach(btn => btn.classList.remove('active'));[m
+[32m+[m[32m                this.classList.add('active');[m
+[32m+[m[32m                // In a real app, this would filter the orders table[m
+[32m+[m[32m            });[m
+[32m+[m[32m        });[m
+[32m+[m[41m        [m
+[32m+[m[32m        function updateStats() {[m
+[32m+[m[32m            // In a real app, this would update the dashboard stats[m
+[32m+[m[32m            console.log('Stats would update here');[m
+[32m+[m[32m        }[m
+[32m+[m[32m    });[m
+[32m+[m[32m</script>[m
+[32m+[m[32m</body>[m
+[32m+[m[32m</html>[m
+\ No newline at end of file[m
