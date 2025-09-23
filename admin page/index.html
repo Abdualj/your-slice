@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     </head>
 <body class="pre-login">
+    </class>
     <!-- Login Dialog -->
     <dialog id="loginDialog">
         <button class="close-btn" aria-label="Sulje"></button>
@@ -26,10 +27,8 @@
             <input type="password" id="password" name="password"
                 pattern="(?=.*[A-Z])(?=.*[0-9]).{6,}" required>
             <div class="error-message" id="passwordError">Salasanan tulee olla vähintään 6 merkkiä pitkä, sisältää vähintään yhden ison kirjaimen ja yhden numeron</div>
-            
-            <menu>
-                <button type="button" class="cancel-btn">Peruuta</button>
-                <button type="submit" class="submit-btn">Kirjaudu</button>
+        <menu>
+                <button value="submit" class="submit-btn">Kirjaudu</button>
             </menu>
         </form>
     </dialog>
@@ -191,6 +190,33 @@
                     </tbody>
                 </table>
             </div>
+
+<div class="products-table">
+    <div class="products-header">
+        <h2>Manage Products</h2>
+    </div>
+
+    <div class="add-product-form">
+        <input type="text" id="productName" placeholder="Product Name">
+        <input type="number" id="productPrice" placeholder="Price (€)">
+        <button id="addProductBtn">Add Product</button>
+    </div>
+
+    <table id="productsTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price (€)</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Uudet tuotteet tulee tänne -->
+        </tbody>
+    </table>
+</div>
+
+
         </div>
     </div>
     
@@ -450,7 +476,7 @@
                 // In a real app, this would update the dashboard stats
                 console.log('Stats would update here based on the action performed');
             }
-        }
+        });
     </script>
 </body>
 </html>
