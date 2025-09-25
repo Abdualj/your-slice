@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Your Slice</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
     </head>
 <body class="pre-login">
     </class>
@@ -191,6 +194,8 @@
                 </table>
             </div>
 
+
+
 <div class="products-table">
     <div class="products-header">
         <h2>Manage Products</h2>
@@ -220,6 +225,13 @@
 
         </div>
     </div>
+
+       
+    
+    <section id="map-section">
+        <h2>Our Location</h2>
+        <div id="map" style="height: 250px;"></div>
+    </section>
     
     <script>
         // Show login dialog on page load
@@ -533,7 +545,19 @@ addProductBtn.addEventListener('click', function() {
     productPriceInput.value = '';
 });
 
+    // Leaflet kartta init
+        const map = L.map('map').setView([60.1699, 24.9384], 13); // Helsingin koordinaatit
 
+        // Lisää taustakartta
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Lisää markkeri
+        L.marker([60.1699, 24.9384]).addTo(map)
+            .bindPopup('Our Pizza Shop<br>Helsinki')
+            .openPopup();
     </script>
 </body>
 </html>
