@@ -6,6 +6,8 @@
     <title>Your Slice</title>
     <link rel="stylesheet" href="styles.css">
     <script src="main.js" defer></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
     <!-- Smooth Scroll -->
     <style>
@@ -231,6 +233,11 @@
         </div>
     </section>
 
+    <section id="map-section">
+        <h2>Our Location</h2>
+        <div id="map" style="height: 250px;"></div>
+    </section>
+
     <!-- Reviews Section (lisää tämä ennen footeria) -->
 <section id="reviews" class="reviews-section container">
   <div class="section-title">
@@ -378,5 +385,22 @@
             </menu>
         </form>
     </dialog>
+    
+    <script>
+
+    // Leaflet kartta init
+        const map = L.map('map').setView([60.1699, 24.9384], 13); // Helsingin koordinaatit
+
+        // Lisää taustakartta
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Lisää markkeri
+        L.marker([60.1699, 24.9384]).addTo(map)
+            .bindPopup('Our Pizza Shop<br>Helsinki')
+            .openPopup();
+    </script>
 </body>
 </html>
