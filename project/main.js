@@ -115,6 +115,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Expose the function globally so other modules/scripts can call it
   window.addToCart = addToCart;
+// ---------- POPULAR CREATIONS: Add to cart ----------
+$$(".add-to-cart-btn").forEach((btn) => {
+  btn.addEventListener("click", function () {
+    const menuItem = this.closest(".menu-item");
+    if (!menuItem) return;
+    const nameEl = menuItem.querySelector("h3");
+    const priceEl = menuItem.querySelector(".price");
+    const imgEl = menuItem.querySelector("img");
+
+    const name = nameEl ? nameEl.textContent.trim() : "Menu Item";
+    const price = priceEl ? parseFloat(priceEl.textContent.replace("€", "").trim()) || 0 : 0;
+    const image = imgEl ? imgEl.src : "";
+
+    addToCart(name, price, image);
+
+    const originalText = this.textContent;
+    this.textContent = "Added!";
+    setTimeout(() => (this.textContent = originalText), 1500);
+  });
+});
 
   // Cart panel toggles
   safeAddListener(cartIcon, "click", () => {
@@ -136,257 +156,180 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // ---------- MENU: Add to cart buttons ----------
-  $$(".add-to-cart-btn").forEach((btn) => {
-    btn.addEventListener("click", function () {
-      const menuItem = this.closest(".menu-item");
-      if (!menuItem) return;
-      const nameEl = menuItem.querySelector("h3");
-      const priceEl = menuItem.querySelector(".price");
-      const imgEl = menuItem.querySelector("img");
-      const name = nameEl ? nameEl.textContent.trim() : "Menu Item";
-      const price = priceEl ? parseFloat(priceEl.textContent.replace("€", "").trim()) || 0 : 0;
-      const image = imgEl ? imgEl.src : "";
-      addToCart(name, price, image);
-      const originalText = this.textContent;
-      this.textContent = "Added!";
-      setTimeout(() => (this.textContent = originalText), 1500);
-    });
-  });
+  // Pizza Builder Functionality
+    // Pizza configuration
+    const pizzaConfig = {
+        base: { name: "Original", price: 0 },
+        sauce: { name: "Tomato Sauce", price: 0 },
+        cheese: { name: "Mozzarella", price: 0 },
+        toppings: []
+    };
 
-  // ---------- MENU SCROLL (arrows + dots) ----------
-  const scrollContainer = $(".menu-scroll-container");
-  const menuItems = $$(".menu-item");
-  const leftArrow = $(".left-arrow");
-  const rightArrow = $(".right-arrow");
-  const dots = $$(".dot");
+    const basePrice = 3.00; // A plain slice price
 
-  if (scrollContainer && menuItems.length) {
-    safeAddListener(leftArrow, "click", () => scrollContainer.scrollBy({ left: -300, behavior: "smooth" }));
-    safeAddListener(rightArrow, "click", () => scrollContainer.scrollBy({ left: 300, behavior: "smooth" }));
+    // DOM Elements
+    const steps = document.querySelectorAll(".step");
+    const stepContents = document.querySelectorAll(".step-content");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const optionCards = document.querySelectorAll(".option-card");
+    const selectedOptions = document.getElementById("selectedOptions");
+    const currentPrice = document.getElementById("currentPrice");
+    const toppingsCounter = document.getElementById("selectedToppingsCount");
+    const buildNowBtn = document.getElementById("buildNowBtn");
 
-    dots.forEach((dot, i) =>
-      dot.addEventListener("click", () => {
-        const itemWidth = menuItems[0].offsetWidth + 20; // matches CSS gap
-        scrollContainer.scrollTo({ left: i * itemWidth, behavior: "smooth" });
-      })
-    );
-
-    scrollContainer.addEventListener("scroll", () => {
-      const scrollPos = scrollContainer.scrollLeft;
-      const itemWidth = menuItems[0].offsetWidth + 20;
-      const activeIndex = Math.round(scrollPos / itemWidth);
-      dots.forEach((dot, i) => dot.classList.toggle("active", i === activeIndex));
-    });
-  }
-
-  // ---------- PIZZA BUILDER ----------
-  // Config and DOM references (defensive)
-  const pizzaConfig = {
-    base: { name: "Original", price: 0 },
-    sauce: { name: "Tomato Sauce", price: 0 },
-    cheese: { name: "Mozzarella", price: 0 },
-    toppings: [],
-    size: { name: "Regular", price: 0, multiplier: 1 },
-  };
-  const basePrice = 6.5;
-
-  const stepEls = $$(".step");
-  const stepContents = $$(".step-content");
-  const prevButton = $("#prevBtn");
-  const nextButton = $("#nextBtn");
-  const optionCards = $$(".option-card");
-  const selectedOptionsEl = $("#selectedOptions");
-  const currentPriceEl = $("#currentPrice");
-  const toppingsCounterEl = $("#selectedToppingsCount");
-  const buildNowBtn2 = $("#buildNowBtn"); // optional duplicate
-
-  let currentStep = 1;
-
-  function getSizeMultiplier(size) {
-    switch (size) {
-      case "large":
-        return 1.5;
-      case "xl":
-        return 2;
-      default:
-        return 1;
-    }
-  }
-
-  function renderStepUI() {
-    stepEls.forEach((s) => {
-      const n = parseInt(s.dataset.step, 10);
-      s.classList.toggle("active", n === currentStep);
-    });
-    stepContents.forEach((c) => {
-      const n = parseInt(c.id.replace("step", ""), 10);
-      c.style.display = n === currentStep ? "block" : "none";
+    // Scroll to builder section
+    buildNowBtn.addEventListener("click", function () {
+        document.querySelector(".builder-section").scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+        });
     });
 
-    if (prevButton) prevButton.disabled = currentStep === 1;
-    if (nextButton) {
-      if (currentStep === 5) nextButton.textContent = "Complete Your Slice";
-      else {
-        const titles = ["", "Base", "Sauce", "Cheese", "Toppings", "Size"];
-        nextButton.textContent = `Next: Choose ${titles[currentStep + 1] || ""}`;
-      }
-    }
+    // Step navigation
+    let currentStep = 1;
 
-    updatePizzaVisualization();
-    updatePrice();
-  }
+    function updateStepNavigation() {
+        // Update step indicators
+        steps.forEach(step => {
+            const stepNum = parseInt(step.dataset.step);
+            step.classList.toggle("active", stepNum === currentStep);
+        });
 
-  function updatePizzaVisualization() {
-    if (!selectedOptionsEl) return;
-    selectedOptionsEl.innerHTML = `
-      <div><strong>Base:</strong> ${pizzaConfig.base.name}</div>
-      <div><strong>Sauce:</strong> ${pizzaConfig.sauce.name}</div>
-      <div><strong>Cheese:</strong> ${pizzaConfig.cheese.name}</div>
-      <div><strong>Toppings:</strong> ${pizzaConfig.toppings.length ? pizzaConfig.toppings.map(t => t.name).join(", ") : "None"}</div>
-      <div><strong>Size:</strong> ${pizzaConfig.size.name}</div>
-    `;
-  }
+        // Update step content visibility
+        stepContents.forEach(content => {
+            const contentStep = content.id.replace("step", "");
+            content.style.display = (parseInt(contentStep) === currentStep) ? "block" : "none";
+        });
 
-  function updatePrice() {
-    if (!currentPriceEl) return;
-    let total = basePrice;
-    total += (pizzaConfig.base.price || 0);
-    total += (pizzaConfig.sauce.price || 0);
-    total += (pizzaConfig.cheese.price || 0);
-    total += (pizzaConfig.toppings || []).reduce((s, t) => s + (t.price || 0), 0);
-    total += (pizzaConfig.size.price || 0);
-    total *= pizzaConfig.size.multiplier || 1;
-    currentPriceEl.textContent = `€${total.toFixed(2)}`;
-  }
+        // Update button states
+        prevBtn.disabled = currentStep === 1;
 
-  function updateToppingsCounter() {
-    if (!toppingsCounterEl) return;
-    toppingsCounterEl.textContent = `${pizzaConfig.toppings.length}/3 toppings selected`;
-  }
-
-  // Safe auto-select first option for step when entering
-  function autoSelectFirstOptionForStep(step) {
-    const content = $(`#step${step}`);
-    if (!content) return;
-    const first = content.querySelector(".option-card");
-    if (!first) return;
-    const type = first.dataset.type;
-    const name = first.dataset.name;
-    const price = parseFloat(first.dataset.price) || 0;
-
-    // If nothing selected in this step, pick first
-    const anySelected = Array.from(content.querySelectorAll(".option-card")).some(c => c.classList.contains("selected"));
-    if (!anySelected) {
-      content.querySelectorAll(".option-card").forEach(c => c.classList.remove("selected"));
-      first.classList.add("selected");
-      if (type === "size") {
-        pizzaConfig.size = { name, price, multiplier: getSizeMultiplier(first.dataset.size) };
-      } else if (type === "topping") {
-        if (!pizzaConfig.toppings.find(t => t.name === name)) pizzaConfig.toppings.push({ name, price });
-      } else {
-        pizzaConfig[type] = { name, price };
-      }
-    }
-  }
-
-  // Option card clicks
-  optionCards.forEach((card) => {
-    card.addEventListener("click", function () {
-      const type = this.dataset.type;
-      const name = this.dataset.name;
-      const price = parseFloat(this.dataset.price) || 0;
-
-      if (type === "topping") {
-        const idx = pizzaConfig.toppings.findIndex(t => t.name === name);
-        if (idx >= 0) {
-          pizzaConfig.toppings.splice(idx, 1);
-          this.classList.remove("selected");
-        } else if (pizzaConfig.toppings.length < 3) {
-          pizzaConfig.toppings.push({ name, price });
-          this.classList.add("selected");
+        const stepTitles = ["", "Base", "Sauce", "Cheese", "Toppings"];
+        if (currentStep === 4) {
+            nextBtn.textContent = "Complete Your Slice";
         } else {
-          // optional: feedback that max toppings reached
-          // flash the card or show small message
+            nextBtn.textContent = `Next: Choose ${stepTitles[currentStep + 1]}`;
         }
+
+        updatePizzaVisualization();
+        updatePrice();
+    }
+
+    // Option selection
+    optionCards.forEach(card => {
+        card.addEventListener("click", function() {
+            const type = this.dataset.type;
+            const name = this.dataset.name;
+            const price = parseFloat(this.dataset.price);
+
+            if (type === "topping") {
+                // Multiple toppings allowed, max 3
+                const index = pizzaConfig.toppings.findIndex(t => t.name === name);
+                if (index > -1) {
+                    pizzaConfig.toppings.splice(index, 1);
+                    this.classList.remove("selected");
+                } else if (pizzaConfig.toppings.length < 3) {
+                    pizzaConfig.toppings.push({ name, price });
+                    this.classList.add("selected");
+                }
+                updateToppingsCounter();
+            } else {
+                // Single choice options
+                const parent = this.closest(".options-grid");
+                parent.querySelectorAll(".option-card").forEach(c => c.classList.remove("selected"));
+                this.classList.add("selected");
+
+                pizzaConfig[type] = { name, price };
+            }
+
+            updatePizzaVisualization();
+            updatePrice();
+        });
+    });
+
+    // Navigation buttons
+    nextBtn.addEventListener("click", function() {
+        if (currentStep < 4) {
+            currentStep++;
+            updateStepNavigation();
+        } else {
+            completePizza();
+        }
+    });
+
+    prevBtn.addEventListener("click", function() {
+        if (currentStep > 1) {
+            currentStep--;
+            updateStepNavigation();
+        }
+    });
+
+    // Update toppings counter
+    function updateToppingsCounter() {
+        toppingsCounter.textContent = `${pizzaConfig.toppings.length}/3 toppings selected`;
+    }
+
+    // Update pizza visualization
+    function updatePizzaVisualization() {
+        selectedOptions.innerHTML = `
+            <div><strong>Base:</strong> ${pizzaConfig.base.name}</div>
+            <div><strong>Sauce:</strong> ${pizzaConfig.sauce.name}</div>
+            <div><strong>Cheese:</strong> ${pizzaConfig.cheese.name}</div>
+            <div><strong>Toppings:</strong> ${pizzaConfig.toppings.length > 0 ? pizzaConfig.toppings.map(t => t.name).join(", ") : "None"}</div>
+        `;
+    }
+
+    // Update price
+    function updatePrice() {
+        let total = basePrice;
+        total += pizzaConfig.base.price;
+        total += pizzaConfig.sauce.price;
+        total += pizzaConfig.cheese.price;
+        total += pizzaConfig.toppings.reduce((sum, t) => sum + t.price, 0);
+        currentPrice.textContent = `€${total.toFixed(2)}`;
+    }
+
+    // Complete pizza
+    function completePizza() {
+        const totalPrice = parseFloat(currentPrice.textContent.replace("€", ""));
+        const customizations = [
+            pizzaConfig.base.name,
+            pizzaConfig.sauce.name,
+            pizzaConfig.cheese.name,
+            ...pizzaConfig.toppings.map(t => t.name)
+        ];
+
+        addToCart(
+            "Custom Pizza Slice",
+            totalPrice,
+            "https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+            customizations
+        );
+
+        alert("Your custom slice has been added to the cart!");
+        resetBuilder();
+    }
+
+    // Reset builder
+    function resetBuilder() {
+        currentStep = 1;
+        pizzaConfig.base = { name: "Original", price: 0 };
+        pizzaConfig.sauce = { name: "Tomato Sauce", price: 0 };
+        pizzaConfig.cheese = { name: "Mozzarella", price: 0 };
+        pizzaConfig.toppings = [];
+
+        optionCards.forEach(card => card.classList.remove("selected"));
+        document.querySelector("#step1 .option-card").classList.add("selected");
+
+        updateStepNavigation();
         updateToppingsCounter();
-      } else {
-        // single-select
-        const parent = this.closest(".options-grid");
-        if (parent) parent.querySelectorAll(".option-card").forEach(c => c.classList.remove("selected"));
-        this.classList.add("selected");
-
-        if (type === "size") {
-          pizzaConfig.size = { name, price, multiplier: getSizeMultiplier(this.dataset.size) };
-        } else {
-          pizzaConfig[type] = { name, price };
-        }
-      }
-      updatePizzaVisualization();
-      updatePrice();
-    });
-  });
-
-  // Step navigation buttons
-  safeAddListener(nextButton, "click", () => {
-    if (currentStep < 5) {
-      currentStep++;
-      // auto-select first option for that step
-      autoSelectFirstOptionForStep(currentStep);
-      renderStepUI();
-    } else {
-      // Complete pizza: compute price from currentPriceEl and add to cart
-      const totalPrice = currentPriceEl ? parseFloat(currentPriceEl.textContent.replace("€", "")) || basePrice : basePrice;
-      const customizations = [
-        pizzaConfig.base.name,
-        pizzaConfig.sauce.name,
-        pizzaConfig.cheese.name,
-        ...pizzaConfig.toppings.map(t => t.name),
-        pizzaConfig.size.name
-      ];
-      addToCart("Custom Pizza Slice", totalPrice, "https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80", customizations);
-      alert("Your custom pizza has been added to the cart!");
-      // reset builder selections
-      resetBuilderState();
     }
-  });
 
-  safeAddListener(prevButton, "click", () => {
-    if (currentStep > 1) {
-      currentStep--;
-      renderStepUI();
-    }
-  });
-
-  // Reset builder state
-  function resetBuilderState() {
-    currentStep = 1;
-    pizzaConfig.base = { name: "Original", price: 0 };
-    pizzaConfig.sauce = { name: "Tomato Sauce", price: 0 };
-    pizzaConfig.cheese = { name: "Mozzarella", price: 0 };
-    pizzaConfig.toppings = [];
-    pizzaConfig.size = { name: "Regular", price: 0, multiplier: 1 };
-    optionCards.forEach(c => c.classList.remove("selected"));
-    // Select first base option if exists
-    const firstBase = $("#step1 .option-card");
-    if (firstBase) firstBase.classList.add("selected");
-    renderStepUI();
+    // Init
+    updateStepNavigation();
     updateToppingsCounter();
-  }
 
-  // Make builder accessible via second build button if present
-  if (buildNowBtn2 && builderSection) {
-    buildNowBtn2.addEventListener("click", () =>
-      builderSection.scrollIntoView({ behavior: "smooth", block: "start" })
-    );
-  }
-
-  // Init builder default
-  // auto-select first option of step 1 if present
-  const firstBaseOption = $("#step1 .option-card");
-  if (firstBaseOption) firstBaseOption.classList.add("selected");
-  renderStepUI();
-  updateToppingsCounter();
 
   // ---------- LOGIN & SIGNUP DIALOGS ----------
   const loginDialog = $("#loginDialog");
