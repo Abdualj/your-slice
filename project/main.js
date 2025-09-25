@@ -1,499 +1,472 @@
-// main.js
+// main.js - Unified, fixed version
 document.addEventListener("DOMContentLoaded", function () {
-  // Scroll to builder section when "Build Your Slice Now" button is clicked
-  const buildButton = document.querySelector(".hero .btn-primary");
-  const builderSection = document.querySelector(".builder-section");
+  // ---------- Helpers ----------
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+  const safeAddListener = (el, ev, fn) => { if (el) el.addEventListener(ev, fn); };
 
-  buildButton.addEventListener("click", function () {
-    builderSection.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-  });
-
-  // Step navigation functionality
-  const steps = document.querySelectorAll(".step");
-  const prevButton = document.querySelector(
-    ".navigation-buttons .btn:first-child"
-  );
-  const nextButton = document.querySelector(
-    ".navigation-buttons .btn:last-child"
-  );
-  const stepTitles = ["Base", "Sauce", "Cheese", "Toppings", "Size"];
-  let currentStep = 1;
-
-  // Option selection
-  const optionCards = document.querySelectorAll(".option-card");
-  optionCards.forEach((card) => {
-    card.addEventListener("click", function () {
-      // Remove selected class from all cards in the same container
-      const parent = this.closest(".options-grid");
-      parent.querySelectorAll(".option-card").forEach((c) => {
-        c.classList.remove("selected");
-      });
-
-      // Add selected class to clicked card
-      this.classList.add("selected");
-    });
-  });
-
-  // Next button functionality
-  nextButton.addEventListener("click", function () {
-    if (currentStep < 5) {
-      // Move to next step
-      steps[currentStep - 1].classList.remove("active");
-      currentStep++;
-      steps[currentStep - 1].classList.add("active");
-
-      // Update button text
-      if (currentStep === 5) {
-        this.textContent = "Complete Your Slice";
-      } else {
-        this.textContent = `Next: Choose ${stepTitles[currentStep]}`;
-      }
-
-      // Enable previous button after first step
-      if (currentStep > 1) {
-        prevButton.disabled = false;
-      }
-    } else {
-      // Completion action - add custom pizza to cart
-      const selectedBase = document.querySelector(
-        ".options-grid .option-card.selected h3"
-      ).textContent;
-
-      // Add to cart
-      addToCart(
-        "Custom Pizza Slice",
-        6.5,
-        "https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
-        [selectedBase]
-      );
-
-      // Reset builder
-      resetBuilder();
-    }
-  });
-
-  // Previous button functionality
-  prevButton.addEventListener("click", function () {
-    if (currentStep > 1) {
-      steps[currentStep - 1].classList.remove("active");
-      currentStep--;
-      steps[currentStep - 1].classList.add("active");
-
-      // Update button text
-      nextButton.textContent = `Next: Choose ${stepTitles[currentStep]}`;
-
-      // Disable previous button on first step
-      if (currentStep === 1) {
-        this.disabled = true;
-      }
-
-      // If we're not on the last step, make sure Next button says "Next"
-      if (currentStep < 5) {
-        nextButton.textContent = `Next: Choose ${stepTitles[currentStep]}`;
-      }
-    }
-  });
-
-  // Add to cart buttons for menu items
-  const addToCartButtons = document.querySelectorAll(".add-to-cart-btn");
-  addToCartButtons.forEach((button) => {
-    button.addEventListener("click", function () {
-      const menuItem = this.closest(".menu-item");
-      const name = menuItem.querySelector("h3").textContent;
-      const price = parseFloat(
-        menuItem.querySelector(".price").textContent.replace("€", "")
-      );
-      const image = menuItem.querySelector("img").src;
-
-      addToCart(name, price, image);
-
-      // Animation feedback
-      this.textContent = "Added!";
-      setTimeout(() => {
-        this.textContent = "Add to Cart";
-      }, 1500);
-    });
-  });
-
-  // Reset builder function
-  function resetBuilder() {
-    currentStep = 1;
-    steps.forEach((step, index) => {
-      if (index === 0) {
-        step.classList.add("active");
-      } else {
-        step.classList.remove("active");
-      }
-    });
-    nextButton.textContent = "Next: Choose Sauce";
-    prevButton.disabled = true;
-
-    // Reset selection to first option in each step
-    const firstOption = document.querySelector(
-      ".options-grid .option-card:first-child"
+  // ---------- Scroll to builder ----------
+  const buildButton = $(".hero .btn-primary") || $("#buildNowBtn");
+  const builderSection = $(".builder-section");
+  if (buildButton && builderSection) {
+    buildButton.addEventListener("click", () =>
+      builderSection.scrollIntoView({ behavior: "smooth", block: "start" })
     );
-    document.querySelectorAll(".option-card").forEach((card) => {
-      card.classList.remove("selected");
-    });
-    if (firstOption) firstOption.classList.add("selected");
   }
 
-  // Cart functionality
-  const cartPanel = document.querySelector(".cart-panel");
-  const cartIcon = document.querySelector(".cart-icon");
-  const closeCart = document.querySelector(".close-cart");
-  const cartItems = document.querySelector(".cart-items");
-  const cartCount = document.querySelector(".cart-count");
-  const cartSubtotal = document.querySelector(".cart-subtotal");
-  const cartTotal = document.querySelector(".cart-total");
-  const emptyCart = document.querySelector(".empty-cart");
+  // ---------- GLOBAL CART SYSTEM ----------
+  const cartPanel = $(".cart-panel");
+  const cartIcon = $(".cart-icon");
+  const closeCart = $(".close-cart");
+  const cartItemsEl = $(".cart-items");
+  const cartCountEl = $(".cart-count");
+  const cartSubtotalEl = $(".cart-subtotal");
+  const cartTotalEl = $(".cart-total");
+  const emptyCartTemplate = $(".empty-cart");
+  const deliveryFeeValue = 2.5;
 
   let cart = [];
 
-  // Toggle cart panel
-  cartIcon.addEventListener("click", function () {
-    cartPanel.classList.add("open");
-    document.body.classList.add("cart-open");
-  });
-
-  closeCart.addEventListener("click", function () {
-    cartPanel.classList.remove("open");
-    document.body.classList.remove("cart-open");
-  });
-
-  // Add to cart functionality
-  function addToCart(name, price, image, customizations = []) {
-    // Check if item already exists in cart
-    const existingItemIndex = cart.findIndex(
-      (item) =>
-        item.name === name &&
-        JSON.stringify(item.customizations) === JSON.stringify(customizations)
-    );
-
-    if (existingItemIndex >= 0) {
-      // Increase quantity if item exists
-      cart[existingItemIndex].quantity += 1;
-    } else {
-      // Add new item to cart
-      cart.push({
-        name,
-        price,
-        image,
-        customizations,
-        quantity: 1,
-      });
-    }
-
-    updateCart();
-
-    // Show cart panel when adding an item
-    cartPanel.classList.add("open");
-    document.body.classList.add("cart-open");
-  }
-
-  // Update cart display
   function updateCart() {
-    // Update cart count
-    const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
-    cartCount.textContent = totalItems;
+    if (!cartItemsEl) return;
+    const totalItems = cart.reduce((s, it) => s + it.quantity, 0);
+    if (cartCountEl) cartCountEl.textContent = totalItems;
 
-    // Clear cart items
-    cartItems.innerHTML = "";
+    cartItemsEl.innerHTML = "";
 
     if (cart.length === 0) {
-      // Show empty cart message
-      const emptyCartClone = emptyCart.cloneNode(true);
-      cartItems.appendChild(emptyCartClone);
+      if (emptyCartTemplate) cartItemsEl.appendChild(emptyCartTemplate.cloneNode(true));
+      if (cartSubtotalEl) cartSubtotalEl.textContent = "€0.00";
+      if (cartTotalEl) cartTotalEl.textContent = "€0.00";
       return;
     }
 
-    // Calculate totals
     let subtotal = 0;
-
-    // Add each item to cart
     cart.forEach((item, index) => {
       const itemTotal = item.price * item.quantity;
       subtotal += itemTotal;
 
-      const cartItem = document.createElement("div");
-      cartItem.className = "cart-item";
-      cartItem.innerHTML = `
-                <div class="cart-item-img">
-                    <img src="${item.image}" alt="${item.name}">
-                </div>
-                <div class="cart-item-details">
-                    <h3>${item.name}</h3>
-                    ${
-                      item.customizations.length > 0
-                        ? `<p>${item.customizations.join(", ")}</p>`
-                        : ""
-                    }
-                    <div class="cart-item-price">€${itemTotal.toFixed(2)}</div>
-                    <div class="cart-item-controls">
-                        <button class="quantity-btn minus" data-index="${index}">-</button>
-                        <span class="item-quantity">${item.quantity}</span>
-                        <button class="quantity-btn plus" data-index="${index}">+</button>
-                        <button class="remove-item" data-index="${index}">×</button>
-                    </div>
-                </div>
-            `;
-
-      cartItems.appendChild(cartItem);
+      const div = document.createElement("div");
+      div.className = "cart-item";
+      div.innerHTML = `
+        <div class="cart-item-img"><img src="${item.image}" alt="${item.name}"></div>
+        <div class="cart-item-details">
+          <h3>${item.name}</h3>
+          ${item.customizations && item.customizations.length ? `<p>${item.customizations.join(", ")}</p>` : ""}
+          <div class="cart-item-price">€${itemTotal.toFixed(2)}</div>
+          <div class="cart-item-controls">
+            <button class="quantity-btn minus" data-index="${index}">-</button>
+            <span class="item-quantity">${item.quantity}</span>
+            <button class="quantity-btn plus" data-index="${index}">+</button>
+            <button class="remove-item" data-index="${index}">×</button>
+          </div>
+        </div>
+      `;
+      cartItemsEl.appendChild(div);
     });
 
-    // Update totals
-    const deliveryFee = 2.5;
-    const total = subtotal + deliveryFee;
+    const total = subtotal + deliveryFeeValue;
+    if (cartSubtotalEl) cartSubtotalEl.textContent = `€${subtotal.toFixed(2)}`;
+    if (cartTotalEl) cartTotalEl.textContent = `€${total.toFixed(2)}`;
 
-    cartSubtotal.textContent = `€${subtotal.toFixed(2)}`;
-    cartTotal.textContent = `€${total.toFixed(2)}`;
-
-    // Add event listeners to quantity buttons
-    document.querySelectorAll(".quantity-btn.minus").forEach((btn) => {
-      btn.addEventListener("click", function () {
-        const index = parseInt(this.dataset.index);
-        if (cart[index].quantity > 1) {
-          cart[index].quantity -= 1;
-        } else {
-          cart.splice(index, 1);
-        }
+    // Attach listeners (re-query since DOM refreshed)
+    $$(".quantity-btn.minus", cartItemsEl).forEach((btn) =>
+      btn.addEventListener("click", () => {
+        const i = parseInt(btn.dataset.index, 10);
+        if (!Number.isFinite(i)) return;
+        if (cart[i].quantity > 1) cart[i].quantity -= 1;
+        else cart.splice(i, 1);
         updateCart();
-      });
-    });
-
-    document.querySelectorAll(".quantity-btn.plus").forEach((btn) => {
-      btn.addEventListener("click", function () {
-        const index = parseInt(this.dataset.index);
-        cart[index].quantity += 1;
+      })
+    );
+    $$(".quantity-btn.plus", cartItemsEl).forEach((btn) =>
+      btn.addEventListener("click", () => {
+        const i = parseInt(btn.dataset.index, 10);
+        if (!Number.isFinite(i)) return;
+        cart[i].quantity += 1;
         updateCart();
-      });
-    });
-
-    document.querySelectorAll(".remove-item").forEach((btn) => {
-      btn.addEventListener("click", function () {
-        const index = parseInt(this.dataset.index);
-        cart.splice(index, 1); // Poista tuote korista
-
-        if (cart.length === 0) {
-          // Jos kori on tyhjä, näytä tyhjä viesti ja nollaa summat
-          cartItems.innerHTML = "";
-          cartCount.textContent = "0";
-          cartSubtotal.textContent = "€0.00";
-          cartTotal.textContent = "€0.00"; // Ei toimitusmaksua
-          document.querySelector(".delivery-fee").textContent = "€0.00"; // Nollaa toimitusmaksu
-          cartItems.appendChild(emptyCart.cloneNode(true));
-        } else {
-          updateCart(); // Päivitä kori ja summat
-        }
-      });
-    });
+      })
+    );
+    $$(".remove-item", cartItemsEl).forEach((btn) =>
+      btn.addEventListener("click", () => {
+        const i = parseInt(btn.dataset.index, 10);
+        if (!Number.isFinite(i)) return;
+        cart.splice(i, 1);
+        updateCart();
+      })
+    );
   }
 
-  // Checkout button
-  document
-    .querySelector(".checkout-btn")
-    .addEventListener("click", function () {
-      if (cart.length > 0) {
-        alert(
-          "Proceeding to checkout! This would open a checkout form in a real application."
-        );
-        // In a real app, you would redirect to a checkout page or show a form
-      } else {
-        alert("Your cart is empty. Add some items first!");
-      }
-    });
-
-  // Menu scroll functionality
-  const scrollContainer = document.querySelector(".menu-scroll-container");
-  const menuItems = document.querySelectorAll(".menu-item");
-  const leftArrow = document.querySelector(".left-arrow");
-  const rightArrow = document.querySelector(".right-arrow");
-  const dots = document.querySelectorAll(".dot");
-
-  // Set up arrow functionality
-  leftArrow.addEventListener("click", () => {
-    scrollContainer.scrollBy({ left: -300, behavior: "smooth" });
-  });
-
-  rightArrow.addEventListener("click", () => {
-    scrollContainer.scrollBy({ left: 300, behavior: "smooth" });
-  });
-
-  // Set up dot indicators
-  dots.forEach((dot, index) => {
-    dot.addEventListener("click", () => {
-      const scrollPosition = index * (menuItems[0].offsetWidth + 20);
-      scrollContainer.scrollTo({ left: scrollPosition, behavior: "smooth" });
-    });
-  });
-
-  // Update dot indicators on scroll
-  scrollContainer.addEventListener("scroll", () => {
-    const scrollPos = scrollContainer.scrollLeft;
-    const itemWidth = menuItems[0].offsetWidth + 20;
-    const activeIndex = Math.round(scrollPos / itemWidth);
-
-    dots.forEach((dot, index) => {
-      dot.classList.toggle("active", index === activeIndex);
-    });
-  });
-
-  // Initialize cart
-  updateCart();
-});
-
-// Login dialog functionality
-const loginDialog = document.getElementById("loginDialog");
-document.getElementById("openLoginDialog").addEventListener("click", (e) => {
-  e.preventDefault();
-  loginDialog.showModal();
-});
-
-// Sign up dialog functionality
-const signupDialog = document.getElementById("signupDialog");
-document.getElementById("openSignupDialog").addEventListener("click", (e) => {
-  e.preventDefault();
-  signupDialog.showModal();
-});
-
-// Add close button functionality
-const closeBtns = document.querySelectorAll(".close-btn");
-closeBtns.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    loginDialog.close();
-    signupDialog.close();
-  });
-});
-
-// Close dialog when clicking outside
-loginDialog.addEventListener("click", (e) => {
-  if (e.target === loginDialog) {
-    loginDialog.close();
+  function addToCart(name, price, image, customizations = []) {
+    // normalize customizations array
+    const cust = Array.isArray(customizations) ? customizations : [];
+    const existingIdx = cart.findIndex(
+      (it) => it.name === name && JSON.stringify(it.customizations) === JSON.stringify(cust)
+    );
+    if (existingIdx >= 0) {
+      cart[existingIdx].quantity += 1;
+    } else {
+      cart.push({ name, price: Number(price) || 0, image: image || "", customizations: cust, quantity: 1 });
+    }
+    updateCart();
+    if (cartPanel) cartPanel.classList.add("open");
+    document.body.classList.add("cart-open");
   }
-});
 
-signupDialog.addEventListener("click", (e) => {
-  if (e.target === signupDialog) {
-    signupDialog.close();
-  }
-});
+  // Expose the function globally so other modules/scripts can call it
+  window.addToCart = addToCart;
 
-// Form submission handling
-const loginForm = document.querySelector(".login-form");
-loginForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  alert("Login successful! Welcome back.");
-  loginDialog.close();
-});
-
-const signupForm = document.querySelector(".signup-form");
-signupForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  alert("Account created successfully! Welcome to Your Slice.");
-  signupDialog.close();
-});
-
-// Burger menu functionality
-const burgerMenu = document.getElementById("burgerMenu");
-const navMobile = document.getElementById("navMobile");
-
-if (burgerMenu && navMobile) {
-  burgerMenu.addEventListener("click", () => {
-    navMobile.classList.toggle("active");
+  // Cart panel toggles
+  safeAddListener(cartIcon, "click", () => {
+    if (cartPanel) cartPanel.classList.add("open");
+    document.body.classList.add("cart-open");
+  });
+  safeAddListener(closeCart, "click", () => {
+    if (cartPanel) cartPanel.classList.remove("open");
+    document.body.classList.remove("cart-open");
   });
 
-  // Close mobile menu when clicking outside
-  document.addEventListener("click", (e) => {
-    if (
-      !burgerMenu.contains(e.target) &&
-      !navMobile.contains(e.target) &&
-      navMobile.classList.contains("active")
-    ) {
-      navMobile.classList.remove("active");
+  // Checkout
+  const checkoutBtn = $(".checkout-btn");
+  safeAddListener(checkoutBtn, "click", () => {
+    if (cart.length > 0) {
+      alert("Proceeding to checkout! This would open a checkout form in a real application.");
+    } else {
+      alert("Your cart is empty. Add some items first!");
     }
   });
-}
 
-document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("addReviewForm");
-  const list = document.getElementById("reviewsList");
-  const STORAGE_KEY = "reviews";
+  // ---------- MENU: Add to cart buttons ----------
+  $$(".add-to-cart-btn").forEach((btn) => {
+    btn.addEventListener("click", function () {
+      const menuItem = this.closest(".menu-item");
+      if (!menuItem) return;
+      const nameEl = menuItem.querySelector("h3");
+      const priceEl = menuItem.querySelector(".price");
+      const imgEl = menuItem.querySelector("img");
+      const name = nameEl ? nameEl.textContent.trim() : "Menu Item";
+      const price = priceEl ? parseFloat(priceEl.textContent.replace("€", "").trim()) || 0 : 0;
+      const image = imgEl ? imgEl.src : "";
+      addToCart(name, price, image);
+      const originalText = this.textContent;
+      this.textContent = "Added!";
+      setTimeout(() => (this.textContent = originalText), 1500);
+    });
+  });
 
-  // Ladataan olemassa olevat arvostelut
-  let reviews = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  // ---------- MENU SCROLL (arrows + dots) ----------
+  const scrollContainer = $(".menu-scroll-container");
+  const menuItems = $$(".menu-item");
+  const leftArrow = $(".left-arrow");
+  const rightArrow = $(".right-arrow");
+  const dots = $$(".dot");
 
-  function saveReviews() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(reviews));
-  }
+  if (scrollContainer && menuItems.length) {
+    safeAddListener(leftArrow, "click", () => scrollContainer.scrollBy({ left: -300, behavior: "smooth" }));
+    safeAddListener(rightArrow, "click", () => scrollContainer.scrollBy({ left: 300, behavior: "smooth" }));
 
-  // Estetään mahdollinen HTML-injektio (yksinkertainen)
-  function escapeHtml(str) {
-    return String(str).replace(/[&<>"']/g, (s) => {
-      return {
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;",
-      }[s];
+    dots.forEach((dot, i) =>
+      dot.addEventListener("click", () => {
+        const itemWidth = menuItems[0].offsetWidth + 20; // matches CSS gap
+        scrollContainer.scrollTo({ left: i * itemWidth, behavior: "smooth" });
+      })
+    );
+
+    scrollContainer.addEventListener("scroll", () => {
+      const scrollPos = scrollContainer.scrollLeft;
+      const itemWidth = menuItems[0].offsetWidth + 20;
+      const activeIndex = Math.round(scrollPos / itemWidth);
+      dots.forEach((dot, i) => dot.classList.toggle("active", i === activeIndex));
     });
   }
 
-  function addReviewToDOM(review) {
-    const { name, rating, text } = review;
-    const li = document.createElement("li");
-    li.className = "review-item";
+  // ---------- PIZZA BUILDER ----------
+  // Config and DOM references (defensive)
+  const pizzaConfig = {
+    base: { name: "Original", price: 0 },
+    sauce: { name: "Tomato Sauce", price: 0 },
+    cheese: { name: "Mozzarella", price: 0 },
+    toppings: [],
+    size: { name: "Regular", price: 0, multiplier: 1 },
+  };
+  const basePrice = 6.5;
 
-    // sisältö (escape)
-    li.innerHTML = `<div class="review-content"><strong>${escapeHtml(
-      name
-    )}</strong> (${escapeHtml(rating)}★)<p>${escapeHtml(text)}</p></div>`;
+  const stepEls = $$(".step");
+  const stepContents = $$(".step-content");
+  const prevButton = $("#prevBtn");
+  const nextButton = $("#nextBtn");
+  const optionCards = $$(".option-card");
+  const selectedOptionsEl = $("#selectedOptions");
+  const currentPriceEl = $("#currentPrice");
+  const toppingsCounterEl = $("#selectedToppingsCount");
+  const buildNowBtn2 = $("#buildNowBtn"); // optional duplicate
 
-    // poistonappi
-    const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "Poista";
-    deleteBtn.className = "delete-btn";
+  let currentStep = 1;
 
-    deleteBtn.addEventListener("click", () => {
-      if (confirm("Haluatko varmasti poistaa tämän arvostelun?")) {
-        // Poistetaan DOMista
-        li.remove();
+  function getSizeMultiplier(size) {
+    switch (size) {
+      case "large":
+        return 1.5;
+      case "xl":
+        return 2;
+      default:
+        return 1;
+    }
+  }
 
-        // Poistetaan myös reviews-taulukosta (löydetään indeksi)
-        const index = reviews.findIndex(
-          (r) => r.name === name && r.rating === rating && r.text === text
-        );
-        if (index > -1) {
-          reviews.splice(index, 1);
-          saveReviews();
+  function renderStepUI() {
+    stepEls.forEach((s) => {
+      const n = parseInt(s.dataset.step, 10);
+      s.classList.toggle("active", n === currentStep);
+    });
+    stepContents.forEach((c) => {
+      const n = parseInt(c.id.replace("step", ""), 10);
+      c.style.display = n === currentStep ? "block" : "none";
+    });
+
+    if (prevButton) prevButton.disabled = currentStep === 1;
+    if (nextButton) {
+      if (currentStep === 5) nextButton.textContent = "Complete Your Slice";
+      else {
+        const titles = ["", "Base", "Sauce", "Cheese", "Toppings", "Size"];
+        nextButton.textContent = `Next: Choose ${titles[currentStep + 1] || ""}`;
+      }
+    }
+
+    updatePizzaVisualization();
+    updatePrice();
+  }
+
+  function updatePizzaVisualization() {
+    if (!selectedOptionsEl) return;
+    selectedOptionsEl.innerHTML = `
+      <div><strong>Base:</strong> ${pizzaConfig.base.name}</div>
+      <div><strong>Sauce:</strong> ${pizzaConfig.sauce.name}</div>
+      <div><strong>Cheese:</strong> ${pizzaConfig.cheese.name}</div>
+      <div><strong>Toppings:</strong> ${pizzaConfig.toppings.length ? pizzaConfig.toppings.map(t => t.name).join(", ") : "None"}</div>
+      <div><strong>Size:</strong> ${pizzaConfig.size.name}</div>
+    `;
+  }
+
+  function updatePrice() {
+    if (!currentPriceEl) return;
+    let total = basePrice;
+    total += (pizzaConfig.base.price || 0);
+    total += (pizzaConfig.sauce.price || 0);
+    total += (pizzaConfig.cheese.price || 0);
+    total += (pizzaConfig.toppings || []).reduce((s, t) => s + (t.price || 0), 0);
+    total += (pizzaConfig.size.price || 0);
+    total *= pizzaConfig.size.multiplier || 1;
+    currentPriceEl.textContent = `€${total.toFixed(2)}`;
+  }
+
+  function updateToppingsCounter() {
+    if (!toppingsCounterEl) return;
+    toppingsCounterEl.textContent = `${pizzaConfig.toppings.length}/3 toppings selected`;
+  }
+
+  // Safe auto-select first option for step when entering
+  function autoSelectFirstOptionForStep(step) {
+    const content = $(`#step${step}`);
+    if (!content) return;
+    const first = content.querySelector(".option-card");
+    if (!first) return;
+    const type = first.dataset.type;
+    const name = first.dataset.name;
+    const price = parseFloat(first.dataset.price) || 0;
+
+    // If nothing selected in this step, pick first
+    const anySelected = Array.from(content.querySelectorAll(".option-card")).some(c => c.classList.contains("selected"));
+    if (!anySelected) {
+      content.querySelectorAll(".option-card").forEach(c => c.classList.remove("selected"));
+      first.classList.add("selected");
+      if (type === "size") {
+        pizzaConfig.size = { name, price, multiplier: getSizeMultiplier(first.dataset.size) };
+      } else if (type === "topping") {
+        if (!pizzaConfig.toppings.find(t => t.name === name)) pizzaConfig.toppings.push({ name, price });
+      } else {
+        pizzaConfig[type] = { name, price };
+      }
+    }
+  }
+
+  // Option card clicks
+  optionCards.forEach((card) => {
+    card.addEventListener("click", function () {
+      const type = this.dataset.type;
+      const name = this.dataset.name;
+      const price = parseFloat(this.dataset.price) || 0;
+
+      if (type === "topping") {
+        const idx = pizzaConfig.toppings.findIndex(t => t.name === name);
+        if (idx >= 0) {
+          pizzaConfig.toppings.splice(idx, 1);
+          this.classList.remove("selected");
+        } else if (pizzaConfig.toppings.length < 3) {
+          pizzaConfig.toppings.push({ name, price });
+          this.classList.add("selected");
+        } else {
+          // optional: feedback that max toppings reached
+          // flash the card or show small message
+        }
+        updateToppingsCounter();
+      } else {
+        // single-select
+        const parent = this.closest(".options-grid");
+        if (parent) parent.querySelectorAll(".option-card").forEach(c => c.classList.remove("selected"));
+        this.classList.add("selected");
+
+        if (type === "size") {
+          pizzaConfig.size = { name, price, multiplier: getSizeMultiplier(this.dataset.size) };
+        } else {
+          pizzaConfig[type] = { name, price };
         }
       }
+      updatePizzaVisualization();
+      updatePrice();
     });
+  });
 
-    li.appendChild(deleteBtn);
-    list.appendChild(li);
+  // Step navigation buttons
+  safeAddListener(nextButton, "click", () => {
+    if (currentStep < 5) {
+      currentStep++;
+      // auto-select first option for that step
+      autoSelectFirstOptionForStep(currentStep);
+      renderStepUI();
+    } else {
+      // Complete pizza: compute price from currentPriceEl and add to cart
+      const totalPrice = currentPriceEl ? parseFloat(currentPriceEl.textContent.replace("€", "")) || basePrice : basePrice;
+      const customizations = [
+        pizzaConfig.base.name,
+        pizzaConfig.sauce.name,
+        pizzaConfig.cheese.name,
+        ...pizzaConfig.toppings.map(t => t.name),
+        pizzaConfig.size.name
+      ];
+      addToCart("Custom Pizza Slice", totalPrice, "https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80", customizations);
+      alert("Your custom pizza has been added to the cart!");
+      // reset builder selections
+      resetBuilderState();
+    }
+  });
+
+  safeAddListener(prevButton, "click", () => {
+    if (currentStep > 1) {
+      currentStep--;
+      renderStepUI();
+    }
+  });
+
+  // Reset builder state
+  function resetBuilderState() {
+    currentStep = 1;
+    pizzaConfig.base = { name: "Original", price: 0 };
+    pizzaConfig.sauce = { name: "Tomato Sauce", price: 0 };
+    pizzaConfig.cheese = { name: "Mozzarella", price: 0 };
+    pizzaConfig.toppings = [];
+    pizzaConfig.size = { name: "Regular", price: 0, multiplier: 1 };
+    optionCards.forEach(c => c.classList.remove("selected"));
+    // Select first base option if exists
+    const firstBase = $("#step1 .option-card");
+    if (firstBase) firstBase.classList.add("selected");
+    renderStepUI();
+    updateToppingsCounter();
   }
 
-  // Renderöidään aiemmat arvostelut
-  reviews.forEach(addReviewToDOM);
+  // Make builder accessible via second build button if present
+  if (buildNowBtn2 && builderSection) {
+    buildNowBtn2.addEventListener("click", () =>
+      builderSection.scrollIntoView({ behavior: "smooth", block: "start" })
+    );
+  }
 
-  // Lomakkeen lähetys
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const name = document.getElementById("reviewerName").value.trim();
-    const rating = document.getElementById("reviewRating").value;
-    const text = document.getElementById("reviewText").value.trim();
+  // Init builder default
+  // auto-select first option of step 1 if present
+  const firstBaseOption = $("#step1 .option-card");
+  if (firstBaseOption) firstBaseOption.classList.add("selected");
+  renderStepUI();
+  updateToppingsCounter();
 
-    if (!name || !rating || !text) return; // yksinkertainen validointi
+  // ---------- LOGIN & SIGNUP DIALOGS ----------
+  const loginDialog = $("#loginDialog");
+  const signupDialog = $("#signupDialog");
+  safeAddListener($("#openLoginDialog"), "click", (e) => { e && e.preventDefault(); if (loginDialog) loginDialog.showModal(); });
+  safeAddListener($("#openSignupDialog"), "click", (e) => { e && e.preventDefault(); if (signupDialog) signupDialog.showModal(); });
 
-    const review = { name, rating, text };
-    reviews.push(review);
-    saveReviews();
+  // close buttons
+  $$(".close-btn").forEach(btn => btn.addEventListener("click", () => {
+    if (loginDialog) loginDialog.close();
+    if (signupDialog) signupDialog.close();
+  }));
 
-    addReviewToDOM(review);
-    form.reset();
-  });
+  // close on backdrop click
+  if (loginDialog) loginDialog.addEventListener("click", (e) => { if (e.target === loginDialog) loginDialog.close(); });
+  if (signupDialog) signupDialog.addEventListener("click", (e) => { if (e.target === signupDialog) signupDialog.close(); });
+
+  // form submissions (simple demo)
+  const loginForm = $(".login-form");
+  const signupForm = $(".signup-form");
+  if (loginForm) loginForm.addEventListener("submit", (e) => { e.preventDefault(); alert("Login successful! Welcome back."); if (loginDialog) loginDialog.close(); });
+  if (signupForm) signupForm.addEventListener("submit", (e) => { e.preventDefault(); alert("Account created successfully! Welcome to Your Slice."); if (signupDialog) signupDialog.close(); });
+
+  // ---------- BURGER MENU ----------
+  const burgerMenu = $("#burgerMenu");
+  const navMobile = $("#navMobile");
+  if (burgerMenu && navMobile) {
+    burgerMenu.addEventListener("click", (e) => { e.stopPropagation(); navMobile.classList.toggle("active"); });
+    document.addEventListener("click", (e) => {
+      if (!burgerMenu.contains(e.target) && !navMobile.contains(e.target) && navMobile.classList.contains("active")) {
+        navMobile.classList.remove("active");
+      }
+    });
+  }
+
+  // ---------- REVIEWS (localStorage) ----------
+  const reviewForm = $("#addReviewForm");
+  const reviewsList = $("#reviewsList");
+  const STORAGE_KEY = "reviews";
+  if (reviewForm && reviewsList) {
+    let reviews = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+
+    function saveReviews() { localStorage.setItem(STORAGE_KEY, JSON.stringify(reviews)); }
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, (s) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[s]));
+    }
+    function addReviewToDOM(review) {
+      const li = document.createElement("li");
+      li.className = "review-item";
+      li.innerHTML = `<div class="review-content"><strong>${escapeHtml(review.name)}</strong> (${escapeHtml(review.rating)}★)<p>${escapeHtml(review.text)}</p></div>`;
+      const deleteBtn = document.createElement("button");
+      deleteBtn.textContent = "Poista";
+      deleteBtn.className = "delete-btn";
+      deleteBtn.addEventListener("click", () => {
+        if (confirm("Haluatko varmasti poistaa tämän arvostelun?")) {
+          li.remove();
+          const idx = reviews.findIndex(r => r.name === review.name && r.rating === review.rating && r.text === review.text);
+          if (idx > -1) { reviews.splice(idx, 1); saveReviews(); }
+        }
+      });
+      li.appendChild(deleteBtn);
+      reviewsList.appendChild(li);
+    }
+    // render existing
+    reviews.forEach(addReviewToDOM);
+
+    reviewForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = $("#reviewerName") ? $("#reviewerName").value.trim() : "";
+      const rating = $("#reviewRating") ? $("#reviewRating").value : "";
+      const text = $("#reviewText") ? $("#reviewText").value.trim() : "";
+      if (!name || !rating || !text) return;
+      const review = { name, rating, text };
+      reviews.push(review);
+      saveReviews();
+      addReviewToDOM(review);
+      reviewForm.reset();
+    });
+  }
+
+  // ---------- Final init ----------
+  updateCart();
 });
