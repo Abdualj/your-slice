@@ -6,6 +6,10 @@
     <title>Your Slice</title>
     <link rel="stylesheet" href="styles.css">
     <script src="main.js" defer></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    
 <!-- Smooth Scroll -->
     <style>
         html {
@@ -369,12 +373,18 @@
         </div>
     </section>
 
-    <!-- Reviews Section -->
-    <section id="reviews" class="reviews-section container">
-        <div class="section-title">
-            <h2>Restaurant Reviews</h2>
-            <p>Read what customers say or add your own review</p>
-        </div>
+
+    <section id="map-section">
+        <h2>Our Location</h2>
+        <div id="map" style="height: 250px;"></div>
+    </section>
+
+    <!-- Reviews Section (lisää tämä ennen footeria) -->
+<section id="reviews" class="reviews-section container">
+  <div class="section-title">
+    <h2>Restaurant Reviews</h2>
+    <p>Read what customers say or add your own review</p>
+  </div>
 
         <form id="addReviewForm" class="add-review-form">
             <input type="text" id="reviewerName" placeholder="Your name" required>
@@ -514,7 +524,26 @@
             </menu>
         </form>
     </dialog>
-    </body>
+    
+    <script>
+
+    // Leaflet kartta init
+        const map = L.map('map').setView([60.1699, 24.9384], 13); // Helsingin koordinaatit
+
+        // Lisää taustakartta
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Lisää markkeri
+        L.marker([60.1699, 24.9384]).addTo(map)
+            .bindPopup('Our Pizza Shop<br>Helsinki')
+            .openPopup();
+    </script>
+</body>
+    
+
 </html>
 
    
