@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Your Slice</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
     </head>
 <body class="pre-login">
@@ -71,7 +69,7 @@
                 <li><a href="/admin page/menu page/menu.html"><i>🍕</i> <span>Menu Items</span></a></li>
                 <li><a href="/admin page/customer page/customer.html"><i>👥</i> <span>Customers</span></a></li>
                 <li><a href="#"><i>⚙️</i> <span>Settings</span></a></li>
-                <li><a href="/project/index.html"><i>↩️</i> <span>Back to Store</span></a></li>
+                <li><a href="/project/mainPage.html"><i>↩️</i> <span>Back to Store</span></a></li>
             </ul>
         </div>
 
@@ -225,13 +223,6 @@
 
         </div>
     </div>
-
-       
-    
-    <section id="map-section">
-        <h2>Our Location</h2>
-        <div id="map" style="height: 250px;"></div>
-    </section>
     
     <script>
         // Show login dialog on page load
@@ -544,20 +535,6 @@ addProductBtn.addEventListener('click', function() {
     productNameInput.value = '';
     productPriceInput.value = '';
 });
-
-    // Leaflet kartta init
-        const map = L.map('map').setView([60.1699, 24.9384], 13); // Helsingin koordinaatit
-
-        // Lisää taustakartta
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; OpenStreetMap contributors'
-        }).addTo(map);
-
-        // Lisää markkeri
-        L.marker([60.1699, 24.9384]).addTo(map)
-            .bindPopup('Our Pizza Shop<br>Helsinki')
-            .openPopup();
     </script>
 </body>
 </html>
