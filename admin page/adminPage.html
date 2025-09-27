@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Your Slice</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="admin.css">
+    <script src="admin.js" defer></script>
 
     </head>
 <body class="pre-login">
@@ -33,29 +34,7 @@
             </menu>
         </form>
     </dialog>
-
-    <!-- Scroll Action Selector -->
-    <div class="action-selector">
-        <button class="action-option" data-action="process">
-            <i>⏱</i> Process
-        </button>
-        <button class="action-option" data-action="complete">
-            <i>✅</i> Complete
-        </button>
-        <button class="action-option" data-action="cancel">
-            <i>❌</i> Cancel
-        </button>
-        <button class="action-option" data-action="view">
-            <i>👁</i> View
-        </button>
-        <button class="action-option" data-action="edit">
-            <i>✏️</i> Edit
-        </button>
-        <button class="action-option" data-action="delete">
-            <i>🗑</i> Delete
-        </button>
-    </div>
-
+    
     <!-- Admin Dashboard (hidden until login) -->
     <div class="admin-container">
         <!-- Sidebar -->
@@ -144,8 +123,16 @@
                             <td>2x Margherita, 1x Pepperoni</td>
                             <td>€14.50</td>
                             <td><span class="status status-new">New</span></td>
-                            <td class="action-cell">
-                                <span class="current-action">Click to select action</span>
+                            <td data-label="Actions" class="action-cell">
+                              <select class="action-select">
+                                <option value="">Click to select action</option>
+                                <option value="process">⏱ Process</option>
+                                <option value="complete">✅ Complete</option>
+                                <option value="cancel">❌ Cancel</option>
+                                <option value="view">👁 View</option>
+                                <option value="edit">✏️ Edit</option>
+                                <option value="delete">🗑 Delete</option>
+                              </select>
                             </td>
                         </tr>
                         <tr>
@@ -154,8 +141,16 @@
                             <td>1x Veggie Supreme</td>
                             <td>€9.00</td>
                             <td><span class="status status-processing">Processing</span></td>
-                            <td class="action-cell">
-                                <span class="current-action">Click to select action</span>
+                            <td data-label="Actions" class="action-cell">
+                              <select class="action-select">
+                                <option value="">Click to select action</option>
+                                <option value="process">⏱ Process</option>
+                                <option value="complete">✅ Complete</option>
+                                <option value="cancel">❌ Cancel</option>
+                                <option value="view">👁 View</option>
+                                <option value="edit">✏️ Edit</option>
+                                <option value="delete">🗑 Delete</option>
+                              </select>
                             </td>
                         </tr>
                         <tr>
@@ -164,8 +159,16 @@
                             <td>3x BBQ Chicken, 2x Soda</td>
                             <td>€28.50</td>
                             <td><span class="status status-completed">Completed</span></td>
-                            <td class="action-cell">
-                                <span class="current-action">Click to select action</span>
+                            <td data-label="Actions" class="action-cell">
+                              <select class="action-select">
+                                <option value="">Click to select action</option>
+                                <option value="process">⏱ Process</option>
+                                <option value="complete">✅ Complete</option>
+                                <option value="cancel">❌ Cancel</option>
+                                <option value="view">👁 View</option>
+                                <option value="edit">✏️ Edit</option>
+                                <option value="delete">🗑 Delete</option>
+                              </select>
                             </td>
                         </tr>
                         <tr>
@@ -174,8 +177,16 @@
                             <td>1x Gluten-Free Pizza</td>
                             <td>€12.00</td>
                             <td><span class="status status-new">New</span></td>
-                            <td class="action-cell">
-                                <span class="current-action">Click to select action</span>
+                            <td data-label="Actions" class="action-cell">
+                              <select class="action-select">
+                                <option value="">Click to select action</option>
+                                <option value="process">⏱ Process</option>
+                                <option value="complete">✅ Complete</option>
+                                <option value="cancel">❌ Cancel</option>
+                                <option value="view">👁 View</option>
+                                <option value="edit">✏️ Edit</option>
+                                <option value="delete">🗑 Delete</option>
+                              </select>
                             </td>
                         </tr>
                         <tr>
@@ -184,15 +195,21 @@
                             <td>1x Hawaiian, 1x Garlic Bread</td>
                             <td>€15.50</td>
                             <td><span class="status status-processing">Processing</span></td>
-                            <td class="action-cell">
-                                <span class="current-action">Click to select action</span>
+                            <td data-label="Actions" class="action-cell">
+                              <select class="action-select">
+                                <option value="">Click to select action</option>
+                                <option value="process">⏱ Process</option>
+                                <option value="complete">✅ Complete</option>
+                                <option value="cancel">❌ Cancel</option>
+                                <option value="view">👁 View</option>
+                                <option value="edit">✏️ Edit</option>
+                                <option value="delete">🗑 Delete</option>
+                              </select>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-
-
 
 <div class="products-table">
     <div class="products-header">
@@ -218,323 +235,9 @@
             <!-- Uudet tuotteet tulee tänne -->
         </tbody>
     </table>
+    </div>
+    </div>
 </div>
 
-
-        </div>
-    </div>
-    
-    <script>
-        // Show login dialog on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            const dialog = document.getElementById('loginDialog');
-            dialog.showModal();
-            
-            // Add close button functionality
-            const closeBtn = document.querySelector('.close-btn');
-            closeBtn.addEventListener('click', () => {
-                dialog.close();
-            });
-            
-            // Form validation
-            const loginForm = document.getElementById('loginForm');
-            const nameInput = document.getElementById('name');
-            const emailInput = document.getElementById('email');
-            const passwordInput = document.getElementById('password');
-            const nameError = document.getElementById('nameError');
-            const emailError = document.getElementById('emailError');
-            const passwordError = document.getElementById('passwordError');
-            
-            // Validate inputs on change
-            nameInput.addEventListener('input', function() {
-                if (nameInput.validity.valid) {
-                    nameError.style.display = 'none';
-                } else {
-                    nameError.style.display = 'block';
-                }
-            });
-            
-            emailInput.addEventListener('input', function() {
-                if (emailInput.validity.valid) {
-                    emailError.style.display = 'none';
-                } else {
-                    emailError.style.display = 'block';
-                }
-            });
-            
-            passwordInput.addEventListener('input', function() {
-                if (passwordInput.validity.valid) {
-                    passwordError.style.display = 'none';
-                } else {
-                    passwordError.style.display = 'block';
-                }
-            });
-            
-            // Handle form submission
-            loginForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                let isValid = true;
-                
-                // Validate name
-                if (nameInput.value.length < 3) {
-                    nameError.style.display = 'block';
-                    isValid = false;
-                } else {
-                    nameError.style.display = 'none';
-                }
-                
-                // Validate email
-                if (!emailInput.value.endsWith('@metropolia.fi')) {
-                    emailError.style.display = 'block';
-                    isValid = false;
-                } else {
-                    emailError.style.display = 'none';
-                }
-                
-                // Validate password
-                const hasUpperCase = /[A-Z]/.test(passwordInput.value);
-                const hasNumber = /[0-9]/.test(passwordInput.value);
-                
-                if (passwordInput.value.length < 6 || !hasUpperCase || !hasNumber) {
-                    passwordError.style.display = 'block';
-                    isValid = false;
-                } else {
-                    passwordError.style.display = 'none';
-                }
-                
-                // If form is valid, close dialog and show admin dashboard
-                if (isValid) {
-                    dialog.close();
-                    document.querySelector('.admin-container').style.display = 'flex';
-                    document.body.classList.remove('pre-login');
-                    
-                    // Initialize scroll action selector
-                    initScrollActionSelector();
-                }
-            });
-            
-            // Cancel button functionality
-            const cancelBtn = document.querySelector('.cancel-btn');
-            cancelBtn.addEventListener('click', function() {
-                dialog.close();
-            });
-            
-            // Filter buttons
-            const filterButtons = document.querySelectorAll('.filter-btn');
-            filterButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    filterButtons.forEach(btn => btn.classList.remove('active'));
-                    this.classList.add('active');
-                    // In a real app, this would filter the orders table
-                });
-            });
-        });
-        
-        // Scroll Action Selector Functionality
-        function initScrollActionSelector() {
-            const actionSelector = document.querySelector('.action-selector');
-            const actionOptions = document.querySelectorAll('.action-option');
-            const actionCells = document.querySelectorAll('.action-cell');
-            const tableRows = document.querySelectorAll('tbody tr');
-            let selectedAction = null;
-            let activeRow = null;
-            
-            // Add click event listeners to table rows
-            tableRows.forEach(row => {
-                row.addEventListener('click', function(e) {
-                    // Remove active class from all rows
-                    tableRows.forEach(r => r.classList.remove('active'));
-                    
-                    // Add active class to clicked row
-                    this.classList.add('active');
-                    
-                    // Set active row
-                    activeRow = this;
-                    
-                    // Position action selector near the active row
-                    positionActionSelector(this);
-                    
-                    // Show action selector
-                    actionSelector.style.display = 'flex';
-                });
-            });
-            
-            // Add click event listeners to action options
-            actionOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    // Remove active class from all options
-                    actionOptions.forEach(opt => opt.classList.remove('active'));
-                    
-                    // Add active class to clicked option
-                    this.classList.add('active');
-                    
-                    // Set selected action
-                    selectedAction = this.getAttribute('data-action');
-                    
-                    // Update active row if exists
-                    if (activeRow) {
-                        updateRowAction(activeRow, selectedAction);
-                        
-                        // Hide action selector after a delay
-                        setTimeout(() => {
-                            actionSelector.style.display = 'none';
-                            activeRow.classList.remove('active');
-                            activeRow = null;
-                        }, 1000);
-                    }
-                });
-            });
-            
-            // Position the action selector relative to the active row
-            function positionActionSelector(row) {
-                const rowRect = row.getBoundingClientRect();
-                const tableRect = document.querySelector('.orders-table').getBoundingClientRect();
-                
-                // Position vertically aligned with the row
-                const topPosition = Math.max(20, rowRect.top + window.scrollY - 100);
-                actionSelector.style.top = `${topPosition}px`;
-                
-                // Position to the right of the table on desktop
-                if (window.innerWidth > 768) {
-                    actionSelector.style.right = '20px';
-                    actionSelector.style.left = 'auto';
-                } else {
-                    // On mobile, center it horizontally
-                    actionSelector.style.left = '50%';
-                    actionSelector.style.right = 'auto';
-                    actionSelector.style.transform = 'translateX(-50%)';
-                }
-            }
-            
-            // Update the action for a specific row
-            function updateRowAction(row, action) {
-                const actionCell = row.querySelector('.action-cell');
-                const statusCell = row.querySelector('.status');
-                
-                let actionText = '';
-                let newStatus = '';
-                
-                switch(action) {
-                    case 'process':
-                        actionText = 'Processing order...';
-                        newStatus = 'Processing';
-                        break;
-                    case 'complete':
-                        actionText = 'Completing order...';
-                        newStatus = 'Completed';
-                        break;
-                    case 'cancel':
-                        actionText = 'Cancelling order...';
-                        newStatus = 'Cancelled';
-                        break;
-                    case 'view':
-                        actionText = 'Viewing order details...';
-                        break;
-                    case 'edit':
-                        actionText = 'Editing order...';
-                        break;
-                    case 'delete':
-                        actionText = 'Deleting order...';
-                        break;
-                }
-                
-                // Update action cell
-                actionCell.innerHTML = `<span class="action-applied">${actionText}</span>`;
-                
-                // Update status if applicable
-                if (newStatus) {
-                    statusCell.textContent = newStatus;
-                    statusCell.className = 'status';
-                    
-                    switch(newStatus) {
-                        case 'Processing':
-                            statusCell.classList.add('status-processing');
-                            break;
-                        case 'Completed':
-                            statusCell.classList.add('status-completed');
-                            break;
-                        case 'Cancelled':
-                            statusCell.classList.add('status-cancelled');
-                            break;
-                    }
-                }
-                
-                // Update stats (simulated)
-                updateStats();
-            }
-            
-            // Close action selector when clicking outside
-            document.addEventListener('click', function(e) {
-                if (!actionSelector.contains(e.target) && !e.target.closest('tbody tr')) {
-                    actionSelector.style.display = 'none';
-                    if (activeRow) {
-                        activeRow.classList.remove('active');
-                        activeRow = null;
-                    }
-                }
-            });
-            
-            // Simulate stats update
-            function updateStats() {
-                // In a real app, this would update the dashboard stats
-                console.log('Stats would update here based on the action performed');
-            }
-
-        };
-
-            
-                // === Product Management ===
-            const addProductBtn = document.getElementById('addProductBtn');
-            const productNameInput = document.getElementById('productName');
-            const productPriceInput = document.getElementById('productPrice');
-            const productsTableBody = document.querySelector('#productsTable tbody');
-
-        
-
-            // Poista tuote (delegointi)
-            productsTableBody.addEventListener('click', function(e) {
-            if (e.target.classList.contains('delete-btn')) {
-                if (confirm('Poistetaanko tuote?')) {
-                    e.target.closest('tr').remove();
-                }
-            }
-        });
-        ;
-        
-addProductBtn.addEventListener('click', function() {
-    const name = productNameInput.value.trim();
-    const price = parseFloat(productPriceInput.value);
-
-    if (!name || isNaN(price)) {
-        alert('Täytä tuotteen nimi ja hinta oikein.');
-        return;
-    }
-
-    // Luo uusi rivi
-    const tr = document.createElement('tr');
-
-    tr.innerHTML = `
-        <td>${name}</td>
-        <td>€${price.toFixed(2)}</td>
-        <td><button class="delete-btn">Delete</button></td>
-    `;
-
-    // Lisää rivi taulukkoon
-    productsTableBody.appendChild(tr);
-
-    // Poista nappi
-    const deleteBtn = tr.querySelector('.delete-btn');
-    deleteBtn.addEventListener('click', () => {
-        if (confirm('Haluatko varmasti poistaa tuotteen?')) {
-        tr.remove();
-        }
-    });
-
-    // Tyhjennä inputit
-    productNameInput.value = '';
-    productPriceInput.value = '';
-});
-    </script>
 </body>
 </html>
