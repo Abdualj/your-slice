@@ -409,7 +409,7 @@ tr.active::after {
     color: var(--danger);
 }
 
-/* Actions-select - mobiiliystävällinen */
+/* Actions-select */
 .action-select {
   width: 100%;
   padding: 10px 14px;
