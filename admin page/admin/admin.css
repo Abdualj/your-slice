@@ -231,10 +231,49 @@ body.pre-login::before {
 }
 
 .user-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--dark);
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.user-info span {
+  font-weight: 500;
+}
+
+
+.user-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  list-style: none;
+  margin: 8px 0 0 0;
+  padding: 8px 0;
+  min-width: 120px;
+  display: none;
+  z-index: 10;
+}
+
+.user-menu li {
+  padding: 8px 16px;
+}
+
+.user-menu li a {
+  color: #333;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.user-menu li:hover {
+  background-color: #f5f5f5;
 }
 
 .user-avatar {

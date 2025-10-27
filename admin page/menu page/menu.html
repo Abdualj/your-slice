@@ -12,21 +12,26 @@
             <div class="sidebar-header">
                 <h2>🍕 <span>Your Slice Admin</span></h2>
             </div>
-          <ul class="sidebar-menu">
-                <li><a href="#" class="active"><i>📊</i> <span>Dashboard</span></a></li>
+            <ul class="sidebar-menu">
+                <li><a href="/admin page/admin/adminPage.html" class="active"><i>📊</i> <span>Dashboard</span></a></li>
                 <li><a href="/admin page/orders page/orders.html"><i>📝</i> <span>Orders</span></a></li>
                 <li><a href="/admin page/menu page/menu.html"><i>🍕</i> <span>Menu Items</span></a></li>
                 <li><a href="/admin page/customer page/customer.html"><i>👥</i> <span>Customers</span></a></li>
                 <li><a href="#"><i>⚙️</i> <span>Settings</span></a></li>
-                <li><a href="/project/index.html"><i>↩️</i> <span>Back to Store</span></a></li>
+                <li><a href="/main page/mainPage.html"><i>↩️</i> <span>Back to Store</span></a></li>
             </ul>
         </div>
- <div class="main-content">
+        <!-- Main Content -->
+        <div class="main-content">
             <div class="admin-header">
-                <h1>Menu Items Management</h1>
-                <div class="user-info">
+                <h1>Admin Dashboard</h1>
+                <div class="user-info" id="userInfo">
                     <div class="user-avatar">A</div>
-                    <span>Admin User</span>
+                    <span>Admin User ▾</span>
+
+                    <ul class="user-menu" id="userMenu">
+                        <li><a href="#" id="logoutBtn"><i>🚪</i> <span>Logout</span></a></li>
+                    </ul>
                 </div>
             </div>
             
@@ -74,6 +79,10 @@
             </div>
         </div>
     </div>
+
+<script src="/admin page/loginJS/login.js" defer></script>
+<script src="/admin page/admin/admin.js" defer></script>
+
     <script>
         // Product Management Functionality
         const addProductBtn = document.getElementById('addProductBtn');
