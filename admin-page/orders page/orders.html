@@ -1,201 +1,237 @@
 <!DOCTYPE html>
 <html lang="fi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard - Your Slice</title>
-    <link rel="stylesheet" href="orders.css">
-    </head>
 
-    <body>
+    <link rel="stylesheet" href="orders.css" />
+  </head>
+
+  <body>
     <!-- Admin Dashboard -->
     <div class="admin-container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <h2>🍕 <span>Your Slice Admin</span></h2>
-            </div>
-            <ul class="sidebar-menu">
-                <li><a href="/admin-page/adminPage.html" class="active"><i>📊</i> <span>Dashboard</span></a></li>
-                <li><a href="/admin-page/orders page/orders.html"><i>📝</i> <span>Orders</span></a></li>
-                <li><a href="/admin-page/menu page/menu.html"><i>🍕</i> <span>Menu Items</span></a></li>
-                <li><a href="/admin-page/customer page/customer.html"><i>👥</i> <span>Customers</span></a></li>
-                <li><a href="#"><i>⚙️</i> <span>Settings</span></a></li>
-                <li><a href="/main-page/mainPage.html"><i>↩️</i> <span>Back to Store</span></a></li>
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <h2>🍕 <span>Your Slice Admin</span></h2>
+        </div>
+        <ul class="sidebar-menu">
+          <li>
+            <a href="/admin-page/admin/adminPage.html"
+              ><i>📊</i> <span>Dashboard</span></a
+            >
+          </li>
+          <li>
+            <a href="/admin-page/orders page/orders.html" class="active"
+              ><i>📝</i> <span>Orders</span></a
+            >
+          </li>
+          <li>
+            <a href="/admin-page/menu page/menu.html"
+              ><i>🍕</i> <span>Menu Items</span></a
+            >
+          </li>
+          <li>
+            <a href="/admin-page/customer page/customer.html"
+              ><i>👥</i> <span>Customers</span></a
+            >
+          </li>
+          <li>
+            <a href="#"><i>⚙️</i> <span>Settings</span></a>
+          </li>
+          <li>
+            <a href="/main-page/mainPage.html"
+              ><i>↩️</i> <span>Back to Store</span></a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <div class="admin-header">
+          <h1>Admin Dashboard</h1>
+          <div class="user-info" id="userInfo">
+            <div class="user-avatar">A</div>
+            <span>Admin User ▾</span>
+
+            <ul class="user-menu" id="userMenu">
+              <li>
+                <a href="#" id="logoutBtn"><i>🚪</i> <span>Logout</span></a>
+              </li>
             </ul>
+          </div>
         </div>
 
-        <!-- Main Content -->
-        <div class="main-content">
-            <div class="admin-header">
-                <h1>Order Management</h1>
-                <div class="user-info">
-                    <div class="user-avatar">A</div>
-                    <span>Admin User</span>
-                </div>
-            </div>
-
-            <!-- Search Bar -->
-            <div class="search-container">
-                <input type="text" id="searchOrder" placeholder="Search orders...">
-            </div>
-
-            <!-- Orders Table -->
-            <div class="orders-table">
-                <div class="table-header">
-                    <h2>Recent Orders</h2>
-                    <div class="filters">
-                        <button class="filter-btn active">All</button>
-                        <button class="filter-btn">New</button>
-                        <button class="filter-btn">Processing</button>
-                        <button class="filter-btn">Completed</button>
-                    </div>
-                </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Order ID</th>
-                            <th>Customer</th>
-                            <th>Items</th>
-                            <th>Total</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>#ORD-1025</td>
-                            <td>Matti Meikäläinen</td>
-                            <td>2x Margherita, 1x Pepperoni</td>
-                            <td>€14.50</td>
-                            <td><span class="status status-new">New</span></td>
-                            <td data-label="Actions" class="action-cell">
-                              <select class="action-select">
-                                <option value="">Click to select action</option>
-                                <option value="process">⏱ Process</option>
-                                <option value="complete">✅ Complete</option>
-                                <option value="cancel">❌ Cancel</option>
-                                <option value="view">👁 View</option>
-                                <option value="edit">✏️ Edit</option>
-                                <option value="delete">🗑 Delete</option>
-                              </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#ORD-1024</td>
-                            <td>Liisa Virtanen</td>
-                            <td>1x Veggie Supreme</td>
-                            <td>€9.00</td>
-                            <td><span class="status status-processing">Processing</span></td>
-                            <td data-label="Actions" class="action-cell">
-                              <select class="action-select">
-                                <option value="">Click to select action</option>
-                                <option value="process">⏱ Process</option>
-                                <option value="complete">✅ Complete</option>
-                                <option value="cancel">❌ Cancel</option>
-                                <option value="view">👁 View</option>
-                                <option value="edit">✏️ Edit</option>
-                                <option value="delete">🗑 Delete</option>
-                              </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#ORD-1023</td>
-                            <td>Antti Korhonen</td>
-                            <td>3x BBQ Chicken, 2x Soda</td>
-                            <td>€28.50</td>
-                            <td><span class="status status-completed">Completed</span></td>
-                            <td data-label="Actions" class="action-cell">
-                              <select class="action-select">
-                                <option value="">Click to select action</option>
-                                <option value="process">⏱ Process</option>
-                                <option value="complete">✅ Complete</option>
-                                <option value="cancel">❌ Cancel</option>
-                                <option value="view">👁 View</option>
-                                <option value="edit">✏️ Edit</option>
-                                <option value="delete">🗑 Delete</option>
-                              </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#ORD-1022</td>
-                            <td>Maria Järvinen</td>
-                            <td>1x Gluten-Free Pizza</td>
-                            <td>€12.00</td>
-                            <td><span class="status status-new">New</span></td>
-                            <td data-label="Actions" class="action-cell">
-                              <select class="action-select">
-                                <option value="">Click to select action</option>
-                                <option value="process">⏱ Process</option>
-                                <option value="complete">✅ Complete</option>
-                                <option value="cancel">❌ Cancel</option>
-                                <option value="view">👁 View</option>
-                                <option value="edit">✏️ Edit</option>
-                                <option value="delete">🗑 Delete</option>
-                              </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#ORD-1021</td>
-                            <td>Jussi Nieminen</td>
-                            <td>1x Hawaiian, 1x Garlic Bread</td>
-                            <td>€15.50</td>
-                            <td><span class="status status-processing">Processing</span></td>
-                            <td data-label="Actions" class="action-cell">
-                              <select class="action-select">
-                                <option value="">Click to select action</option>
-                                <option value="process">⏱ Process</option>
-                                <option value="complete">✅ Complete</option>
-                                <option value="cancel">❌ Cancel</option>
-                                <option value="view">👁 View</option>
-                                <option value="edit">✏️ Edit</option>
-                                <option value="delete">🗑 Delete</option>
-                              </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#ORD-1020</td>
-                            <td>Sanna Marin</td>
-                            <td>2x Quattro Stagioni, 1x Salad</td>
-                            <td>€22.00</td>
-                            <td><span class="status status-completed">Completed</span></td>
-                            <td data-label="Actions" class="action-cell">
-                              <select class="action-select">
-                                <option value="">Click to select action</option>
-                                <option value="process">⏱ Process</option>
-                                <option value="complete">✅ Complete</option>
-                                <option value="cancel">❌ Cancel</option>
-                                <option value="view">👁 View</option>
-                                <option value="edit">✏️ Edit</option>
-                                <option value="delete">🗑 Delete</option>
-                              </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#ORD-1021</td>
-                            <td>Jussi Nieminen</td>
-                            <td>1x Hawaiian, 1x Garlic Bread</td>
-                            <td>€15.50</td>
-                            <td><span class="status status-processing">Processing</span></td>
-                            <td data-label="Actions" class="action-cell">
-                              <select class="action-select">
-                                <option value="">Click to select action</option>
-                                <option value="process">⏱ Process</option>
-                                <option value="complete">✅ Complete</option>
-                                <option value="cancel">❌ Cancel</option>
-                                <option value="view">👁 View</option>
-                                <option value="edit">✏️ Edit</option>
-                                <option value="delete">🗑 Delete</option>
-                              </select>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <!-- Search Bar -->
+        <div class="search-container">
+          <input type="text" id="searchOrder" placeholder="Search orders..." />
         </div>
+
+        <!-- Orders Table -->
+        <div class="orders-table">
+          <div class="table-header">
+            <h2>Recent Orders</h2>
+            <div class="filters">
+              <button class="filter-btn active">All</button>
+              <button class="filter-btn">New</button>
+              <button class="filter-btn">Processing</button>
+              <button class="filter-btn">Completed</button>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Items</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>#ORD-1025</td>
+                <td>Matti Meikäläinen</td>
+                <td>2x Margherita, 1x Pepperoni</td>
+                <td>€14.50</td>
+                <td><span class="status status-new">New</span></td>
+                <td data-label="Actions" class="action-cell">
+                  <select class="action-select">
+                    <option value="">Click to select action</option>
+                    <option value="process">⏱ Process</option>
+                    <option value="complete">✅ Complete</option>
+                    <option value="cancel">❌ Cancel</option>
+                    <option value="view">👁 View</option>
+                    <option value="edit">✏️ Edit</option>
+                    <option value="delete">🗑 Delete</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td>#ORD-1024</td>
+                <td>Liisa Virtanen</td>
+                <td>1x Veggie Supreme</td>
+                <td>€9.00</td>
+                <td>
+                  <span class="status status-processing">Processing</span>
+                </td>
+                <td data-label="Actions" class="action-cell">
+                  <select class="action-select">
+                    <option value="">Click to select action</option>
+                    <option value="process">⏱ Process</option>
+                    <option value="complete">✅ Complete</option>
+                    <option value="cancel">❌ Cancel</option>
+                    <option value="view">👁 View</option>
+                    <option value="edit">✏️ Edit</option>
+                    <option value="delete">🗑 Delete</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td>#ORD-1023</td>
+                <td>Antti Korhonen</td>
+                <td>3x BBQ Chicken, 2x Soda</td>
+                <td>€28.50</td>
+                <td><span class="status status-completed">Completed</span></td>
+                <td data-label="Actions" class="action-cell">
+                  <select class="action-select">
+                    <option value="">Click to select action</option>
+                    <option value="process">⏱ Process</option>
+                    <option value="complete">✅ Complete</option>
+                    <option value="cancel">❌ Cancel</option>
+                    <option value="view">👁 View</option>
+                    <option value="edit">✏️ Edit</option>
+                    <option value="delete">🗑 Delete</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td>#ORD-1022</td>
+                <td>Maria Järvinen</td>
+                <td>1x Gluten-Free Pizza</td>
+                <td>€12.00</td>
+                <td><span class="status status-new">New</span></td>
+                <td data-label="Actions" class="action-cell">
+                  <select class="action-select">
+                    <option value="">Click to select action</option>
+                    <option value="process">⏱ Process</option>
+                    <option value="complete">✅ Complete</option>
+                    <option value="cancel">❌ Cancel</option>
+                    <option value="view">👁 View</option>
+                    <option value="edit">✏️ Edit</option>
+                    <option value="delete">🗑 Delete</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td>#ORD-1021</td>
+                <td>Jussi Nieminen</td>
+                <td>1x Hawaiian, 1x Garlic Bread</td>
+                <td>€15.50</td>
+                <td>
+                  <span class="status status-processing">Processing</span>
+                </td>
+                <td data-label="Actions" class="action-cell">
+                  <select class="action-select">
+                    <option value="">Click to select action</option>
+                    <option value="process">⏱ Process</option>
+                    <option value="complete">✅ Complete</option>
+                    <option value="cancel">❌ Cancel</option>
+                    <option value="view">👁 View</option>
+                    <option value="edit">✏️ Edit</option>
+                    <option value="delete">🗑 Delete</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td>#ORD-1020</td>
+                <td>Sanna Marin</td>
+                <td>2x Quattro Stagioni, 1x Salad</td>
+                <td>€22.00</td>
+                <td><span class="status status-completed">Completed</span></td>
+                <td data-label="Actions" class="action-cell">
+                  <select class="action-select">
+                    <option value="">Click to select action</option>
+                    <option value="process">⏱ Process</option>
+                    <option value="complete">✅ Complete</option>
+                    <option value="cancel">❌ Cancel</option>
+                    <option value="view">👁 View</option>
+                    <option value="edit">✏️ Edit</option>
+                    <option value="delete">🗑 Delete</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td>#ORD-1021</td>
+                <td>Jussi Nieminen</td>
+                <td>1x Hawaiian, 1x Garlic Bread</td>
+                <td>€15.50</td>
+                <td>
+                  <span class="status status-processing">Processing</span>
+                </td>
+                <td data-label="Actions" class="action-cell">
+                  <select class="action-select">
+                    <option value="">Click to select action</option>
+                    <option value="process">⏱ Process</option>
+                    <option value="complete">✅ Complete</option>
+                    <option value="cancel">❌ Cancel</option>
+                    <option value="view">👁 View</option>
+                    <option value="edit">✏️ Edit</option>
+                    <option value="delete">🗑 Delete</option>
+                  </select>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
-<script src="./orders.js" defer></script>
-<script src="../admin.js" defer></script>
-</body>
+    <script src="/admin-page/loginJS/login.js" defer></script>
+    <script src="/admin-page/admin/admin.js" defer></script>
+    <script src="./orders.js" defer></script>
+  </body>
 </html>
