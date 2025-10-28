@@ -156,180 +156,227 @@ $$(".add-to-cart-btn").forEach((btn) => {
     }
   });
 
-  // Pizza Builder Functionality
-    // Pizza configuration
-    const pizzaConfig = {
-        base: { name: "Original", price: 0 },
-        sauce: { name: "Tomato Sauce", price: 0 },
-        cheese: { name: "Mozzarella", price: 0 },
-        toppings: []
-    };
+// Pizza Builder Functionality
+const pizzaConfig = {
+    base: { name: "Original", price: 0 },
+    sauce: { name: "Tomato Sauce", price: 0 },
+    cheese: { name: "Mozzarella", price: 0 },
+    toppings: []
+};
 
-    const basePrice = 3.00; // A plain slice price
+const basePrice = 3.00; // A plain slice price
 
-    // DOM Elements
-    const steps = document.querySelectorAll(".step");
-    const stepContents = document.querySelectorAll(".step-content");
-    const prevBtn = document.getElementById("prevBtn");
-    const nextBtn = document.getElementById("nextBtn");
-    const optionCards = document.querySelectorAll(".option-card");
-    const selectedOptions = document.getElementById("selectedOptions");
-    const currentPrice = document.getElementById("currentPrice");
-    const toppingsCounter = document.getElementById("selectedToppingsCount");
-    const buildNowBtn = document.getElementById("buildNowBtn");
+// DOM Elements
+const steps = document.querySelectorAll(".step");
+const stepContents = document.querySelectorAll(".step-content");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const optionCards = document.querySelectorAll(".option-card");
+const selectedOptions = document.getElementById("selectedOptions");
+const currentPrice = document.getElementById("currentPrice");
+const toppingsCounter = document.getElementById("selectedToppingsCount");
+const buildNowBtn = document.getElementById("buildNowBtn");
+const pizzaCanvas = document.getElementById("pizzaCanvas");
+const pizzaBase = pizzaCanvas.querySelector(".pizza-base");
+const pizzaSauce = pizzaCanvas.querySelector(".pizza-sauce");
+const pizzaCheese = pizzaCanvas.querySelector(".pizza-cheese");
+const pizzaToppings = pizzaCanvas.querySelector(".pizza-toppings");
 
-    // Scroll to builder section
-    buildNowBtn.addEventListener("click", function () {
-        document.querySelector(".builder-section").scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-        });
+// Scroll to builder section
+buildNowBtn.addEventListener("click", function () {
+    document.querySelector(".builder-section").scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+    });
+});
+
+// Step navigation
+let currentStep = 1;
+
+function updateStepNavigation() {
+    // Update step indicators
+    steps.forEach(step => {
+        const stepNum = parseInt(step.dataset.step);
+        step.classList.toggle("active", stepNum === currentStep);
     });
 
-    // Step navigation
-    let currentStep = 1;
+    // Update step content visibility
+    stepContents.forEach(content => {
+        const contentStep = content.id.replace("step", "");
+        content.style.display = (parseInt(contentStep) === currentStep) ? "block" : "none";
+    });
 
-    function updateStepNavigation() {
-        // Update step indicators
-        steps.forEach(step => {
-            const stepNum = parseInt(step.dataset.step);
-            step.classList.toggle("active", stepNum === currentStep);
-        });
+    // Update button states
+    prevBtn.disabled = currentStep === 1;
 
-        // Update step content visibility
-        stepContents.forEach(content => {
-            const contentStep = content.id.replace("step", "");
-            content.style.display = (parseInt(contentStep) === currentStep) ? "block" : "none";
-        });
+    const stepTitles = ["", "Base", "Sauce", "Cheese", "Toppings"];
+    if (currentStep === 4) {
+        nextBtn.textContent = "Complete Your Slice";
+    } else {
+        nextBtn.textContent = `Next: Choose ${stepTitles[currentStep + 1]}`;
+    }
 
-        // Update button states
-        prevBtn.disabled = currentStep === 1;
+    updatePizzaVisualization();
+    updatePrice();
+}
 
-        const stepTitles = ["", "Base", "Sauce", "Cheese", "Toppings"];
-        if (currentStep === 4) {
-            nextBtn.textContent = "Complete Your Slice";
+// Option selection
+optionCards.forEach(card => {
+    card.addEventListener("click", function() {
+        const type = this.dataset.type;
+        const name = this.dataset.name;
+        const price = parseFloat(this.dataset.price);
+
+        if (type === "topping") {
+            // Multiple toppings allowed, max 3
+            const index = pizzaConfig.toppings.findIndex(t => t.name === name);
+            if (index > -1) {
+                pizzaConfig.toppings.splice(index, 1);
+                this.classList.remove("selected");
+            } else if (pizzaConfig.toppings.length < 3) {
+                pizzaConfig.toppings.push({ name, price });
+                this.classList.add("selected");
+            }
+            updateToppingsCounter();
         } else {
-            nextBtn.textContent = `Next: Choose ${stepTitles[currentStep + 1]}`;
+            // Single choice options
+            const parent = this.closest(".options-grid");
+            parent.querySelectorAll(".option-card").forEach(c => c.classList.remove("selected"));
+            this.classList.add("selected");
+
+            pizzaConfig[type] = { name, price };
         }
 
         updatePizzaVisualization();
         updatePrice();
-    }
-
-    // Option selection
-    optionCards.forEach(card => {
-        card.addEventListener("click", function() {
-            const type = this.dataset.type;
-            const name = this.dataset.name;
-            const price = parseFloat(this.dataset.price);
-
-            if (type === "topping") {
-                // Multiple toppings allowed, max 3
-                const index = pizzaConfig.toppings.findIndex(t => t.name === name);
-                if (index > -1) {
-                    pizzaConfig.toppings.splice(index, 1);
-                    this.classList.remove("selected");
-                } else if (pizzaConfig.toppings.length < 3) {
-                    pizzaConfig.toppings.push({ name, price });
-                    this.classList.add("selected");
-                }
-                updateToppingsCounter();
-            } else {
-                // Single choice options
-                const parent = this.closest(".options-grid");
-                parent.querySelectorAll(".option-card").forEach(c => c.classList.remove("selected"));
-                this.classList.add("selected");
-
-                pizzaConfig[type] = { name, price };
-            }
-
-            updatePizzaVisualization();
-            updatePrice();
-        });
     });
+});
 
-    // Navigation buttons
-    nextBtn.addEventListener("click", function() {
-        if (currentStep < 4) {
-            currentStep++;
-            updateStepNavigation();
-        } else {
-            completePizza();
-        }
-    });
-
-    prevBtn.addEventListener("click", function() {
-        if (currentStep > 1) {
-            currentStep--;
-            updateStepNavigation();
-        }
-    });
-
-    // Update toppings counter
-    function updateToppingsCounter() {
-        toppingsCounter.textContent = `${pizzaConfig.toppings.length}/3 toppings selected`;
-    }
-
-    // Update pizza visualization
-    function updatePizzaVisualization() {
-        selectedOptions.innerHTML = `
-            <div><strong>Base:</strong> ${pizzaConfig.base.name}</div>
-            <div><strong>Sauce:</strong> ${pizzaConfig.sauce.name}</div>
-            <div><strong>Cheese:</strong> ${pizzaConfig.cheese.name}</div>
-            <div><strong>Toppings:</strong> ${pizzaConfig.toppings.length > 0 ? pizzaConfig.toppings.map(t => t.name).join(", ") : "None"}</div>
-        `;
-    }
-
-    // Update price
-    function updatePrice() {
-        let total = basePrice;
-        total += pizzaConfig.base.price;
-        total += pizzaConfig.sauce.price;
-        total += pizzaConfig.cheese.price;
-        total += pizzaConfig.toppings.reduce((sum, t) => sum + t.price, 0);
-        currentPrice.textContent = `€${total.toFixed(2)}`;
-    }
-
-    // Complete pizza
-    function completePizza() {
-        const totalPrice = parseFloat(currentPrice.textContent.replace("€", ""));
-        const customizations = [
-            pizzaConfig.base.name,
-            pizzaConfig.sauce.name,
-            pizzaConfig.cheese.name,
-            ...pizzaConfig.toppings.map(t => t.name)
-        ];
-
-        addToCart(
-            "Custom Pizza Slice",
-            totalPrice,
-            "https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
-            customizations
-        );
-
-        alert("Your custom slice has been added to the cart!");
-        resetBuilder();
-    }
-
-    // Reset builder
-    function resetBuilder() {
-        currentStep = 1;
-        pizzaConfig.base = { name: "Original", price: 0 };
-        pizzaConfig.sauce = { name: "Tomato Sauce", price: 0 };
-        pizzaConfig.cheese = { name: "Mozzarella", price: 0 };
-        pizzaConfig.toppings = [];
-
-        optionCards.forEach(card => card.classList.remove("selected"));
-        document.querySelector("#step1 .option-card").classList.add("selected");
-
+// Navigation buttons
+nextBtn.addEventListener("click", function() {
+    if (currentStep < 4) {
+        currentStep++;
         updateStepNavigation();
-        updateToppingsCounter();
+    } else {
+        completePizza();
     }
+});
 
-    // Init
+prevBtn.addEventListener("click", function() {
+    if (currentStep > 1) {
+        currentStep--;
+        updateStepNavigation();
+    }
+});
+
+// Update toppings counter
+function updateToppingsCounter() {
+    toppingsCounter.textContent = `${pizzaConfig.toppings.length}/3 toppings selected`;
+}
+
+// Update pizza visualization
+function updatePizzaVisualization() {
+    // Update base
+    pizzaBase.className = "pizza-base";
+    if (pizzaConfig.base.name !== "Original") {
+        pizzaBase.classList.add(pizzaConfig.base.name.toLowerCase().replace(" ", "-"));
+    }
+    
+    // Update sauce
+    pizzaSauce.className = "pizza-sauce";
+    if (pizzaConfig.sauce.name !== "None") {
+        pizzaSauce.classList.add("active");
+        pizzaSauce.classList.add(pizzaConfig.sauce.name.toLowerCase().split(" ")[0]);
+    }
+    
+    // Update cheese
+    pizzaCheese.className = "pizza-cheese";
+    if (pizzaConfig.cheese.name !== "None") {
+        pizzaCheese.classList.add("active");
+        pizzaCheese.classList.add(pizzaConfig.cheese.name.toLowerCase().split(" ")[0]);
+    }
+    
+    // Update toppings
+    pizzaToppings.innerHTML = "";
+    pizzaConfig.toppings.forEach((topping, index) => {
+        const toppingEl = document.createElement("div");
+        toppingEl.className = `topping ${topping.name.toLowerCase().replace(" ", "-")} active new`;
+        
+        // Random position for toppings
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 60 + Math.random() * 80; // Distance from center
+        const x = Math.cos(angle) * distance;
+        const y = Math.sin(angle) * distance;
+        
+        toppingEl.style.left = `calc(50% + ${x}px)`;
+        toppingEl.style.top = `calc(50% + ${y}px)`;
+        
+        pizzaToppings.appendChild(toppingEl);
+        
+        // Remove the 'new' class after animation completes
+        setTimeout(() => {
+            toppingEl.classList.remove("new");
+        }, 600);
+    });
+    
+    // Update summary text
+    selectedOptions.innerHTML = `
+        <div><strong>Base:</strong> ${pizzaConfig.base.name}</div>
+        <div><strong>Sauce:</strong> ${pizzaConfig.sauce.name}</div>
+        <div><strong>Cheese:</strong> ${pizzaConfig.cheese.name}</div>
+        <div><strong>Toppings:</strong> ${pizzaConfig.toppings.length > 0 ? pizzaConfig.toppings.map(t => t.name).join(", ") : "None"}</div>
+    `;
+}
+
+// Update price
+function updatePrice() {
+    let total = basePrice;
+    total += pizzaConfig.base.price;
+    total += pizzaConfig.sauce.price;
+    total += pizzaConfig.cheese.price;
+    total += pizzaConfig.toppings.reduce((sum, t) => sum + t.price, 0);
+    currentPrice.textContent = `€${total.toFixed(2)}`;
+}
+
+// Complete pizza
+function completePizza() {
+    const totalPrice = parseFloat(currentPrice.textContent.replace("€", ""));
+    const customizations = [
+        pizzaConfig.base.name,
+        pizzaConfig.sauce.name,
+        pizzaConfig.cheese.name,
+        ...pizzaConfig.toppings.map(t => t.name)
+    ];
+
+    addToCart(
+        "Custom Pizza Slice",
+        totalPrice,
+        "https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+        customizations
+    );
+
+    alert("Your custom slice has been added to the cart!");
+    resetBuilder();
+}
+
+// Reset builder
+function resetBuilder() {
+    currentStep = 1;
+    pizzaConfig.base = { name: "Original", price: 0 };
+    pizzaConfig.sauce = { name: "Tomato Sauce", price: 0 };
+    pizzaConfig.cheese = { name: "Mozzarella", price: 0 };
+    pizzaConfig.toppings = [];
+
+    optionCards.forEach(card => card.classList.remove("selected"));
+    document.querySelector("#step1 .option-card").classList.add("selected");
+
     updateStepNavigation();
     updateToppingsCounter();
+}
 
+// Init
+updateStepNavigation();
+updateToppingsCounter();
 
   // ---------- LOGIN & SIGNUP DIALOGS ----------
   const loginDialog = $("#loginDialog");
