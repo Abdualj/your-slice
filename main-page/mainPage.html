@@ -8,6 +8,8 @@
     <script src="main.js" defer></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/@mapbox/polyline"></script>
+
 
     
 <!-- Smooth Scroll -->
@@ -276,99 +278,474 @@
         </div>
     </section>
 
-    <!-- Menu Section -->
+ <!-- Daily Lunch Menu Section -->
     <section id="menu" class="menu-section">
         <div class="container">
             <div class="section-title">
-                <h2>Popular Creations</h2>
-                <p>Not feeling creative? Try our signature slices</p>
+                <h2>Daily Lunch Specials</h2>
+                <p>Fresh options every day - available from 11:30 AM to 2:30 PM</p>
             </div>
 
-            <div class="menu-scroll-container">
-                <div class="menu-scroll-grid">
-                    <div class="menu-item">
-                        <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Margherita">
-                        <div class="menu-item-content">
-                            <h3>Classic Margherita</h3>
-                            <p>Tomato sauce, fresh mozzarella, basil leaves</p>
-                            <div class="menu-item-bottom">
-                                <span class="price">€4.00</span>
-                                <button class="add-to-cart-btn">Add to Cart</button>
+            <div class="lunch-menu-container">
+                <div class="day-selector">
+                    <button class="day-btn active" data-day="monday">Monday<span class="today-highlight" id="today-indicator">Today</span></button>
+                    <button class="day-btn" data-day="tuesday">Tuesday</button>
+                    <button class="day-btn" data-day="wednesday">Wednesday</button>
+                    <button class="day-btn" data-day="thursday">Thursday</button>
+                    <button class="day-btn" data-day="friday">Friday</button>
+                    <button class="day-btn" data-day="saturday">Saturday</button>
+                    <button class="day-btn" data-day="sunday">Sunday</button>
+                </div>
+
+                <!-- Monday Menu -->
+                <div class="daily-menu active" id="monday-menu">
+                    <div class="daily-menu-header">
+                        <h3>Monday Lunch Specials</h3>
+                        <p>Start your week with our delicious pizza options</p>
+                    </div>
+                    <div class="menu-options">
+                        <div class="menu-option vegan">
+                            <div class="option-header">
+                                <div class="option-icon">V</div>
+                                <h4>Vegan Option</h4>
+                            </div>
+                            <div class="menu-item">
+                                <div class="menu-item-img">
+                                    <img src="" alt="Vegan Garden Pizza">
+                                </div>
+                                <div class="menu-item-details">
+                                    <h5>Mediterranean Veggie Delight</h5>
+                                    <p>Tomato sauce, vegan cheese, roasted peppers, artichokes, olives, and fresh basil</p>
+                                    <div class="menu-item-price">€3.50</div>
+                                    <button class="add-to-cart-btn">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="menu-option meat">
+                            <div class="option-header">
+                                <div class="option-icon">M</div>
+                                <h4>Meat Option</h4>
+                            </div>
+                            <div class="menu-item">
+                                <div class="menu-item-img">
+                                    <img src="https://images.unsplash.com/photo-1595708684082-a173bb3a06c5?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Pepperoni Pizza">
+                                </div>
+                                <div class="menu-item-details">
+                                    <h5>Classic Pepperoni Feast</h5>
+                                    <p>Tomato sauce, mozzarella, double pepperoni, and oregano</p>
+                                    <div class="menu-item-price">€4.00</div>
+                                    <button class="add-to-cart-btn">Add to Cart</button>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="menu-item">
-                        <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Pepperoni">
-                        <div class="menu-item-content">
-                            <h3>Pepperoni Supreme</h3>
-                            <p>Tomato sauce, mozzarella, spicy pepperoni</p>
-                            <div class="menu-item-bottom">
-                                <span class="price">€4.00</span>
-                                <button class="add-to-cart-btn">Add to Cart</button>
+                <!-- Tuesday Menu -->
+                <div class="daily-menu" id="tuesday-menu">
+                    <div class="daily-menu-header">
+                        <h3>Tuesday Lunch Specials</h3>
+                        <p>Taco Tuesday with a pizza twist!</p>
+                    </div>
+                    <div class="menu-options">
+                        <div class="menu-option vegan">
+                            <div class="option-header">
+                                <div class="option-icon">V</div>
+                                <h4>Vegan Option</h4>
+                            </div>
+                            <div class="menu-item">
+                                <div class="menu-item-img">
+                                    <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Vegan Taco Pizza">
+                                </div>
+                                <div class="menu-item-details">
+                                    <h5>Vegan Taco Pizza</h5>
+                                    <p>Spicy tomato sauce, vegan cheese, black beans, corn, avocado, and fresh cilantro</p>
+                                    <div class="menu-item-price">€3.50</div>
+                                    <button class="add-to-cart-btn">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="menu-option meat">
+                            <div class="option-header">
+                                <div class="option-icon">M</div>
+                                <h4>Meat Option</h4>
+                            </div>
+                            <div class="menu-item">
+                                <div class="menu-item-img">
+                                    <img src="https://images.unsplash.com/photo-1595708684082-a173bb3a06c5?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Beef Taco Pizza">
+                                </div>
+                                <div class="menu-item-details">
+                                    <h5>Beef Taco Pizza</h5>
+                                    <p>Seasoned ground beef, cheddar cheese, tomatoes, lettuce, and sour cream</p>
+                                    <div class="menu-item-price">€4.00</div>
+                                    <button class="add-to-cart-btn">Add to Cart</button>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="menu-item">
-                        <img src="https://images.unsplash.com/photo-1595854341625-f33ee10dbf94?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Veggie">
-                        <div class="menu-item-content">
-                            <h3>Garden Veggie</h3>
-                            <p>Tomato sauce, mozzarella, mushrooms, peppers, olives</p>
-                            <div class="menu-item-bottom">
-                                <span class="price">€5.00</span>
-                                <button class="add-to-cart-btn">Add to Cart</button>
+                <!-- Wednesday Menu -->
+                <div class="daily-menu" id="wednesday-menu">
+                    <div class="daily-menu-header">
+                        <h3>Wednesday Lunch Specials</h3>
+                        <p>Hump day delight with our specialty pizzas</p>
+                    </div>
+                    <div class="menu-options">
+                        <div class="menu-option vegan">
+                            <div class="option-header">
+                                <div class="option-icon">V</div>
+                                <h4>Vegan Option</h4>
+                            </div>
+                            <div class="menu-item">
+                                <div class="menu-item-img">
+                                    <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Vegan Pesto Pizza">
+                                </div>
+                                <div class="menu-item-details">
+                                    <h5>Pesto Veggie Delight</h5>
+                                    <p>Vegan pesto, cashew cheese, sun-dried tomatoes, spinach, and pine nuts</p>
+                                    <div class="menu-item-price">€3.50</div>
+                                    <button class="add-to-cart-btn">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="menu-option meat">
+                            <div class="option-header">
+                                <div class="option-icon">M</div>
+                                <h4>Meat Option</h4>
+                            </div>
+                            <div class="menu-item">
+                                <div class="menu-item-img">
+                                    <img src="https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="BBQ Chicken Pizza">
+                                </div>
+                                <div class="menu-item-details">
+                                    <h5>BBQ Chicken Pizza</h5>
+                                    <p>BBQ sauce, mozzarella, grilled chicken, red onions, and cilantro</p>
+                                    <div class="menu-item-price">€4.00</div>
+                                    <button class="add-to-cart-btn">Add to Cart</button>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="menu-item">
-                        <img src="https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="BBQ Chicken">
-                        <div class="menu-item-content">
-                            <h3>BBQ Chicken</h3>
-                            <p>BBQ sauce, mozzarella, grilled chicken, red onions</p>
-                            <div class="menu-item-bottom">
-                                <span class="price">€5.00</span>
-                                <button class="add-to-cart-btn">Add to Cart</button>
+                <!-- Thursday Menu -->
+                <div class="daily-menu" id="thursday-menu">
+                    <div class="daily-menu-header">
+                        <h3>Thursday Lunch Specials</h3>
+                        <p>Almost there! Enjoy our Italian classics</p>
+                    </div>
+                    <div class="menu-options">
+                        <div class="menu-option vegan">
+                            <div class="option-header">
+                                <div class="option-icon">V</div>
+                                <h4>Vegan Option</h4>
+                            </div>
+                            <div class="menu-item">
+                                <div class="menu-item-img">
+                                    <img src="https://images.unsplash.com/photo-1595854341625-f33ee10dbf94?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Vegan Margherita">
+                                </div>
+                                <div class="menu-item-details">
+                                    <h5>Vegan Margherita</h5>
+                                    <p>Tomato sauce, vegan mozzarella, fresh basil, and olive oil</p>
+                                    <div class="menu-item-price">€3.50</div>
+                                    <button class="add-to-cart-btn">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="menu-option meat">
+                            <div class="option-header">
+                                <div class="option-icon">M</div>
+                                <h4>Meat Option</h4>
+                            </div>
+                            <div class="menu-item">
+                                <div class="menu-item-img">
+                                    <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Meat Lovers">
+                                </div>
+                                <div class="menu-item-details">
+                                    <h5>Meat Lovers Pizza</h5>
+                                    <p>Tomato sauce, mozzarella, pepperoni, sausage, ham, and bacon</p>
+                                    <div class="menu-item-price">€4.00</div>
+                                    <button class="add-to-cart-btn">Add to Cart</button>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="menu-item">
-                        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Truffle">
-                        <div class="menu-item-content">
-                            <h3>Truffle Delight</h3>
-                            <p>White sauce, mozzarella, truffle oil, mushrooms</p>
-                            <div class="menu-item-bottom">
-                                <span class="price">€6.00</span>
-                                <button class="add-to-cart-btn">Add to Cart</button>
+                <!-- Friday Menu -->
+                <div class="daily-menu" id="friday-menu">
+                    <div class="daily-menu-header">
+                        <h3>Friday Lunch Specials</h3>
+                        <p>Celebrate the weekend with our special pizzas</p>
+                    </div>
+                    <div class="menu-options">
+                        <div class="menu-option vegan">
+                            <div class="option-header">
+                                <div class="option-icon">V</div>
+                                <h4>Vegan Option</h4>
+                            </div>
+                            <div class="menu-item">
+                                <div class="menu-item-img">
+                                    <img src="" alt="Vegan Supreme">
+                                </div>
+                                <div class="menu-item-details">
+                                    <h5>Vegan Supreme</h5>
+                                    <p>Tomato sauce, vegan cheese, mushrooms, onions, peppers, olives, and vegan sausage</p>
+                                    <div class="menu-item-price">€3.50</div>
+                                    <button class="add-to-cart-btn">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="menu-option meat">
+                            <div class="option-header">
+                                <div class="option-icon">M</div>
+                                <h4>Meat Option</h4>
+                            </div>
+                            <div class="menu-item">
+                                <div class="menu-item-img">
+                                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Truffle Delight">
+                                </div>
+                                <div class="menu-item-details">
+                                    <h5>Truffle Delight</h5>
+                                    <p>White sauce, mozzarella, truffle oil, mushrooms, prosciutto, and arugula</p>
+                                    <div class="menu-item-price">€4.00</div>
+                                    <button class="add-to-cart-btn">Add to Cart</button>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="menu-item">
-                        <img src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Hawaiian">
-                        <div class="menu-item-content">
-                            <h3>Hawaiian Paradise</h3>
-                            <p>Tomato sauce, mozzarella, ham, pineapple</p>
-                            <div class="menu-item-bottom">
-                                <span class="price">€6.00</span>
-                                <button class="add-to-cart-btn">Add to Cart</button>
+                <!-- Saturday Menu -->
+                <div class="daily-menu" id="saturday-menu">
+                    <div class="daily-menu-header">
+                        <h3>Saturday Lunch Specials</h3>
+                        <p>Weekend treat with our gourmet options</p>
+                    </div>
+                    <div class="menu-options">
+                        <div class="menu-option vegan">
+                            <div class="option-header">
+                                <div class="option-icon">V</div>
+                                <h4>Vegan Option</h4>
+                            </div>
+                            <div class="menu-item">
+                                <div class="menu-item-img">
+                                    <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Vegan Buffalo">
+                                </div>
+                                <div class="menu-item-details">
+                                    <h5>Buffalo Cauliflower Pizza</h5>
+                                    <p>Buffalo sauce, vegan cheese, crispy cauliflower, celery, and vegan ranch</p>
+                                    <div class="menu-item-price">€3.50</div>
+                                    <button class="add-to-cart-btn">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="menu-option meat">
+                            <div class="option-header">
+                                <div class="option-icon">M</div>
+                                <h4>Meat Option</h4>
+                            </div>
+                            <div class="menu-item">
+                                <div class="menu-item-img">
+                                    <img src="https://images.unsplash.com/photo-1595708684082-a173bb3a06c5?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Hawaiian Pizza">
+                                </div>
+                                <div class="menu-item-details">
+                                    <h5>Hawaiian Paradise</h5>
+                                    <p>Tomato sauce, mozzarella, ham, pineapple, and bacon</p>
+                                    <div class="menu-item-price">€4.00</div>
+                                    <button class="add-to-cart-btn">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sunday Menu -->
+                <div class="daily-menu" id="sunday-menu">
+                    <div class="daily-menu-header">
+                        <h3>Sunday Lunch Specials</h3>
+                        <p>Relax and enjoy our comforting pizzas</p>
+                    </div>
+                    <div class="menu-options">
+                        <div class="menu-option vegan">
+                            <div class="option-header">
+                                <div class="option-icon">V</div>
+                                <h4>Vegan Option</h4>
+                            </div>
+                            <div class="menu-item">
+                                <div class="menu-item-img">
+                                    <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Vegan White Pizza">
+                                </div>
+                                <div class="menu-item-details">
+                                    <h5>Garlic White Pizza</h5>
+                                    <p>Garlic sauce, vegan ricotta, spinach, artichokes, and roasted garlic</p>
+                                    <div class="menu-item-price">€3.50</div>
+                                    <button class="add-to-cart-btn">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="menu-option meat">
+                            <div class="option-header">
+                                <div class="option-icon">M</div>
+                                <h4>Meat Option</h4>
+                            </div>
+                            <div class="menu-item">
+                                <div class="menu-item-img">
+                                    <img src="https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Buffalo Chicken Pizza">
+                                </div>
+                                <div class="menu-item-details">
+                                    <h5>Buffalo Chicken Pizza</h5>
+                                    <p>Buffalo sauce, mozzarella, grilled chicken, red onions, and blue cheese</p>
+                                    <div class="menu-item-price">€4.00</div>
+                                    <button class="add-to-cart-btn">Add to Cart</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <!-- Scroll indicators -->
-            <div class="scroll-indicators">
-                <button class="scroll-arrow left-arrow" aria-label="Scroll left">&#8249;</button>
-                <div class="dot-indicators">
-                    <span class="dot active"></span>
-                    <span class="dot"></span>
-                    <span class="dot"></span>
+
+            <!-- Weekly Overview -->
+            <div class="week-menu">
+                <div class="section-title">
+                    <h2>Weekly Lunch Overview</h2>
+                    <p>Plan your week with our delicious lunch options</p>
                 </div>
-                <button class="scroll-arrow right-arrow" aria-label="Scroll right">&#8250;</button>
+                <div class="week-grid">
+                    <!-- Monday -->
+                    <div class="week-day">
+                        <div class="week-day-header">
+                            <h4>Monday</h4>
+                        </div>
+                        <div class="week-day-options">
+                            <div class="week-option">
+                                <h6><span class="vegan-label"></span>Vegan</h6>
+                                <p>Mediterranean Veggie Delight</p>
+                                <div class="week-price">€3.50</div>
+                            </div>
+                            <div class="week-option">
+                                <h6><span class="meat-label"></span>Meat</h6>
+                                <p>Classic Pepperoni Feast</p>
+                                <div class="week-price">€4.00</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tuesday -->
+                    <div class="week-day">
+                        <div class="week-day-header">
+                            <h4>Tuesday</h4>
+                        </div>
+                        <div class="week-day-options">
+                            <div class="week-option">
+                                <h6><span class="vegan-label"></span>Vegan</h6>
+                                <p>Vegan Taco Pizza</p>
+                                <div class="week-price">€3.50</div>
+                            </div>
+                            <div class="week-option">
+                                <h6><span class="meat-label"></span>Meat</h6>
+                                <p>Beef Taco Pizza</p>
+                                <div class="week-price">€4.00</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Wednesday -->
+                    <div class="week-day">
+                        <div class="week-day-header">
+                            <h4>Wednesday</h4>
+                        </div>
+                        <div class="week-day-options">
+                            <div class="week-option">
+                                <h6><span class="vegan-label"></span>Vegan</h6>
+                                <p>Pesto Veggie Delight</p>
+                                <div class="week-price">€3.50</div>
+                            </div>
+                            <div class="week-option">
+                                <h6><span class="meat-label"></span>Meat</h6>
+                                <p>BBQ Chicken Pizza</p>
+                                <div class="week-price">€4.00</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Thursday -->
+                    <div class="week-day">
+                        <div class="week-day-header">
+                            <h4>Thursday</h4>
+                        </div>
+                        <div class="week-day-options">
+                            <div class="week-option">
+                                <h6><span class="vegan-label"></span>Vegan</h6>
+                                <p>Vegan Margherita</p>
+                                <div class="week-price">€3.50</div>
+                            </div>
+                            <div class="week-option">
+                                <h6><span class="meat-label"></span>Meat</h6>
+                                <p>Meat Lovers Pizza</p>
+                                <div class="week-price">€4.00</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Friday -->
+                    <div class="week-day">
+                        <div class="week-day-header">
+                            <h4>Friday</h4>
+                        </div>
+                        <div class="week-day-options">
+                            <div class="week-option">
+                                <h6><span class="vegan-label"></span>Vegan</h6>
+                                <p>Vegan Supreme</p>
+                                <div class="week-price">€3.50</div>
+                            </div>
+                            <div class="week-option">
+                                <h6><span class="meat-label"></span>Meat</h6>
+                                <p>Truffle Delight</p>
+                                <div class="week-price">€4.00</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Saturday -->
+                    <div class="week-day">
+                        <div class="week-day-header">
+                            <h4>Saturday</h4>
+                        </div>
+                        <div class="week-day-options">
+                            <div class="week-option">
+                                <h6><span class="vegan-label"></span>Vegan</h6>
+                                <p>Buffalo Cauliflower Pizza</p>
+                                <div class="week-price">€3.50</div>
+                            </div>
+                            <div class="week-option">
+                                <h6><span class="meat-label"></span>Meat</h6>
+                                <p>Hawaiian Paradise</p>
+                                <div class="week-price">€4.00</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sunday -->
+                    <div class="week-day">
+                        <div class="week-day-header">
+                            <h4>Sunday</h4>
+                        </div>
+                        <div class="week-day-options">
+                            <div class="week-option">
+                                <h6><span class="vegan-label"></span>Vegan</h6>
+                                <p>Garlic White Pizza</p>
+                                <div class="week-price">€3.50</div>
+                            </div>
+                            <div class="week-option">
+                                <h6><span class="meat-label"></span>Meat</h6>
+                                <p>Buffalo Chicken Pizza</p>
+                                <div class="week-price">€4.00</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -376,15 +753,15 @@
 
     <section id="map-section">
         <h2>Our Location</h2>
-        <div id="map" style="height: 250px;"></div>
+        <div id="map"></div>
     </section>
 
-    <!-- Reviews Section (lisää tämä ennen footeria) -->
-<section id="reviews" class="reviews-section container">
-  <div class="section-title">
-    <h2>Restaurant Reviews</h2>
-    <p>Read what customers say or add your own review</p>
-  </div>
+    <!-- Reviews Section -->
+    <section id="reviews" class="reviews-section container">
+        <div class="section-title">
+            <h2>Restaurant Reviews</h2>
+            <p>Read what customers say or add your own review</p>
+        </div>
 
         <form id="addReviewForm" class="add-review-form">
             <input type="text" id="reviewerName" placeholder="Your name" required>
@@ -526,22 +903,88 @@
     </dialog>
     
     <script>
+        // Initialize map
+        const map = L.map('map').setView([60.1699, 24.9384], 13); // Helsinki coords
 
-    // Leaflet kartta init
-        const map = L.map('map').setView([60.1699, 24.9384], 13); // Helsingin koordinaatit
-
-        // Lisää taustakartta
+        // Add OpenStreetMap tiles
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
 
-        // Lisää markkeri
-        L.marker([60.1699, 24.9384]).addTo(map)
+        // Add your pizza shop marker
+        const shopCoords = [60.1699, 24.9384];
+        L.marker(shopCoords).addTo(map)
             .bindPopup('Our Pizza Shop<br>Helsinki')
             .openPopup();
+
+        // Add click-to-get-route functionality
+        map.on('click', (e) => {
+            const destination = e.latlng;
+            getHslRoute(shopCoords, [destination.lat, destination.lng]);
+        });
+
+        async function getHslRoute(from, to) {
+            const query = `
+            {
+                plan(
+                    from: {lat: ${from[0]}, lon: ${from[1]}},
+                    to: {lat: ${to[0]}, lon: ${to[1]}},
+                    numItineraries: 1
+                ) {
+                    itineraries {
+                        duration
+                        legs {
+                            mode
+                            from { name lat lon }
+                            to { name lat lon }
+                            legGeometry { points }
+                        }
+                    }
+                }
+            }`;
+
+            try {
+                const response = await fetch('https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query })
+                });
+
+                const json = await response.json();
+                const itinerary = json.data.plan.itineraries[0];
+                drawRoute(itinerary);
+            } catch (err) {
+                console.error('HSL route error:', err);
+                alert('Could not fetch route from HSL API.');
+            }
+        }
+
+        function drawRoute(itinerary) {
+            itinerary.legs.forEach(leg => {
+                const coords = polyline.decode(leg.legGeometry.points);
+                const latlngs = coords.map(([lat, lon]) => [lat, lon]);
+                L.polyline(latlngs, {
+                    color: getModeColor(leg.mode),
+                    weight: 5,
+                    opacity: 0.8
+                }).addTo(map);
+            });
+
+            const totalMinutes = Math.round(itinerary.duration / 60);
+            alert(`Estimated travel time: ${totalMinutes} minutes`);
+        }
+
+        function getModeColor(mode) {
+            switch (mode) {
+                case 'WALK': return 'gray';
+                case 'BUS': return 'blue';
+                case 'TRAM': return 'green';
+                case 'RAIL': return 'red';
+                case 'SUBWAY': return 'orange';
+                default: return 'black';
+            }
+        }
     </script>
 </body>
 </html>
-
-   

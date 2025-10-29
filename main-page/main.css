@@ -17,6 +17,28 @@
 body {
   background-color: #f9f9f9;
   color: var(--text);
+  overflow-x: hidden;
+}
+
+/* Fix section spacing and overlapping issues */
+.builder-section {
+  padding: 60px 0;
+  margin-bottom: 40px;
+}
+
+.menu-section {
+  padding: 60px 0;
+  margin-bottom: 40px;
+}
+
+.reviews-section {
+  padding: 60px 0;
+  margin-bottom: 40px;
+}
+
+#map-section {
+  padding: 40px 0;
+  margin-bottom: 40px;
 }
 
 header {
@@ -99,7 +121,6 @@ nav ul li a:hover {
   background-color: transparent;
   color: var(--dark);
   border: 2px solid var(--dark);
-  margin-left: 90px;
 }
 
 .login-btn:hover {
@@ -305,13 +326,14 @@ nav ul li a:hover {
   display: flex;
   justify-content: center;
   margin-bottom: 40px;
+  flex-wrap: wrap;
 }
 
 .step {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 20px;
+  margin: 0 10px 15px;
 }
 
 .step-number {
@@ -343,14 +365,17 @@ nav ul li a:hover {
 }
 
 
+/* Fix pizza preview positioning */
 .pizza-preview {
   flex: 1;
   min-width: 300px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
   padding: 20px;
   position: relative;
+  margin-bottom: 40px;
 }
 
 .pizza-canvas {
@@ -569,10 +594,13 @@ nav ul li a:hover {
 
 /* Pizza summary styles */
 .pizza-summary {
-  position: absolute;
-  bottom: -120px;
-  left: 0;
-  right: 0;
+  position: relative;
+  bottom: auto;
+  left: auto;
+  right: auto;
+  margin-top: 20px;
+  width: 100%;
+  max-width: 300px;
   background-color: white;
   padding: 15px;
   border-radius: 8px;
@@ -678,167 +706,304 @@ nav ul li a:hover {
   font-weight: 600;
 }
 
+/* Fix navigation buttons spacing */
 .navigation-buttons {
   display: flex;
   justify-content: space-between;
   margin-top: 30px;
+  gap: 15px;
 }
 
-/* Menu section with horizontal scrolling */
-.menu-scroll-container {
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-  padding: 20px 0;
-  margin: 0 -20px;
-  scrollbar-width: none; /* Firefox */
+.navigation-buttons .btn {
+  flex: 1;
+  max-width: 200px;
+}
+/* Daily Lunch Menu Styles */
+.lunch-menu-container {
+    margin-bottom: 40px;
 }
 
-.menu-scroll-container::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Edge */
+.day-selector {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
-.menu-scroll-grid {
-  display: flex;
-  gap: 20px;
-  padding: 0px;
+.day-btn {
+    padding: 10px 20px;
+    background-color: white;
+    border: 2px solid var(--light);
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.day-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.day-btn.active {
+    background-color: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.today-highlight {
+    display: inline-block;
+    background-color: var(--secondary);
+    color: white;
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+.daily-menu {
+    display: none;
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.daily-menu.active {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.daily-menu-header {
+    background-color: var(--dark);
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.daily-menu-header h3 {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+}
+
+.daily-menu-header p {
+    opacity: 0.8;
+}
+
+.menu-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 0;
+}
+
+.menu-option {
+    padding: 25px;
+    border-right: 1px solid #eee;
+}
+
+.menu-option:last-child {
+    border-right: none;
+}
+
+.option-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.option-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    font-weight: bold;
+    color: white;
+}
+
+.vegan .option-icon {
+    background-color: var(--success);
+}
+
+.meat .option-icon {
+    background-color: var(--primary);
+}
+
+.option-header h4 {
+    font-size: 1.2rem;
 }
 
 .menu-item {
-  scroll-snap-align: start;
-  flex: 0 0 calc(100% - 40px);
-  max-width: 300px;
-  background-color: white;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    display: flex;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
 }
 
-.menu-item img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
+.menu-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
 }
 
-.menu-item-content {
-  padding: 15px;
+.menu-item-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-right: 15px;
+    flex-shrink: 0;
 }
 
-.menu-item h3 {
-  margin-bottom: 10px;
+.menu-item-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.menu-item p {
-  color: #777;
-  margin-bottom: 15px;
-  font-size: 14px;
+.menu-item-details {
+    flex: 1;
 }
 
-.menu-item-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.menu-item-details h5 {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
 }
 
-.price {
-  font-weight: 600;
-  color: var(--dark);
+.menu-item-details p {
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.menu-item-price {
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 1.1rem;
 }
 
 .add-to-cart-btn {
-  background-color: var(--primary);
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 8px 15px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-weight: 600;
 }
 
 .add-to-cart-btn:hover {
-  background-color: #c0392b;
+    background-color: #c0392b;
 }
 
-/* Scroll indicators */
-.scroll-indicators {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-  padding: 50px 0px;
+.week-menu {
+    margin-top: 50px;
 }
 
-.scroll-arrow {
-  background: var(--primary);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  font-size: 20px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.3s;
+.week-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
 }
 
-.scroll-arrow:hover {
-  background: #c0392b;
+.week-day {
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
 }
 
-.dot-indicators {
-  display: flex;
-  gap: 8px;
+.week-day-header {
+    background-color: var(--dark);
+    color: white;
+    padding: 15px;
+    text-align: center;
 }
 
-.dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #ddd;
-  cursor: pointer;
-  transition: background-color 0.3s;
+.week-day-options {
+    padding: 15px;
 }
 
-.dot.active {
-  background: var(--primary);
+.week-option {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.week-option:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.week-option h6 {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.week-option h6 span {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.vegan-label {
+    background-color: var(--success);
+}
+
+.meat-label {
+    background-color: var(--primary);
+}
+
+.week-option p {
+    font-size: 0.85rem;
+    color: #777;
+    margin-bottom: 5px;
+}
+
+.week-price {
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 0.9rem;
 }
 
 /* Responsive adjustments */
-@media (min-width: 640px) {
-  .menu-item {
-    flex: 0 0 calc(50% - 20px);
-  }
-}
-
-@media (min-width: 768px) {
-  .menu-item {
-    flex: 0 0 calc(33.333% - 20px);
-  }
-
-  nav ul {
-    margin-top: 15px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  .auth-buttons {
-    margin-top: 10px;
-    margin-left: 0;
-  }
-
-  .form-row {
-    flex-direction: column;
-    gap: 0;
-  }
-}
-
-@media (min-width: 1024px) {
-  .menu-item {
-    flex: 0 0 calc(25% - 20px);
-  }
+@media (max-width: 768px) {
+    .menu-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .menu-option {
+        border-right: none;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .menu-option:last-child {
+        border-bottom: none;
+    }
+    
+    .day-selector {
+        gap: 5px;
+    }
+    
+    .day-btn {
+        padding: 8px 15px;
+        font-size: 14px;
+    }
 }
 
 footer {
@@ -1192,7 +1357,7 @@ footer {
 }
 
 #map {
-  width: 50%;
+  width: 80%;
   height: 400px;
   margin: 40px auto;
   border-radius: 12px;
@@ -1200,5 +1365,5 @@ footer {
 }
 #map-section h2 {
   text-align: center;
-  margin-bottom: 20px; /* vähän väliä otsikon ja kartan väliin */
+  margin-bottom: 20px;
 }
