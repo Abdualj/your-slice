@@ -121,85 +121,113 @@ document.addEventListener("DOMContentLoaded", function () {
     const dayButtons = document.querySelectorAll('.day-btn');
     const dailyMenus = document.querySelectorAll('.daily-menu');
     const todayIndicator = document.getElementById('today-indicator');
-    
-    // Get current day (0 = Sunday, 1 = Monday, etc.)
+
+    // --- Get current weekday (0 = Sunday, 1 = Monday, etc.) ---
     const today = new Date().getDay();
     const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
     const currentDay = dayNames[today];
-    
-    // Set today's menu as active initially
-    setActiveDay(currentDay);
-    
-    // Add click event listeners to day buttons
-    dayButtons.forEach(button => {
-      button.addEventListener('click', function() {
-        const day = this.getAttribute('data-day');
-        setActiveDay(day);
-      });
-    });
-    
+
+    // --- Function: show active day section ---
     function setActiveDay(day) {
-      // Remove active class from all buttons and menus
+      // Remove "active" from all buttons and menus
       dayButtons.forEach(btn => {
         btn.classList.remove('active');
         btn.querySelector('.today-highlight')?.remove();
       });
-      
       dailyMenus.forEach(menu => {
         menu.classList.remove('active');
       });
-      
-      // Add active class to selected day button and menu
+
+      // Add "active" only to the selected day button + menu
       const activeButton = document.querySelector(`.day-btn[data-day="${day}"]`);
       const activeMenu = document.getElementById(`${day}-menu`);
-      
+
       if (activeButton && activeMenu) {
         activeButton.classList.add('active');
-        
-        // Add "Today" indicator if it's the current day
+        // Add "Today" label if this is the current day
         if (day === currentDay) {
           activeButton.appendChild(todayIndicator);
         }
-        
         activeMenu.classList.add('active');
       }
     }
-    
-    // Add to cart functionality for lunch menu items
-    const lunchAddToCartButtons = document.querySelectorAll('.daily-menu .add-to-cart-btn');
-    lunchAddToCartButtons.forEach(button => {
-      button.addEventListener('click', function() {
-        const menuItem = this.closest('.menu-item');
-        if (!menuItem) return;
-        const nameEl = menuItem.querySelector('h5');
-        const priceEl = menuItem.querySelector('.menu-item-price');
-        const imgEl = menuItem.querySelector('img');
-        
-        const name = nameEl ? nameEl.textContent.trim() : 'Lunch Special';
-        const price = priceEl ? parseFloat(priceEl.textContent.replace('€', '').trim()) || 0 : 0;
-        const image = imgEl ? imgEl.src : '';
-        
-        // Get the day and type (vegan/meat) for customizations
-        const dayMenu = this.closest('.daily-menu');
-        const dayName = dayMenu ? dayMenu.id.replace('-menu', '') : 'unknown';
-        const optionType = this.closest('.menu-option').classList.contains('vegan') ? 'Vegan' : 'Meat';
-        
-        const customizations = [`${dayName.charAt(0).toUpperCase() + dayName.slice(1)} Lunch`, optionType];
-        
-        addToCart(name, price, image, customizations);
-        
-        // Visual feedback
-        const originalText = this.textContent;
-        this.textContent = 'Added!';
-        this.style.backgroundColor = 'var(--success)';
-        
-        setTimeout(() => {
-          this.textContent = originalText;
-          this.style.backgroundColor = '';
-        }, 1500);
-      });
-    });
+
+    // --- Function: disable Add to Cart buttons for non-today menus ---
+    function lockNonTodayDays() {
+      const todayMenuSelector = `#${currentDay}-menu`;
+
+      // Disable all Add to Cart buttons in non-today menus
+      document.querySelectorAll(`.daily-menu:not(${todayMenuSelector}) .add-to-cart-btn`)
+        .forEach(btn => {
+          btn.classList.add('is-disabled');          // visually dimmed
+          btn.disabled = true;                       // no click possible
+          btn.title = 'Available only for today\'s lunch'; // tooltip
+          const option = btn.closest('.menu-option');
+          if (option) option.classList.add('dimmed'); // dim the whole option
+        });
+
+      // Ensure today's menu buttons are enabled
+      document.querySelectorAll(`${todayMenuSelector} .add-to-cart-btn`)
+        .forEach(btn => {
+          btn.classList.remove('is-disabled');
+          btn.disabled = false;
+          btn.removeAttribute('title');
+        });
   }
+
+  // --- Activate today's menu on page load ---
+  setActiveDay(currentDay);
+  lockNonTodayDays(); // Lock all other days
+
+  // --- Switch menu when user clicks another day ---
+  dayButtons.forEach(button => {
+    button.addEventListener('click', function () {
+      const day = this.getAttribute('data-day');
+      setActiveDay(day);
+      // We intentionally do NOT unlock other days – they stay disabled
+    });
+  });
+
+  // --- Add to Cart logic for lunch items ---
+  const lunchAddToCartButtons = document.querySelectorAll('.daily-menu .add-to-cart-btn');
+  lunchAddToCartButtons.forEach(button => {
+    button.addEventListener('click', function () {
+      // If this button belongs to a non-today menu, stop the click
+      if (this.disabled || this.classList.contains('is-disabled')) return;
+
+      // Find item info (name, price, image)
+      const menuItem = this.closest('.menu-item');
+      if (!menuItem) return;
+      const nameEl = menuItem.querySelector('h5');
+      const priceEl = menuItem.querySelector('.menu-item-price');
+      const imgEl = menuItem.querySelector('img');
+
+      const name = nameEl ? nameEl.textContent.trim() : 'Lunch Special';
+      const price = priceEl ? parseFloat(priceEl.textContent.replace('€', '').trim()) || 0 : 0;
+      const image = imgEl ? imgEl.src : '';
+
+      // Determine day name + option type (Vegan / Meat)
+      const dayMenu = this.closest('.daily-menu');
+      const dayName = dayMenu ? dayMenu.id.replace('-menu', '') : 'unknown';
+      const optionType = this.closest('.menu-option').classList.contains('vegan') ? 'Vegan' : 'Meat';
+
+      // Create customization labels for the cart item
+      const customizations = [`${dayName.charAt(0).toUpperCase() + dayName.slice(1)} Lunch`, optionType];
+
+      // Add the item to the global cart (function from above)
+      addToCart(name, price, image, customizations);
+
+      // Visual feedback ("Added!" message)
+      const originalText = this.textContent;
+      this.textContent = 'Added!';
+      this.style.backgroundColor = 'var(--success)';
+      setTimeout(() => {
+        this.textContent = originalText;
+        this.style.backgroundColor = '';
+      }, 1500);
+    });
+  });
+}
 
   // ---------- POPULAR CREATIONS: Add to cart ----------
   $$(".add-to-cart-btn").forEach((btn) => {

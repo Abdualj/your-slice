@@ -906,6 +906,17 @@ nav ul li a:hover {
     background-color: #c0392b;
 }
 
+.add-to-cart-btn.is-disabled {
+  opacity: .45;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.menu-option.dimmed {
+  opacity: .7;
+  filter: grayscale(20%);
+}
+
 .week-menu {
     margin-top: 50px;
 }
@@ -1357,11 +1368,12 @@ footer {
 }
 
 #map {
-  width: 80%;
+  width: 61%;
   height: 400px;
   margin: 40px auto;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 0;
 }
 #map-section h2 {
   text-align: center;
